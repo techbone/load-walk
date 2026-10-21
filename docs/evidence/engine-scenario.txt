@@ -1,0 +1,7 @@
+Inverter 2.5 kVA · battery 2 x 200 Ah 12 V lead-acid
+
+Power cut. Evening basics on       237 W run ·   237 W peak / 2000 W · ok         · 8h 36m
+Add the deep freezer               437 W run ·   837 W peak / 2000 W · ok         · 4h 40m
+Add the pressing iron             1537 W run ·  1937 W peak / 2000 W · ok         · 1h 20m
+Someone puts the kettle on        3337 W run ·  3737 W peak / 2000 W · overload   · 37m · switch off: kettle
+Kettle off, iron later             437 W run ·   837 W peak / 2000 W · ok         · 4h 40m
