@@ -1,0 +1,12 @@
+{
+  "name": "load-walk",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "node --test engine/*.test.ts",
+    "scenario": "node engine/scenario.ts | tee docs/evidence/engine-scenario.txt"
+  }
+}
