@@ -36,7 +36,7 @@ No SPECS device. Everything must run and be demonstrable in Lens Studio's Intera
 
 ## Load maths (keep consistent with `docs/research.md`)
 
-The source of truth is `engine/LoadEngine.ts`. It has no imports beyond types and no platform APIs, so the Lens uses this same file (copy it into `Assets/Scripts/` once the project exists; don't fork the logic). `npm test` runs the engine tests and `npm run scenario` writes the demo story to `docs/evidence/`.
+The source of truth is `engine/LoadEngine.ts`. It has no imports beyond types and no platform APIs, so the Lens uses this same file (`npm run sync:lens` copies it to `SpecsBaseTemplate/Assets/Scripts/LoadEngine.ts`; a test fails if the copies drift. Edit the engine, never the Lens copy). `npm test` runs the engine tests and `npm run scenario` writes the demo story to `docs/evidence/`.
 
 - Capacity: the power station's rated output used directly (Home Power Dock HeroEE 1: 200 W, 1 kWh LiFePO4).
 - Startup surge: fridge, freezer, pump ≈ 3× running; only the largest surge counts.

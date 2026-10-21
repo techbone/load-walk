@@ -97,3 +97,10 @@ test("formatHours", () => {
   assert.equal(formatHours(3 + 40 / 60), "3h 40m");
   assert.equal(formatHours(0.5), "30m");
 });
+
+test("Lens copy matches the engine (run npm run sync:lens)", async () => {
+  const { readFileSync } = await import("node:fs");
+  const engine = readFileSync(new URL("./LoadEngine.ts", import.meta.url), "utf8");
+  const lens = readFileSync(new URL("../SpecsBaseTemplate/Assets/Scripts/LoadEngine.ts", import.meta.url), "utf8");
+  assert.equal(lens, engine);
+});
