@@ -1,0 +1,14 @@
+# Lens Studio
+Cache/
+Workspaces/
+*.lsproj.lock
+Support/StudioLib.d.ts.bak
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
+
+# Secrets
+.env
+*.local.*
