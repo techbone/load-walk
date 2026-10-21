@@ -36,6 +36,8 @@ No SPECS device. Everything must run and be demonstrable in Lens Studio's Intera
 
 ## Load maths (keep consistent with `docs/research.md`)
 
+The source of truth is `engine/LoadEngine.ts`. It has no imports beyond types and no platform APIs, so the Lens uses this same file (copy it into `Assets/Scripts/` once the project exists; don't fork the logic). `npm test` runs the engine tests and `npm run scenario` writes the demo story to `docs/evidence/`.
+
 - Inverter usable W ≈ kVA × 0.8.
 - Startup surge: fridge, freezer, pump ≈ 3× running; AC ≈ 2–3×.
 - Battery hours ≈ bank Wh × depth of discharge (lead-acid 0.5, lithium 0.8–0.9) × 0.85 ÷ load W.

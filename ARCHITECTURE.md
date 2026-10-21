@@ -62,4 +62,14 @@ Lens Studio (version per the hackathon quick start), TypeScript, Spectacles Inte
 
 ## Milestones
 
-_Set after the brief. M1 = the thinnest end-to-end slice: scan one appliance, toggle it, meter moves._
+| | Milestone | Owner | Shows | Target |
+|---|---|---|---|---|
+| M0 | Setup: Lens Studio, SPECS Base Template saved into repo root, Lens Studio MCP, CLAD | Musa | `/mcp` shows `lens-studio`, `/plugin` lists CLAD | 22 Oct (live build session) |
+| M1 | Load engine: running, surge, overload culprits, battery hours | Claude | `npm test` 9/9 · `npm run scenario` | 21 Oct ✓ |
+| M2 | Design brief via `plan-lens` interview | Musa answers | `devpost/design-brief.md` approved | 23 Oct |
+| M3 | Thin slice in the Lens: one appliance, scan → tag → toggle → meter moves, using `engine/` | CLAD | Preview + first LEAF pass | 25 Oct |
+| M4 | Full room: all appliances, surge and overload warning with culprit glow and arrow, battery hours | CLAD | LEAF covers every done criterion | 30 Oct |
+| M5 | Real AI moment: nameplate image → RSG Gemini → watts, hard-coded fallback | CLAD | Works with and without a token | 2 Nov |
+| M6 | Polish for the 5 Nov project review, then README, evidence, video, submission | Both | Public repo + YouTube video | 8 Nov (a day of slack before the deadline) |
+
+M1 ran ahead of the brief because the maths is domain fact, not a design decision. The brief decides how it's shown.
