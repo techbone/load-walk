@@ -38,9 +38,10 @@ No SPECS device. Everything must run and be demonstrable in Lens Studio's Intera
 
 The source of truth is `engine/LoadEngine.ts`. It has no imports beyond types and no platform APIs, so the Lens uses this same file (copy it into `Assets/Scripts/` once the project exists; don't fork the logic). `npm test` runs the engine tests and `npm run scenario` writes the demo story to `docs/evidence/`.
 
-- Inverter usable W ≈ kVA × 0.8.
-- Startup surge: fridge, freezer, pump ≈ 3× running; AC ≈ 2–3×.
-- Battery hours ≈ bank Wh × depth of discharge (lead-acid 0.5, lithium 0.8–0.9) × 0.85 ÷ load W.
+- Capacity: the power station's rated output used directly (Home Power Dock HeroEE 1: 200 W, 1 kWh LiFePO4).
+- Startup surge: fridge, freezer, pump ≈ 3× running; only the largest surge counts.
+- Battery hours ≈ Wh × depth of discharge (lithium 0.85, lead-acid 0.5) × 0.85 conversion ÷ load W. Dropped once over capacity.
+- The iron (~1,100 W) trips the unit on running watts alone; the scan tag says so before any toggle.
 
 ## Secrets
 

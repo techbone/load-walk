@@ -40,10 +40,10 @@ flowchart LR
 
 ```ts
 type Appliance = { id: string; name: string; runningW: number; surgeFactor: number; on: boolean };
-type Inverter = { kva: number; usableW: number };          // usableW = kva * 0.8
-type Battery  = { wh: number; dod: number };              // lead-acid 0.5, lithium 0.85
-// hours = battery.wh * battery.dod * 0.85 / sum(on.runningW)
-// overload when sum(on.runningW) + max(on.surge extra) > inverter.usableW
+type Inverter = { ratedW: number };                        // power station: 200 W used directly
+type Battery  = { wh: number; chemistry: "lithium" | "lead-acid" };  // 1000 Wh LiFePO4, 0.85 usable
+// hours = battery.wh * dod * 0.85 / sum(on.runningW), dropped when over capacity
+// overload when sum(on.runningW) > inverter.ratedW; exceedsAlone(a) when a.runningW > ratedW
 ```
 
 ## Key flows
