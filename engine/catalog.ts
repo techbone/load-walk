@@ -1,30 +1,27 @@
-// Typical ratings for a Nigerian home. Estimates; real nameplates win.
-// Sources and caveats: docs/research.md.
+// Demo appliances and the power station, from design-brief.md.
+// Estimates are marked; real nameplates win. Sources: docs/research.md.
 
 import type { Appliance, Battery, Inverter } from "./LoadEngine.ts";
 
-export type ApplianceSpec = Omit<Appliance, "on">;
+export type ApplianceSpec = Omit<Appliance, "on"> & { estimate?: boolean };
 
 export const CATALOG: ApplianceSpec[] = [
-  { id: "bulbs", name: "LED bulbs (x6)", runningW: 60, surgeFactor: 1 },
-  { id: "ceiling-fan", name: "Ceiling fan", runningW: 75, surgeFactor: 1 },
-  { id: "tv", name: "TV", runningW: 70, surgeFactor: 1 },
-  { id: "decoder", name: "Decoder", runningW: 20, surgeFactor: 1 },
-  { id: "router", name: "Wi-Fi router", runningW: 12, surgeFactor: 1 },
-  { id: "laptop", name: "Laptop", runningW: 65, surgeFactor: 1 },
+  { id: "fan", name: "Fan", runningW: 12, surgeFactor: 1 },
+  { id: "phone-charger", name: "Phone charger", runningW: 12, surgeFactor: 1, estimate: true },
+  { id: "power-bank", name: "Power bank", runningW: 18, surgeFactor: 1, estimate: true },
+  { id: "laptop", name: "Laptop", runningW: 140, surgeFactor: 1 }, // adapter maximum, not typical draw
+  { id: "freezer", name: "Freezer", runningW: 350, surgeFactor: 3 },
   { id: "fridge", name: "Fridge", runningW: 150, surgeFactor: 3 },
-  { id: "freezer", name: "Deep freezer", runningW: 200, surgeFactor: 3 },
-  { id: "pump", name: "Water pump (1 HP)", runningW: 750, surgeFactor: 3 },
-  { id: "ac", name: "Split AC (1 HP)", runningW: 900, surgeFactor: 2.5 },
-  { id: "iron", name: "Pressing iron", runningW: 1100, surgeFactor: 1 },
+  { id: "pump", name: "Water pump", runningW: 750, surgeFactor: 3 },
+  { id: "iron", name: "Iron", runningW: 1100, surgeFactor: 1, estimate: true }, // trips on running watts alone
+  { id: "kettle", name: "Kettle", runningW: 1800, surgeFactor: 1 },
   { id: "microwave", name: "Microwave", runningW: 1000, surgeFactor: 1 },
-  { id: "kettle", name: "Electric kettle", runningW: 1800, surgeFactor: 1 },
 ];
 
-// A common setup: 2.5 kVA inverter on a 24 V bank of two 200 Ah lead-acid batteries.
-export const DEFAULT_INVERTER: Inverter = { kva: 2.5 };
-export const DEFAULT_BATTERY: Battery = { voltage: 12, ampHours: 200, count: 2, chemistry: "lead-acid" };
+// Home Power Dock HeroEE 1: 200 W rated output, 1 kWh LiFePO4 (label).
+export const POWER_STATION: Inverter = { ratedW: 200 };
+export const BATTERY: Battery = { wh: 1000, chemistry: "lithium" };
 
 export function household(onIds: string[] = []): Appliance[] {
-  return CATALOG.map((spec) => ({ ...spec, on: onIds.includes(spec.id) }));
+  return CATALOG.map(({ estimate: _estimate, ...spec }) => ({ ...spec, on: onIds.includes(spec.id) }));
 }

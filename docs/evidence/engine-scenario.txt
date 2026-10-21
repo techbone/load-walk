@@ -1,7 +1,15 @@
-Inverter 2.5 kVA · battery 2 x 200 Ah 12 V lead-acid
+Home Power Dock HeroEE 1 · 200 W · 1 kWh LiFePO4
 
-Power cut. Evening basics on       237 W run ·   237 W peak / 2000 W · ok         · 8h 36m
-Add the deep freezer               437 W run ·   837 W peak / 2000 W · ok         · 4h 40m
-Add the pressing iron             1537 W run ·  1937 W peak / 2000 W · ok         · 1h 20m
-Someone puts the kettle on        3337 W run ·  3737 W peak / 2000 W · overload   · 37m · switch off: kettle
-Kettle off, iron later             437 W run ·   837 W peak / 2000 W · ok         · 4h 40m
+Scan tags (fits alone?)
+  Freezer          350 W · too big for this unit alone
+  Iron            1100 W · too big for this unit alone
+  Laptop           140 W · fits
+  Fan               12 W · fits
+
+Toggle sequence
+  Fan                 12 W / 200 W · ok       · 60h 13m
+  + phone charger     24 W / 200 W · ok       ·  30h 6m
+  + power bank        42 W / 200 W · ok       · 17h 12m
+  + laptop           182 W / 200 W · near     ·  3h 58m
+  + iron            1282 W / 200 W · overload ·      -- · switch off: iron
+  Iron off           182 W / 200 W · near     ·  3h 58m

@@ -1,22 +1,31 @@
 // Walks the demo story through the engine and prints what the Lens would show.
 // `npm run scenario` writes this to docs/evidence/engine-scenario.txt.
 
-import { evaluate, formatHours } from "./LoadEngine.ts";
-import { DEFAULT_BATTERY, DEFAULT_INVERTER, household } from "./catalog.ts";
+import { evaluate, exceedsAlone, formatHours } from "./LoadEngine.ts";
+import { BATTERY, CATALOG, POWER_STATION, household } from "./catalog.ts";
 
+const desk = ["fan", "phone-charger", "power-bank", "laptop"];
 const steps: [string, string[]][] = [
-  ["Power cut. Evening basics on", ["bulbs", "ceiling-fan", "tv", "decoder", "router"]],
-  ["Add the deep freezer", ["bulbs", "ceiling-fan", "tv", "decoder", "router", "freezer"]],
-  ["Add the pressing iron", ["bulbs", "ceiling-fan", "tv", "decoder", "router", "freezer", "iron"]],
-  ["Someone puts the kettle on", ["bulbs", "ceiling-fan", "tv", "decoder", "router", "freezer", "iron", "kettle"]],
-  ["Kettle off, iron later", ["bulbs", "ceiling-fan", "tv", "decoder", "router", "freezer"]],
+  ["Fan", ["fan"]],
+  ["+ phone charger", ["fan", "phone-charger"]],
+  ["+ power bank", ["fan", "phone-charger", "power-bank"]],
+  ["+ laptop", desk],
+  ["+ iron", [...desk, "iron"]],
+  ["Iron off", desk],
 ];
 
-console.log(`Inverter ${DEFAULT_INVERTER.kva} kVA · battery 2 x 200 Ah 12 V lead-acid\n`);
+console.log("Home Power Dock HeroEE 1 · 200 W · 1 kWh LiFePO4\n");
+console.log("Scan tags (fits alone?)");
+for (const id of ["freezer", "iron", "laptop", "fan"]) {
+  const a = CATALOG.find((c) => c.id === id)!;
+  console.log(`  ${a.name.padEnd(14)} ${String(a.runningW).padStart(5)} W · ${exceedsAlone(a, POWER_STATION) ? "too big for this unit alone" : "fits"}`);
+}
+
+console.log("\nToggle sequence");
 for (const [label, ids] of steps) {
-  const r = evaluate(household(ids), DEFAULT_INVERTER, DEFAULT_BATTERY);
+  const r = evaluate(household(ids), POWER_STATION, BATTERY);
   const culprits = r.culpritIds.length ? ` · switch off: ${r.culpritIds.join(", ")}` : "";
   console.log(
-    `${label.padEnd(32)} ${String(r.runningW).padStart(5)} W run · ${String(r.peakW).padStart(5)} W peak / ${r.capacityW} W · ${r.status.padEnd(10)} · ${formatHours(r.batteryHours)}${culprits}`,
+    `  ${label.padEnd(16)} ${String(r.runningW).padStart(5)} W / ${r.capacityW} W · ${r.status.padEnd(8)} · ${formatHours(r.batteryHours).padStart(7)}${culprits}`,
   );
 }
