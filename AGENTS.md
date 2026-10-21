@@ -30,8 +30,8 @@ No SPECS device. Everything must run and be demonstrable in Lens Studio's Intera
 ## Visual language
 
 - One accent for "on / within capacity", one warning colour for overload. Neutrals everywhere else.
-- Numbers in a mono face with tabular figures (W, kVA, hours).
-- Plain copy for the user: "Freezer + iron = 1,800 W. Your inverter carries 2,000 W." No filler.
+- Numbers in a mono face with tabular figures (W, Wh, hours).
+- Plain copy for the user: "Iron 1,100 W. This unit carries 200 W." No filler.
 - No emoji icons, no sparkle badges, no gradients.
 
 ## Load maths (keep consistent with `docs/research.md`)
