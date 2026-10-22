@@ -69,7 +69,8 @@ Lens Studio (version per the hackathon quick start), TypeScript, Spectacles Inte
 | M2 | Design brief via `plan-lens` interview | Musa answers | `devpost/design-brief.md` approved | 23 Oct |
 | M3 | Thin slice in the Lens: one appliance, scan → tag → toggle → meter moves, using `engine/` | CLAD | Preview + first LEAF pass | 25 Oct |
 | M4 | Full room: all appliances, surge and overload warning with culprit glow and arrow, battery hours | CLAD | LEAF covers every done criterion | 30 Oct |
-| M5 | Real AI moment: nameplate image → RSG Gemini → watts, hard-coded fallback | CLAD | Works with and without a token | 2 Nov |
-| M6 | Polish for the 5 Nov project review, then README, evidence, video, submission | Both | Public repo + YouTube video | 8 Nov (a day of slack before the deadline) |
+| M5 | Voice: spike in the preview (`docs/spikes/voice.md`), then "on the fan" / "can I run the iron?" alongside pinch | Claude + CLAD | Transcript → same toggle as pinch, or a recorded "glasses only" result | 28 Oct |
+| M6 | Stretch: AI label reading, nameplate image → RSG Gemini → watts, hard-coded fallback | CLAD | Works with and without a token | 2 Nov |
+| M7 | Polish for the 5 Nov project review, then README, evidence, video, submission | Both | Public repo + YouTube video | 8 Nov (a day of slack before the deadline) |
 
 M1 ran ahead of the brief because the maths is domain fact, not a design decision. The brief decides how it's shown.
