@@ -14,3 +14,4 @@ Format: date · what surprised us · what we tried · what we chose · the test 
 ## 2026-10-22
 
 - Lens Studio 5.24.1 sign-in failed at accounts.specs.com ("Something went wrong") in every browser. SPECS team's workaround: downgrade to 5.23.2. A 5.24 project warns as unstable in 5.23, so we recreated the Base Template in 5.23.2 as `lens/` and moved the brief and engine in. Drift test now points at `lens/Assets/Scripts/LoadEngine.ts`.
+- CLAD built the Lens in about 40 min from the brief. 5/5 done-criterion scenarios pass by its report; an extra IK reach test fails (undiagnosed). Details in `docs/evidence/leaf-run-1.md`. Agent deviations from the brief: scan card opens above the appliance (brief says beside), chip shrinks instead of fading, no mono font yet, dark grey UI Kit plates (near-invisible on additive glasses).
