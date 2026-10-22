@@ -7,6 +7,7 @@ import { OverloadScenario } from "./OverloadScenario";
 import { RecoveryScenario } from "./RecoveryScenario";
 import { OutOfViewArrowScenario } from "./OutOfViewArrowScenario";
 import { IKReachScenario } from "./IKReachScenario";
+import { PicksScenario } from "./PicksScenario";
 
 @component
 export class LeafIndex extends BaseScriptComponent {
@@ -19,5 +20,6 @@ export class LeafIndex extends BaseScriptComponent {
     { id: "criterion-4-overload", typename: OverloadScenario.getTypeName() },
     { id: "criterion-5-recovery", typename: RecoveryScenario.getTypeName() },
     { id: "extra-out-of-view-arrow", typename: OutOfViewArrowScenario.getTypeName() },
+    { id: "extra-picks-fridge-pump-iron", typename: PicksScenario.getTypeName() },
   ];
 }
