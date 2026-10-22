@@ -8,6 +8,6 @@
   "scripts": {
     "test": "node --test engine/*.test.ts",
     "scenario": "node engine/scenario.ts | tee docs/evidence/engine-scenario.txt",
-    "sync:lens": "cp engine/LoadEngine.ts SpecsBaseTemplate/Assets/Scripts/LoadEngine.ts"
+    "sync:lens": "cp engine/LoadEngine.ts lens/Assets/Scripts/LoadEngine.ts"
   }
 }

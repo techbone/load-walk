@@ -101,6 +101,6 @@ test("formatHours", () => {
 test("Lens copy matches the engine (run npm run sync:lens)", async () => {
   const { readFileSync } = await import("node:fs");
   const engine = readFileSync(new URL("./LoadEngine.ts", import.meta.url), "utf8");
-  const lens = readFileSync(new URL("../SpecsBaseTemplate/Assets/Scripts/LoadEngine.ts", import.meta.url), "utf8");
+  const lens = readFileSync(new URL("../lens/Assets/Scripts/LoadEngine.ts", import.meta.url), "utf8");
   assert.equal(lens, engine);
 });
