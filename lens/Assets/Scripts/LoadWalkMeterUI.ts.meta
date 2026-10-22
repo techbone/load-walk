@@ -29,6 +29,7 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     numberFont: false
+    plateAlpha: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -39,6 +40,7 @@
     []
   DefaultScriptInputs:
     - numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      plateAlpha: 0.140000
   ScriptTypes:
     -
       {}
@@ -47,4 +49,5 @@
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"group_start", "label":"Settings"}'
     - '// @input Asset.Font numberFont {"hint":"Optional monospaced font for the figures."}'
+    - '// @input float plateAlpha = 0.14 {"hint":"Opacity of the light plate behind the text. 0 drops the plate and leaves bright text.", "widget":"slider", "min":0, "max":0.5, "step":0.02}'
     - '// @ui {"widget":"group_end"}'

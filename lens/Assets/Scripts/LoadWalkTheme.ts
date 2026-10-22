@@ -3,6 +3,7 @@
 // reduced alpha because black is transparent on the additive display.
 
 import { FlexItem } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexItem";
+import { RoundedRectangle } from "SpectaclesUIKit.lspkg/Scripts/Visuals/RoundedRectangle/RoundedRectangle";
 
 export type Level = "idle" | "ok" | "near" | "overload";
 
@@ -87,4 +88,37 @@ export function makeText(
   if (opts?.numbers && numberFont) t.font = numberFont;
   so.createComponent(FlexItem.getTypeName());
   return t;
+}
+
+// ---- plates ---------------------------------------------------------------------------------------------
+// Additive display: black is transparent, so plates are a faint white wash with a brighter rim, never dark.
+// Alpha 0 drops the plates entirely and leaves bright text.
+let plateAlpha = 0.14;
+export function setPlateAlpha(a: number): void {
+  plateAlpha = a;
+}
+
+export function stylePlate(plateSO: SceneObject): void {
+  const rr = plateSO.getComponent(RoundedRectangle.getTypeName()) as RoundedRectangle | null;
+  if (!rr) return;
+  rr.gradient = false;
+  rr.backgroundColor = new vec4(1, 1, 1, plateAlpha);
+  rr.border = plateAlpha > 0;
+  rr.borderSize = 0.12;
+  rr.borderColor = new vec4(1, 1, 1, Math.min(1, plateAlpha * 4));
+}
+
+// Fade a panel by opacity: the plate and every text under it.
+export function setPanelOpacity(panel: SceneObject, a: number): void {
+  const rr = panel.getComponent(RoundedRectangle.getTypeName()) as RoundedRectangle | null;
+  if (rr) rr.opacity = a;
+  const walk = (so: SceneObject) => {
+    const t = so.getComponent("Component.Text") as Text | null;
+    if (t) {
+      const c = t.textFill.color;
+      t.textFill.color = new vec4(c.x, c.y, c.z, a);
+    }
+    for (let i = 0; i < so.getChildrenCount(); i++) walk(so.getChild(i));
+  };
+  walk(panel);
 }

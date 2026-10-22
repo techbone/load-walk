@@ -5,7 +5,7 @@ import { FlexLayout } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Fl
 import { FlexAlign, FlexDirection, FlexJustify } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexTypes";
 import { BackPlate } from "SpectaclesUIKit.lspkg/Scripts/BackPlate";
 import { Billboard } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Billboard/Billboard";
-import { COLORS, makeText } from "./LoadWalkTheme";
+import { COLORS, setPlateAlpha, stylePlate, makeText } from "./LoadWalkTheme";
 
 @component
 export class LoadWalkHintUI extends BaseScriptComponent {
@@ -21,6 +21,10 @@ export class LoadWalkHintUI extends BaseScriptComponent {
   @input
   @hint("Second body line.")
   lineTwo: string = "The finished Lens would recognise it with the camera.";
+  @input
+  @hint("Opacity of the light plate behind the text. 0 drops the plate and leaves bright text.")
+  @widget(new SliderWidget(0, 0.5, 0.02))
+  plateAlpha: number = 0.14;
   @ui.group_end
 
   private panel: SceneObject;
@@ -30,6 +34,9 @@ export class LoadWalkHintUI extends BaseScriptComponent {
     this.sceneObject.createComponent("Component.Canvas");
     this.sceneObject.createComponent(Billboard.getTypeName());
     const plate = this.sceneObject.createComponent(BackPlate.getTypeName()) as BackPlate;
+    setPlateAlpha(this.plateAlpha);
+    // BackPlate applies its own dark style when it starts; restyle after that.
+    this.createEvent("OnStartEvent").bind(() => stylePlate(this.sceneObject));
     const flex = this.sceneObject.createComponent(FlexLayout.getTypeName()) as FlexLayout;
     flex.onLayoutComplete.add((r) => {
       plate.size = new vec2(r.containerWidth, r.containerHeight);

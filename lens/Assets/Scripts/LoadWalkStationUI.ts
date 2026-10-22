@@ -11,7 +11,7 @@ import { Button } from "SpectaclesUIKit.lspkg/Scripts/Components/Button/Button";
 import { Billboard } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Billboard/Billboard";
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import animate from "SpectaclesInteractionKit.lspkg/Utils/animate";
-import { COLORS, Level, levelColor, makeText, setNumberFont, textWidthCm } from "./LoadWalkTheme";
+import { COLORS, Level, levelColor, makeText, setNumberFont, setPanelOpacity, setPlateAlpha, stylePlate, textWidthCm } from "./LoadWalkTheme";
 
 export type CardOption = { id: string; label: string };
 export type TagView = { title: string; note?: string; on: boolean };
@@ -27,6 +27,14 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   @hint("Sideways offset of the scan card from the tag position, in cm. Positive is to the right as the user sees it.")
   @widget(new SliderWidget(-30, 30, 1))
   cardSideOffsetCm: number = 0;
+  @input
+  @hint("How far the scan card sits below the tag position, in cm (negative raises it), so it opens beside the appliance.")
+  @widget(new SliderWidget(-30, 60, 1))
+  cardDropCm: number = 0;
+  @input
+  @hint("Opacity of the light plates behind text. 0 drops the plates and leaves bright text.")
+  @widget(new SliderWidget(0, 0.5, 0.02))
+  plateAlpha: number = 0.14;
   @input
   @allowUndefined
   @hint("Optional monospaced font for the figures (W, hours).")
@@ -54,6 +62,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     this.sceneObject.createComponent("Component.Canvas");
     this.sceneObject.createComponent(Billboard.getTypeName());
     if (this.numberFont) setNumberFont(this.numberFont);
+    setPlateAlpha(this.plateAlpha);
     this.fadeEvent = this.createEvent("DelayedCallbackEvent");
     this.fadeEvent.bind(() => this.fadeChip());
   }
@@ -64,7 +73,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     const titleText = "Scan stand-in: what is this?";
     const widest = Math.max(textWidthCm(titleText, "Caption"), ...options.map((o) => textWidthCm(o.label, "Body") + 4));
     const panel = this.makePanel("ScanCard", () => {});
-    panel.so.getTransform().setLocalPosition(new vec3(this.cardSideOffsetCm, 0, 0));
+    panel.so.getTransform().setLocalPosition(new vec3(this.cardSideOffsetCm, -this.cardDropCm, 0));
     this.card = panel.so;
     makeText(panel.so, titleText, "Caption", widest, COLORS.dim);
     for (const opt of options) {
@@ -155,7 +164,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
       duration: 0.5,
       easing: "ease-in-quad",
       update: (t: number) => {
-        if (!isNull(chip)) chip.getTransform().setLocalScale(vec3.one().uniformScale(Math.max(0.001, 1 - t)));
+        if (!isNull(chip)) setPanelOpacity(chip, Math.max(0, 1 - t));
       },
       ended: () => {
         if (this.chip === chip) {
@@ -177,6 +186,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     const so = global.scene.createSceneObject(name);
     so.setParent(this.sceneObject);
     const plate = so.createComponent(BackPlate.getTypeName()) as BackPlate;
+    stylePlate(so);
     const flex = so.createComponent(FlexLayout.getTypeName()) as FlexLayout;
     flex.onLayoutComplete.add((r) => {
       plate.size = new vec2(r.containerWidth, r.containerHeight);
@@ -201,6 +211,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     so.setParent(parent);
     so.getTransform().setLocalPosition(new vec3(0, 0, 0.6));
     const btn = so.createComponent(Button.getTypeName()) as Button;
+    btn.setVariant({ theme: "SnapOS2", shape: "Rectangle", style: "Ghost" }); // outline and light hover wash, no dark fill
     btn.size = new vec3(widthCm, heightCm, 1);
     const text = makeText(so, label, "Body", widthCm - 0.5, COLORS.text, { z: 0.08, name: "ButtonLabel" });
     so.createComponent(FlexItem.getTypeName());

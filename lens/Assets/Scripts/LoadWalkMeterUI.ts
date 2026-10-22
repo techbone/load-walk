@@ -5,7 +5,7 @@
 import { FlexLayout } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexLayout";
 import { FlexAlign, FlexDirection, FlexJustify } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexTypes";
 import { BackPlate } from "SpectaclesUIKit.lspkg/Scripts/BackPlate";
-import { COLORS, Level, levelColor, makeText, setNumberFont } from "./LoadWalkTheme";
+import { COLORS, setPlateAlpha, stylePlate, Level, levelColor, makeText, setNumberFont } from "./LoadWalkTheme";
 
 export type MeterView = { loadText: string; statusText: string; hoursText: string; level: Level };
 
@@ -18,6 +18,10 @@ export class LoadWalkMeterUI extends BaseScriptComponent {
   @allowUndefined
   @hint("Optional monospaced font for the figures.")
   numberFont: Font;
+  @input
+  @hint("Opacity of the light plate behind the text. 0 drops the plate and leaves bright text.")
+  @widget(new SliderWidget(0, 0.5, 0.02))
+  plateAlpha: number = 0.14;
   @ui.group_end
 
   private load: Text;
@@ -28,6 +32,9 @@ export class LoadWalkMeterUI extends BaseScriptComponent {
     this.sceneObject.createComponent("Component.Canvas");
     if (this.numberFont) setNumberFont(this.numberFont);
     const plate = this.sceneObject.createComponent(BackPlate.getTypeName()) as BackPlate;
+    setPlateAlpha(this.plateAlpha);
+    // BackPlate applies its own dark style when it starts; restyle after that.
+    this.createEvent("OnStartEvent").bind(() => stylePlate(this.sceneObject));
     const flex = this.sceneObject.createComponent(FlexLayout.getTypeName()) as FlexLayout;
     flex.onLayoutComplete.add((r) => {
       plate.size = new vec2(r.containerWidth, r.containerHeight);

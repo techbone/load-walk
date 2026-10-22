@@ -31,6 +31,7 @@
     heading: false
     lineOne: false
     lineTwo: false
+    plateAlpha: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -43,6 +44,7 @@
     - heading: SCAN IS A STAND-IN
       lineOne: Pinch an appliance to scan it.
       lineTwo: The finished Lens would recognise it with the camera.
+      plateAlpha: 0.140000
   ScriptTypes:
     -
       {}
@@ -53,4 +55,5 @@
     - '// @input string heading = "SCAN IS A STAND-IN" {"hint":"Title line of the note."}'
     - '// @input string lineOne = "Pinch an appliance to scan it." {"hint":"First body line."}'
     - '// @input string lineTwo = "The finished Lens would recognise it with the camera." {"hint":"Second body line."}'
+    - '// @input float plateAlpha = 0.14 {"hint":"Opacity of the light plate behind the text. 0 drops the plate and leaves bright text.", "widget":"slider", "min":0, "max":0.5, "step":0.02}'
     - '// @ui {"widget":"group_end"}'

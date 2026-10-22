@@ -456,14 +456,16 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSideOffsetCm: true
-    numberFont: true
+    cardDropCm: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      cardSideOffsetCm: !<float> 0.000000
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      cardSideOffsetCm: !<float> 41.000000
+      cardDropCm: !<float> 0.000000
+      plateAlpha: 0.140000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
   ScriptTypes:
     "":
       {}
@@ -537,14 +539,16 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSideOffsetCm: true
-    numberFont: true
+    cardDropCm: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      cardSideOffsetCm: !<float> 0.000000
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      cardSideOffsetCm: !<float> 26.000000
+      cardDropCm: !<float> 0.000000
+      plateAlpha: 0.140000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
   ScriptTypes:
     "":
       {}
@@ -794,14 +798,16 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSideOffsetCm: true
-    numberFont: true
+    cardDropCm: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      cardSideOffsetCm: !<float> 0.000000
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      cardSideOffsetCm: !<float> -41.000000
+      cardDropCm: !<float> 0.000000
+      plateAlpha: 0.140000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
   ScriptTypes:
     "":
       {}
@@ -1135,14 +1141,15 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSideOffsetCm: true
-    numberFont: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      cardSideOffsetCm: !<float> 0.000000
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      cardSideOffsetCm: !<float> 27.000000
+      cardDropCm: !<float> -8.000000
+      plateAlpha: 0.140000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
   ScriptTypes:
     "":
       {}
@@ -1252,14 +1259,15 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSideOffsetCm: true
-    numberFont: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      cardSideOffsetCm: !<float> 0.000000
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      cardSideOffsetCm: !<float> 23.000000
+      cardDropCm: !<float> -8.000000
+      plateAlpha: 0.140000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
   ScriptTypes:
     "":
       {}
@@ -1933,14 +1941,15 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSideOffsetCm: true
-    numberFont: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      cardSideOffsetCm: !<float> 0.000000
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      cardSideOffsetCm: !<float> 15.000000
+      cardDropCm: !<float> -8.000000
+      plateAlpha: 0.140000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
   ScriptTypes:
     "":
       {}
@@ -2636,14 +2645,15 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSideOffsetCm: true
-    numberFont: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      cardSideOffsetCm: !<float> 0.000000
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      cardSideOffsetCm: !<float> 18.000000
+      cardDropCm: !<float> -8.000000
+      plateAlpha: 0.140000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
   ScriptTypes:
     "":
       {}
@@ -2720,12 +2730,13 @@
   Enabled: true
   ScriptAsset: !<reference> 0016e392-9e92-4090-84b8-630c8ca3ee14
   ScriptInputsDefault:
-    numberFont: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
+      plateAlpha: 0.140000
   ScriptTypes:
     "":
       {}
@@ -3101,6 +3112,7 @@
     heading: true
     lineOne: true
     lineTwo: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -3108,6 +3120,7 @@
       heading: SCAN IS A STAND-IN
       lineOne: Pinch an appliance to scan it.
       lineTwo: The finished Lens would recognise it with the camera.
+      plateAlpha: 0.140000
   ScriptTypes:
     "":
       {}
@@ -3702,14 +3715,15 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSideOffsetCm: true
-    numberFont: true
+    plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      cardSideOffsetCm: !<float> 0.000000
-      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      cardSideOffsetCm: 23.500000
+      cardDropCm: !<float> -8.000000
+      plateAlpha: 0.140000
+      numberFont: !<reference.Font> 6e9388ad-4553-4263-a478-7906dafba6a0
   ScriptTypes:
     "":
       {}
