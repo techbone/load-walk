@@ -1,0 +1,51 @@
+- !<AssetImportMetadata/64836aba-dbf7-4373-91f7-8dd6c1e7cef7>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> f1efc0ff-52b9-47ef-8ce9-4a9845ac941b
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> f1efc0ff-52b9-47ef-8ce9-4a9845ac941b
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 2ab54107-773e-4a73-b8f7-bb508cb1965a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/2ab54107-773e-4a73-b8f7-bb508cb1965a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: b2985c5a-0d52-456a-8d1d-0680a609b116
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    autoRun: false
+    onlyId: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - autoRun: false
+      onlyId: ""
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkScenarioRunner – runs the LEAF scenarios</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @input bool autoRun {"hint":"Run all scenarios when the Lens starts. Leave off for normal use."}'
+    - '// @input string onlyId {"hint":"Run only the scenario with this id. Empty runs all of them."}'
