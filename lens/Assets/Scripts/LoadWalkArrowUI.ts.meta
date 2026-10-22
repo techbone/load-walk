@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/ef1bf469-26a4-4fb7-9b3f-2ef566da6d87>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 6f792b3c-4eea-4064-b2a6-374e5a1b263d
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 6f792b3c-4eea-4064-b2a6-374e5a1b263d
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 5bbf0837-5e41-458c-baaa-1318f9ebe24b
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/5bbf0837-5e41-458c-baaa-1318f9ebe24b>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 86cf9b00-b194-493a-bff0-b30ec345e6a2
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    distanceCm: false
+    radiusCm: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - distanceCm: !<float> 70.000000
+      radiusCm: !<float> 16.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkArrowUI – out-of-view pointer</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float distanceCm = 70 {"hint":"How far in front of the user the arrow floats, in cm.", "widget":"slider", "min":40, "max":120, "step":5}'
+    - '// @input float radiusCm = 16 {"hint":"How far from the view centre the arrow sits, in cm.", "widget":"slider", "min":5, "max":30, "step":1}'
+    - '// @ui {"widget":"group_end"}'

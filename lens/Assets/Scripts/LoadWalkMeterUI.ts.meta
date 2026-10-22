@@ -1,0 +1,50 @@
+- !<AssetImportMetadata/6edbb3ee-6141-419e-9f13-050ddff9f283>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 0016e392-9e92-4090-84b8-630c8ca3ee14
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 0016e392-9e92-4090-84b8-630c8ca3ee14
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 690b82a1-64a3-4b6d-8af7-a971ee8b489c
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/690b82a1-64a3-4b6d-8af7-a971ee8b489c>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: f2b058a6-9eb3-43f2-8def-58299dd22b83
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    numberFont: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkMeterUI – load meter above the power station</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input Asset.Font numberFont {"hint":"Optional monospaced font for the figures."}'
+    - '// @ui {"widget":"group_end"}'

@@ -1,0 +1,74 @@
+- !<AssetImportMetadata/f26692e5-1392-46e5-9681-4141b0b55672>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 608bb85d-43ac-42d5-9c4a-39f08543bf7f
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 608bb85d-43ac-42d5-9c4a-39f08543bf7f
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> f7ed7b35-f5bd-473b-8c02-d05ceb36b678
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/f7ed7b35-f5bd-473b-8c02-d05ceb36b678>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: c7ed2b78-803b-4be9-89d9-25147e5293cc
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    applianceKind: false
+    bodyColor: false
+    bodyVisual: false
+    debugColliders: false
+    glowVisual: false
+    sizeCm: false
+    targetPaddingCm: false
+    ui: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - applianceKind: fan
+      ui: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      bodyVisual: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
+      glowVisual: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
+      sizeCm: !<Vec3> {x: 20.000000, y: 20.000000, z: 20.000000}
+      targetPaddingCm: !<float> 3.000000
+      bodyColor: !<Vec4> {x: 0.620000, y: 0.640000, z: 0.660000, w: 1.000000}
+      debugColliders: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkStation – a scannable appliance</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"References"}'
+    - '// @input string applianceKind = "fan" {"hint":"Id of the real appliance this stand-in represents, e.g. freezer, fan, iron."}'
+    - '// @input AssignableType_1 ui {"hint":"Tag, card and chip UI for this appliance."}'
+    - '// @input Component.RenderMeshVisual bodyVisual {"hint":"Visible body of the appliance."}'
+    - '// @input Component.RenderMeshVisual glowVisual {"hint":"Slightly larger halo shown while this appliance is overloading the unit."}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input vec3 sizeCm = {20,20,20} {"hint":"Size of the appliance in cm (width, height, depth); also sizes the pinch target."}'
+    - '// @input float targetPaddingCm = 3 {"hint":"Extra pinch-target padding around the appliance, in cm. Small appliances need a bigger target.", "widget":"slider", "min":0, "max":12, "step":1}'
+    - '// @input vec4 bodyColor = {0.62,0.64,0.66,1} {"hint":"Body colour at rest. Light neutral so it reads on the additive display.", "widget":"color"}'
+    - '// @input bool debugColliders {"hint":"Show the collider wireframe for debugging."}'
+    - '// @ui {"widget":"group_end"}'

@@ -1,0 +1,74 @@
+- !<AssetImportMetadata/b4f5d1a2-6136-4397-8a11-3bf8a6378df2>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 84365d80-d87f-42f8-9378-491f49a3c0a9
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 84365d80-d87f-42f8-9378-491f49a3c0a9
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 9f7f921d-2593-412a-a193-8170bf00b00c
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/9f7f921d-2593-412a-a193-8170bf00b00c>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: b04b1d97-8770-404e-aba1-f9ca7950cea2
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    arrow: false
+    chime: false
+    chipSeconds: false
+    hint: false
+    meter: false
+    placeRoomAtUserStart: false
+    viewHalfHeightDeg: false
+    viewHalfWidthDeg: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - meter: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      arrow: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      hint: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      chime: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      chipSeconds: !<float> 4.000000
+      placeRoomAtUserStart: true
+      viewHalfWidthDeg: !<float> 18.000000
+      viewHalfHeightDeg: !<float> 16.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkMain – scan, toggle, live load, overload</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"References"}'
+    - '// @input AssignableType_1 meter {"hint":"Load meter floating above the power station."}'
+    - '// @input AssignableType_2 arrow {"hint":"Out-of-view arrow."}'
+    - '// @input AssignableType_3 hint {"hint":"Note that the scan is a stand-in."}'
+    - '// @input Component.AudioComponent chime {"hint":"Plays on the instant a toggle overloads the unit."}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float chipSeconds = 4 {"hint":"How long the live load chip stays before it fades, in seconds.", "widget":"slider", "min":1, "max":10, "step":0.5}'
+    - '// @input bool placeRoomAtUserStart = true {"hint":"Place the whole room in front of wherever the user starts (the preview camera does not start at the world origin). Turn off to keep the room at the origin."}'
+    - '// @input float viewHalfWidthDeg = 18 {"hint":"Horizontal half-angle of the view in degrees; a culprit outside it gets the arrow.", "widget":"slider", "min":10, "max":40, "step":1}'
+    - '// @input float viewHalfHeightDeg = 16 {"hint":"Vertical half-angle of the view in degrees.", "widget":"slider", "min":10, "max":40, "step":1}'
+    - '// @ui {"widget":"group_end"}'

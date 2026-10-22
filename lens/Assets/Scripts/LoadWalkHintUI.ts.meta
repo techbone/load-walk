@@ -1,0 +1,56 @@
+- !<AssetImportMetadata/6d58b0a6-fdf6-4b36-8c07-248c7e7384a0>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> df4d3562-ce8a-4c02-8708-471a2d05f035
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> df4d3562-ce8a-4c02-8708-471a2d05f035
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> d868412b-2f02-49ae-9193-474536576a7f
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/d868412b-2f02-49ae-9193-474536576a7f>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: f4cf3f01-1ea3-40fb-9f91-f45760d8dee4
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    heading: false
+    lineOne: false
+    lineTwo: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - heading: SCAN IS A STAND-IN
+      lineOne: Pinch an appliance to scan it.
+      lineTwo: The finished Lens would recognise it with the camera.
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkHintUI – scan stand-in note</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input string heading = "SCAN IS A STAND-IN" {"hint":"Title line of the note."}'
+    - '// @input string lineOne = "Pinch an appliance to scan it." {"hint":"First body line."}'
+    - '// @input string lineTwo = "The finished Lens would recognise it with the camera." {"hint":"Second body line."}'
+    - '// @ui {"widget":"group_end"}'

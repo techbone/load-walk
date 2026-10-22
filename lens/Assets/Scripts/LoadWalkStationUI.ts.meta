@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/4a1bcd01-3ef5-499b-9f15-098eb920ab44>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 18f6b069-b314-42b0-ab1d-1fb39db008bf
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/18f6b069-b314-42b0-ab1d-1fb39db008bf>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 0f628b7b-3849-4ef0-aff6-e5bf25e42427
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    cardSideOffsetCm: false
+    numberFont: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - cardSideOffsetCm: !<float> 0.000000
+      numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkStationUI – card, tag and chip for one appliance</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float cardSideOffsetCm {"hint":"Sideways offset of the scan card from the tag position, in cm. Positive is to the right as the user sees it.", "widget":"slider", "min":-30, "max":30, "step":1}'
+    - '// @input Asset.Font numberFont {"hint":"Optional monospaced font for the figures (W, hours)."}'
+    - '// @ui {"widget":"group_end"}'
