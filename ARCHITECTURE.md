@@ -64,13 +64,13 @@ Lens Studio (version per the hackathon quick start), TypeScript, Spectacles Inte
 
 | | Milestone | Owner | Shows | Target |
 |---|---|---|---|---|
-| M0 | Setup: Lens Studio, SPECS Base Template saved into repo root, Lens Studio MCP, CLAD | Musa | `/mcp` shows `lens-studio`, `/plugin` lists CLAD | 22 Oct (live build session) |
-| M1 | Load engine: running, surge, overload culprits, battery hours | Claude | `npm test` 9/9 · `npm run scenario` | 21 Oct ✓ |
-| M2 | Design brief via `plan-lens` interview | Musa answers | `devpost/design-brief.md` approved | 23 Oct |
+| M0 | Setup: Lens Studio, SPECS Base Template, Lens Studio MCP, CLAD | Musa | `/mcp` shows `lens-studio`, `/plugin` lists CLAD | 22 Oct ✓ (Studio 5.23.2, `lens/`) |
+| M1 | Load engine: running, surge, overload culprits, battery hours | Claude | `npm test` · `npm run scenario` | 21 Oct ✓ |
+| M2 | Design brief via `plan-lens` interview | Musa answers | `lens/devpost/design-brief.md` approved | 21 Oct ✓ |
 | M3 | Thin slice in the Lens: one appliance, scan → tag → toggle → meter moves, using `engine/` | CLAD | Preview + first LEAF pass | 25 Oct |
 | M4 | Full room: all appliances, surge and overload warning with culprit glow and arrow, battery hours | CLAD | LEAF covers every done criterion | 30 Oct |
-| M5 | Voice: spike in the preview (`docs/spikes/voice.md`), then "on the fan" / "can I run the iron?" alongside pinch | Claude + CLAD | Transcript → same toggle as pinch, or a recorded "glasses only" result | 28 Oct |
-| M6 | Stretch: AI label reading, nameplate image → RSG Gemini → watts, hard-coded fallback | CLAD | Works with and without a token | 2 Nov |
+| M5 | Voice: spike in the preview (`docs/spikes/voice.md`), then "on the fan" / "can I run the iron?" alongside pinch | Claude + CLAD | Transcript → same toggle as pinch, or a recorded "glasses only" result | 1 Nov |
+| M6 | Stretch: AI label reading, nameplate image → RSG Gemini → watts, hard-coded fallback | CLAD | Works with and without a token | 3 Nov |
 | M7 | Polish for the 5 Nov project review, then README, evidence, video, submission | Both | Public repo + YouTube video | 8 Nov (a day of slack before the deadline) |
 
 M1 ran ahead of the brief because the maths is domain fact, not a design decision. The brief decides how it's shown.
