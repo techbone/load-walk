@@ -6,6 +6,10 @@ import { findInteractableByName } from "Leaf.lspkg/Interactors/InteractableUtils
 import { findSceneObjectByName, sleep } from "Leaf.lspkg/Utils/common/Utils";
 import { expect } from "Leaf.lspkg/Utils/common/Expect";
 import { LoadWalkStation } from "../Scripts/LoadWalkStation";
+import { LoadWalkStationUI } from "../Scripts/LoadWalkStationUI";
+import { LoadWalkVoice } from "../Scripts/LoadWalkVoice";
+import { LoadWalkVoiceUI } from "../Scripts/LoadWalkVoiceUI";
+import type { Level } from "../Scripts/LoadWalkTheme";
 
 export function child(root: SceneObject | null | undefined, name: string): SceneObject | null {
   if (!root) return null;
@@ -147,6 +151,8 @@ export function distanceToAppliance(slot: string, point: vec3): number {
 }
 
 export const MAX_PANEL_DISTANCE_CM = 20;
+// The laptop tag was raised 10 cm so it clears the lid; its centre is now about 26 cm from the laptop.
+const TAG_DISTANCE_CM: Record<string, number> = { Laptop: 30 };
 
 function panelDistance(slot: string, panelName: string): number {
   const panel = child(uiRoot(slot), panelName);
@@ -157,7 +163,7 @@ function panelDistance(slot: string, panelName: string): number {
 }
 
 export function expectTagNear(slot: string): void {
-  expect(panelDistance(slot, "Tag") <= MAX_PANEL_DISTANCE_CM).toBe(true);
+  expect(panelDistance(slot, "Tag") <= (TAG_DISTANCE_CM[slot] ?? MAX_PANEL_DISTANCE_CM)).toBe(true);
 }
 
 export function expectCardNear(slot: string): void {
@@ -178,4 +184,52 @@ export function topOf(root: SceneObject): number {
 
 export function glowing(slot: string): boolean {
   return (findSceneObjectByName(slot)!.getComponent(LoadWalkStation.getTypeName()) as LoadWalkStation).isGlowing;
+}
+
+
+// ---- voice ------------------------------------------------------------------------------------------------
+// Scenarios inject transcript text, so they never need a microphone.
+export function voice(): LoadWalkVoice {
+  return findSceneObjectByName("VoiceControl")!.getComponent(LoadWalkVoice.getTypeName()) as LoadWalkVoice;
+}
+
+export function voiceUI(): LoadWalkVoiceUI {
+  return findSceneObjectByName("VoiceControl")!.getComponent(LoadWalkVoiceUI.getTypeName()) as LoadWalkVoiceUI;
+}
+
+async function pressVoiceToggle(i: LoadWalkLeafInteractor): Promise<void> {
+  const btn = findInteractableByName("VoiceToggle", findSceneObjectByName("VoiceControl")!, true);
+  if (!btn) throw new Error("No Voice toggle button");
+  await i.trigger(btn);
+  await sleep(400);
+}
+
+// Press the real Voice button; with skipMicrophone set it switches Voice on without opening the microphone.
+export async function voiceOn(i: LoadWalkLeafInteractor): Promise<void> {
+  LoadWalkVoice.skipMicrophone = true;
+  if (!voice().listening) await pressVoiceToggle(i);
+}
+
+export async function voiceOff(i: LoadWalkLeafInteractor): Promise<void> {
+  if (voice().listening) await pressVoiceToggle(i);
+  LoadWalkVoice.skipMicrophone = false;
+}
+
+export async function say(text: string, isFinal: boolean = true): Promise<void> {
+  voice().inject(text, isFinal);
+  await sleep(400);
+}
+
+// The level a tag is currently highlighted in after a "can I run" question, or null.
+export function highlighted(slot: string): Level | null {
+  return (uiRoot(slot).getComponent(LoadWalkStationUI.getTypeName()) as LoadWalkStationUI).highlightedLevel;
+}
+
+export function tagNotes(slot: string): string[] {
+  const notes: string[] = [];
+  for (const name of ["TagNote", "TagNote2", "TagNote3"]) {
+    const t = textOf(child(uiRoot(slot), "Tag"), name);
+    if (t !== null) notes.push(t);
+  }
+  return notes;
 }

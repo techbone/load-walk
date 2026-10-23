@@ -5,6 +5,10 @@ import { LiveTotalScenario } from "./LiveTotalScenario";
 import { MeterScenario } from "./MeterScenario";
 import { OverloadScenario } from "./OverloadScenario";
 import { RecoveryScenario } from "./RecoveryScenario";
+import { VoiceOffByDefaultScenario } from "./VoiceOffByDefaultScenario";
+import { VoiceCriterionScenario } from "./VoiceCriterionScenario";
+import { VoiceOffTheIronScenario } from "./VoiceOffTheIronScenario";
+import { VoiceCanIRunScenario } from "./VoiceCanIRunScenario";
 import { OutOfViewArrowScenario } from "./OutOfViewArrowScenario";
 import { IKReachScenario } from "./IKReachScenario";
 import { OneCardScenario } from "./OneCardScenario";
@@ -16,6 +20,7 @@ import { EvidenceNearScenario } from "./EvidenceNearScenario";
 import { EvidenceDeskScenario } from "./EvidenceDeskScenario";
 import { EvidenceCardScenario } from "./EvidenceCardScenario";
 import { EvidenceOverloadScenario } from "./EvidenceOverloadScenario";
+import { EvidenceVoiceScenario } from "./EvidenceVoiceScenario";
 
 @component
 export class LeafIndex extends BaseScriptComponent {
@@ -28,6 +33,10 @@ export class LeafIndex extends BaseScriptComponent {
     { id: "criterion-3-meter", typename: MeterScenario.getTypeName() },
     { id: "criterion-4-overload", typename: OverloadScenario.getTypeName() },
     { id: "criterion-5-recovery", typename: RecoveryScenario.getTypeName() },
+    { id: "extra-voice-off-by-default", typename: VoiceOffByDefaultScenario.getTypeName() },
+    { id: "criterion-6-voice", typename: VoiceCriterionScenario.getTypeName() },
+    { id: "extra-voice-off-the-iron", typename: VoiceOffTheIronScenario.getTypeName() },
+    { id: "extra-voice-can-i-run-freezer", typename: VoiceCanIRunScenario.getTypeName() },
     { id: "extra-out-of-view-arrow", typename: OutOfViewArrowScenario.getTypeName() },
     { id: "extra-picks-fridge-pump-iron", typename: PicksScenario.getTypeName() },
     { id: "extra-placement-within-20cm", typename: PlacementScenario.getTypeName() },
@@ -37,5 +46,6 @@ export class LeafIndex extends BaseScriptComponent {
     { id: "extra-evidence-desk", typename: EvidenceDeskScenario.getTypeName() },
     { id: "extra-evidence-card", typename: EvidenceCardScenario.getTypeName() },
     { id: "extra-evidence-overload", typename: EvidenceOverloadScenario.getTypeName() },
+    { id: "extra-evidence-voice", typename: EvidenceVoiceScenario.getTypeName() },
   ];
 }

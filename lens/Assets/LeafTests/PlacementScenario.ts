@@ -1,4 +1,4 @@
-// Placement: every tag and card sits within 20 cm of its appliance (measured from the panel centre to the appliance's
+// Placement: every tag and card sits within 20 cm of its appliance (the raised laptop tag within 30 cm) (measured from the panel centre to the appliance's
 // bounding box). Tags are measured for all eight appliances; cards for the ones still untagged here.
 
 import { Scenario } from "Leaf.lspkg/Scenarios/scenario/Scenario";
