@@ -113,13 +113,12 @@ export class LoadWalkMain extends BaseScriptComponent {
     this.state.tag(s.slotId, specId);
     const spec = specById(specId);
     const cap = capacityW(POWER_STATION);
-    let title = spec.name + " · " + fmtW(spec.runningW);
-    if (spec.surgeFactor > 1) title += " · surges about " + spec.surgeFactor + "×";
     const notes: string[] = [];
+    if (spec.surgeFactor > 1) notes.push("Surges about " + spec.surgeFactor + "×");
     if (spec.estimate) notes.push("Estimate");
-    if (this.state.tooBigAlone(s.slotId)) notes.push("Too big for this " + cap + " W unit");
+    if (this.state.tooBigAlone(s.slotId)) notes.push("Too big for " + cap + " W");
     if (spec.note) notes.push(spec.note);
-    s.ui.showTag({ title, notes, on: false });
+    s.ui.showTag({ name: spec.name, watts: fmtW(spec.runningW), notes, on: false });
   }
 
   // ---- toggle -------------------------------------------------------------------------------------------
@@ -140,7 +139,9 @@ export class LoadWalkMain extends BaseScriptComponent {
     const r = this.state.report();
     const level = this.levelOf(r);
     const cap = fmtNum(r.capacityW);
-    const loadText = fmtNum(r.runningW) + " W / " + cap + " W";
+    const loadText = fmtNum(r.runningW) + " W / " + cap + " W"; // chip: figure and limit on one line
+    const meterWatts = fmtNum(r.runningW) + " W";
+    const meterLimit = "of " + cap + " W";
     const hours = this.state.hoursText(r);
     this.culprits = r.culpritIds;
     const names = r.culpritIds.map((id) => this.state.get(id)?.name ?? id).join(", ");
@@ -149,21 +150,22 @@ export class LoadWalkMain extends BaseScriptComponent {
     if (r.status === "ok") statusText = "Within capacity";
     else if (r.status === "near") statusText = "Near the limit";
     else if (r.status === "surge-risk") statusText = "Startup surge may trip it";
-    else if (r.status === "overload") statusText = "Overload. Switch off " + names;
+    else if (r.status === "overload") statusText = "Overload: switch off " + names;
     this.meter.setView({
-      loadText,
+      loadText: meterWatts,
+      limitText: meterLimit,
       statusText,
       hoursText: r.status === "overload" || r.runningW === 0 ? "Battery left: --" : "Battery left: " + hours,
       level,
     });
 
     // The chip: hours are dropped once over capacity (time-to-trip is meaningless past the limit).
-    const chipText = level === "overload" ? loadText : loadText + " · " + hours;
+    const chipHours = level === "overload" ? null : hours + " left";
     for (const s of this.stations) {
       const isCulprit = level === "overload" && r.culpritIds.indexOf(s.slotId) >= 0;
       s.setGlow(isCulprit);
-      if (isCulprit) s.ui.showChip(chipText, "overload", 0);
-      else if (s === toggled) s.ui.showChip(chipText, level === "idle" ? "ok" : level, level === "overload" ? 0 : this.chipSeconds);
+      if (isCulprit) s.ui.showChip(loadText, null, "overload", 0);
+      else if (s === toggled) s.ui.showChip(loadText, chipHours, level === "idle" ? "ok" : level, level === "overload" ? 0 : this.chipSeconds);
       else s.ui.hideChip();
     }
 

@@ -17,10 +17,10 @@ export class LoadWalkHintUI extends BaseScriptComponent {
   heading: string = "SCAN IS A STAND-IN";
   @input
   @hint("First body line.")
-  lineOne: string = "Pinch an appliance to scan it.";
+  lineOne: string = "Pinch an appliance";
   @input
   @hint("Second body line.")
-  lineTwo: string = "The real Lens uses the camera.";
+  lineTwo: string = "Real Lens: camera scan";
   @input
   @hint("Opacity of the light plate behind the text. 0 drops the plate and leaves bright text.")
   @widget(new SliderWidget(0, 0.5, 0.02))
@@ -50,10 +50,10 @@ export class LoadWalkHintUI extends BaseScriptComponent {
     flex.paddingRight = 1.0;
     flex.width = -1;
     flex.height = -1;
-    const w = Math.max(textWidthCm(this.heading, "Body"), textWidthCm(this.lineOne, "Caption"), textWidthCm(this.lineTwo, "Caption"));
-    makeText(this.sceneObject, this.heading, "Body", w, COLORS.text, { name: "HintHeading" });
-    makeText(this.sceneObject, this.lineOne, "Caption", w, COLORS.text, { name: "HintLineOne" });
-    makeText(this.sceneObject, this.lineTwo, "Caption", w, COLORS.text, { name: "HintLineTwo" });
+    const w = Math.max(textWidthCm(this.heading, "Label"), textWidthCm(this.lineOne, "Label"), textWidthCm(this.lineTwo, "Label"));
+    makeText(this.sceneObject, this.heading, "Label", w, COLORS.text, { name: "HintHeading" });
+    makeText(this.sceneObject, this.lineOne, "Label", w, COLORS.text, { name: "HintLineOne" });
+    makeText(this.sceneObject, this.lineTwo, "Label", w, COLORS.text, { name: "HintLineTwo" });
   }
 
   hide(): void {

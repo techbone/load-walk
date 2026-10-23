@@ -38,15 +38,27 @@ export function fmtW(w: number): string {
   return fmtNum(w) + " W";
 }
 
-export type TextRole = "Title2" | "Headline1" | "Subheadline" | "Body" | "Caption";
-// About twice the stock type scale (readable at arm's length on the glasses), all bold.
+// Text sizes are chosen by real-world height so they read from 2 m (1.5 m for the meter):
+//   Meter  - meter's big figure, digits about 6 cm tall
+//   Number - tag and chip figures, digits about 4 cm tall
+//   Label  - names, notes, buttons, about 2.5 cm cap height
+export type TextRole = "Meter" | "Number" | "Label" | "Arrow";
 const TYPE_SCALE: Record<TextRole, { size: number; weight: number }> = {
-  Title2: { size: 186, weight: 700 },
-  Headline1: { size: 108, weight: 700 },
-  Subheadline: { size: 82, weight: 700 },
-  Body: { size: 78, weight: 700 },
-  Caption: { size: 76, weight: 700 },
+  Meter: { size: 360, weight: 700 },
+  Number: { size: 241, weight: 700 },
+  Label: { size: 150, weight: 700 },
+  Arrow: { size: 250, weight: 700 },
 };
+
+// Text.size is an em height in 1/43.886 cm (the Lens Studio type scale); EM_SCALE corrects it from measurements.
+export const EM_SCALE = 1.0;
+export function emCm(role: TextRole): number {
+  return (TYPE_SCALE[role].size / 43.886) * EM_SCALE;
+}
+// Digits and capitals stand about 0.73 em tall in both faces.
+export function capHeightCm(role: TextRole): number {
+  return emCm(role) * 0.73;
+}
 
 // Optional monospaced face for figures; set by a UI module when one is wired in the Inspector.
 let numberFont: Font | null = null;
@@ -59,10 +71,14 @@ export function applyTextRole(t: Text, role: TextRole): void {
   (t as Text & { weight?: number }).weight = TYPE_SCALE[role].weight;
 }
 
-// Width of a label in cm at the type scale (about 0.52 cm per glyph) plus padding.
-export function textWidthCm(s: string, role: TextRole): number {
-  const per = role === "Headline1" ? 1.5 : role === "Title2" ? 2.5 : role === "Subheadline" ? 1.2 : 1.15;
-  return Math.max(6, s.length * per + 0.6);
+// Width of a string in cm: monospaced figures are 0.6 em per glyph, the bold sans about 0.58 em.
+export function textWidthCm(s: string, role: TextRole, mono: boolean = false): number {
+  return Math.max(4, s.length * emCm(role) * (mono ? 0.6 : 0.58) + 0.6);
+}
+
+// Row height that holds a line of this role.
+export function rowHeightCm(role: TextRole): number {
+  return emCm(role) * 1.25;
 }
 
 export function makeText(
@@ -84,7 +100,8 @@ export function makeText(
   t.verticalAlignment = VerticalAlignment.Center;
   t.horizontalOverflow = HorizontalOverflow.Overflow;
   t.verticalOverflow = VerticalOverflow.Overflow;
-  t.layoutRect = Rect.create(-widthCm / 2, widthCm / 2, -2.2, 2.2);
+  const h = rowHeightCm(role);
+  t.layoutRect = Rect.create(-widthCm / 2, widthCm / 2, -h / 2, h / 2);
   t.textFill.color = color;
   if (opts?.numbers && numberFont) t.font = numberFont;
   so.createComponent(FlexItem.getTypeName());

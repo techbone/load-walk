@@ -11,12 +11,16 @@ import { Button } from "SpectaclesUIKit.lspkg/Scripts/Components/Button/Button";
 import { Billboard } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Billboard/Billboard";
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import animate from "SpectaclesInteractionKit.lspkg/Utils/animate";
-import { COLORS, Level, levelColor, makeText, setNumberFont, setPanelOpacity, setPlateAlpha, stylePlate, stylePlateWhenReady, textWidthCm } from "./LoadWalkTheme";
+import { COLORS, Level, levelColor, makeText, setNumberFont, setPanelOpacity, setPlateAlpha, stylePlateWhenReady, textWidthCm, rowHeightCm } from "./LoadWalkTheme";
 
 export type CardOption = { id: string; label: string };
-export type TagView = { title: string; notes: string[]; on: boolean };
+export type TagView = { name: string; watts: string; notes: string[]; on: boolean };
 
 type Panel = { so: SceneObject; flex: FlexLayout };
+
+// The on/off and picker buttons are about twice the old size (the old ones were 7.5 cm tall).
+const BUTTON_H = 13;
+const CARD_BUTTON_H = 10;
 
 @component
 export class LoadWalkStationUI extends BaseScriptComponent {
@@ -27,6 +31,10 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   @hint("Half the appliance's width in cm; the scan card opens just outside it.")
   @widget(new SliderWidget(0, 80, 0.5))
   applianceHalfWidthCm: number = 10;
+  @input
+  @hint("Half the appliance's depth in cm; tags, chips and cards float just in front of its front face so the model never hides them.")
+  @widget(new SliderWidget(0, 60, 0.5))
+  applianceHalfDepthCm: number = 10;
   @input
   @hint("Which side the scan card opens on: 1 is right as the user sees it, -1 is left.")
   @widget(new SliderWidget(-1, 1, 2))
@@ -76,18 +84,18 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   showCard(options: CardOption[]): void {
     this.hideCard();
     const titleText = "What is this?";
-    const widest = Math.max(textWidthCm(titleText, "Caption"), ...options.map((o) => textWidthCm(o.label, "Body") + 3));
+    const widest = Math.max(textWidthCm(titleText, "Label"), ...options.map((o) => textWidthCm(o.label, "Label") + 3));
     // Beside the appliance: just outside its width on the chosen side, centred at cardCenterYCm above its centre.
     const panel = this.makePanel("ScanCard", (cw) => {
       if (isNull(panel.so)) return;
       const root = this.sceneObject.getTransform().getLocalPosition();
-      const x = this.cardSide * (this.applianceHalfWidthCm + cw / 2 + 2);
-      panel.so.getTransform().setLocalPosition(new vec3(x, this.cardCenterYCm - root.y, 0));
+      const x = this.cardSide * (this.applianceHalfWidthCm + cw / 2 + 0.5);
+      panel.so.getTransform().setLocalPosition(new vec3(x, this.cardCenterYCm - root.y, this.frontZ()));
     });
     this.card = panel.so;
-    makeText(panel.so, titleText, "Caption", widest, COLORS.text);
+    makeText(panel.so, titleText, "Label", widest, COLORS.text, { name: "CardTitle" });
     for (const opt of options) {
-      this.makeButton(panel.so, opt.label, widest, 7.5, () => this._onPick.invoke(opt.id));
+      this.makeButton(panel.so, opt.label, widest, CARD_BUTTON_H, () => this._onPick.invoke(opt.id));
     }
   }
 
@@ -99,19 +107,29 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   }
 
   // ---- appliance tag --------------------------------------------------------------------------------------
+  // Layout, top to bottom: appliance name (small), wattage (biggest), notes (small), on/off button.
+  // The tag grows upward from just above the appliance: this root sits at the appliance top, the panel's bottom on it.
   showTag(view: TagView): void {
     this.hideCard();
     if (this.tag) this.retire(this.tag.so);
-    const widest = Math.max(textWidthCm(view.title, "Body"), ...view.notes.map((n) => textWidthCm(n, "Caption")), 18);
+    const button = "Turn off";
+    const widest = Math.max(
+      textWidthCm(view.name, "Label"),
+      textWidthCm(view.watts, "Number", true),
+      ...view.notes.map((n) => textWidthCm(n, "Label")),
+      textWidthCm(button, "Label") + 4
+    );
     this.tag = this.makePanel("Tag", (w, h) => {
       this.tagW = w;
       this.tagH = h;
+      if (this.tag) this.tag.so.getTransform().setLocalPosition(new vec3(0, h / 2, this.frontZ()));
       this.placeChip();
     });
-    this.tagTitle = makeText(this.tag.so, view.title, "Body", widest, COLORS.text, { numbers: true, name: "TagTitle" });
-    view.notes.forEach((n, k) => makeText(this.tag!.so, n, "Caption", widest, COLORS.text, { name: k === 0 ? "TagNote" : "TagNote" + (k + 1) }));
-    const btn = this.makeButton(this.tag.so, "Turn on", Math.min(widest, 20), 7.5, () => this._onToggle.invoke(), "ToggleButton");
-    this.toggleLabel = btn;
+    makeText(this.tag.so, view.name, "Label", widest, COLORS.text, { name: "TagName" });
+    this.tagTitle = makeText(this.tag.so, view.watts, "Number", widest, COLORS.text, { numbers: true, name: "TagWatts" });
+    view.notes.forEach((n, k) => makeText(this.tag!.so, n, "Label", widest, COLORS.text, { name: k === 0 ? "TagNote" : "TagNote" + (k + 1) }));
+    const btnWidth = textWidthCm(button, "Label") + 4;
+    this.toggleLabel = this.makeButton(this.tag.so, "Turn on", btnWidth, BUTTON_H, () => this._onToggle.invoke(), "ToggleButton");
     this.setOn(view.on);
   }
 
@@ -122,16 +140,17 @@ export class LoadWalkStationUI extends BaseScriptComponent {
 
   // ---- live load chip -------------------------------------------------------------------------------------
   // fadeAfterSec 0 keeps the chip until hideChip() (used for the overload warning).
-  showChip(text: string, level: Level, fadeAfterSec: number): void {
+  showChip(text: string, hours: string | null, level: Level, fadeAfterSec: number): void {
     this.dropChip();
-    const w = textWidthCm(text, "Subheadline") + 2;
+    const w = Math.max(textWidthCm(text, "Number", true), hours ? textWidthCm(hours, "Label", true) : 0);
     const panel = this.makePanel("Chip", (cw, ch) => {
       this.chipW = cw;
       this.chipH = ch;
       this.placeChip();
     });
     this.chip = panel.so;
-    makeText(panel.so, text, "Subheadline", w, levelColor(level), { numbers: true, name: "ChipText" });
+    makeText(panel.so, text, "Number", w, levelColor(level), { numbers: true, name: "ChipText" });
+    if (hours) makeText(panel.so, hours, "Label", w, levelColor(level), { numbers: true, name: "ChipHours" });
     this.placeChip();
     if (fadeAfterSec > 0) {
       this.fadeEvent.enabled = true;
@@ -187,11 +206,16 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     });
   }
 
+  // Panels float 1 cm in front of the appliance's front face.
+  private frontZ(): number {
+    return this.applianceHalfDepthCm + 1;
+  }
+
   // The chip sits directly above the tag (a row of tags is too tight for chips beside them at this text size).
   private placeChip(): void {
     if (!this.chip) return;
-    const y = this.tag ? this.tagH / 2 + this.chipH / 2 + 0.6 : 0;
-    this.chip.getTransform().setLocalPosition(new vec3(0, y, 0));
+    const y = (this.tag ? this.tagH + 0.6 : 0) + this.chipH / 2;
+    this.chip.getTransform().setLocalPosition(new vec3(0, y, this.frontZ()));
   }
 
   // ---- building blocks ------------------------------------------------------------------------------------
@@ -210,9 +234,9 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     flex.direction = FlexDirection.Column;
     flex.alignItems = FlexAlign.Center;
     flex.justifyContent = FlexJustify.Center;
-    flex.rowGap = 0.3;
-    flex.paddingTop = 0.5;
-    flex.paddingBottom = 0.5;
+    flex.rowGap = 0.2;
+    flex.paddingTop = 0.4;
+    flex.paddingBottom = 0.4;
     flex.paddingLeft = 0.8;
     flex.paddingRight = 0.8;
     flex.width = -1;
@@ -228,7 +252,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     const btn = so.createComponent(Button.getTypeName()) as Button;
     btn.setVariant({ theme: "SnapOS2", shape: "Rectangle", style: "Ghost" }); // outline and light hover wash, no dark fill
     btn.size = new vec3(widthCm, heightCm, 1);
-    const text = makeText(so, label, "Body", widthCm - 0.5, COLORS.text, { z: 0.08, name: "ButtonLabel" });
+    const text = makeText(so, label, "Label", widthCm - 0.5, COLORS.text, { z: 0.08, name: "ButtonLabel" });
     so.createComponent(FlexItem.getTypeName());
     btn.onTriggerUp.add(() => onTap());
     return text;

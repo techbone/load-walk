@@ -245,7 +245,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 30.000000, z: 0.000000}
+    Position: {x: 0.000000, y: 21.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -325,7 +325,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 25.000000, z: 0.000000}
+    Position: {x: 0.000000, y: 13.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -512,6 +512,7 @@
   ScriptInputs:
     "":
       applianceHalfWidthCm: !<float> 31.000000
+      applianceHalfDepthCm: !<float> 50.000000
       cardSide: !<float> 1.000000
       cardCenterYCm: !<float> 20.000000
       plateAlpha: 0.140000
@@ -596,8 +597,9 @@
   ScriptInputs:
     "":
       applianceHalfWidthCm: 11.800000
+      applianceHalfDepthCm: !<float> 20.000000
       cardSide: !<float> 1.000000
-      cardCenterYCm: !<float> 15.000000
+      cardCenterYCm: !<float> 8.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -890,6 +892,7 @@
   ScriptInputs:
     "":
       applianceHalfWidthCm: 36.700001
+      applianceHalfDepthCm: 41.700001
       cardSide: !<float> 1.000000
       cardCenterYCm: !<float> 20.000000
       plateAlpha: 0.140000
@@ -1361,8 +1364,9 @@
   ScriptInputs:
     "":
       applianceHalfWidthCm: !<float> 17.000000
+      applianceHalfDepthCm: 15.950000
       cardSide: !<float> 1.000000
-      cardCenterYCm: !<float> 2.000000
+      cardCenterYCm: !<float> 10.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -1506,15 +1510,15 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardCenterYCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       applianceHalfWidthCm: 14.500000
+      applianceHalfDepthCm: 10.850000
       cardSide: !<float> -1.000000
-      cardCenterYCm: !<float> 0.000000
+      cardCenterYCm: !<float> 5.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -2186,7 +2190,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 11.250000, z: 0.000000}
+    Position: {x: 0.000000, y: 2.250000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2227,8 +2231,9 @@
   ScriptInputs:
     "":
       applianceHalfWidthCm: 3.650000
+      applianceHalfDepthCm: !<float> 8.000000
       cardSide: !<float> -1.000000
-      cardCenterYCm: !<float> 8.000000
+      cardCenterYCm: !<float> 11.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -2286,7 +2291,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 19.400000, z: 0.000000}
+    Position: {x: 0.000000, y: 10.350000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2357,7 +2362,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 30.000000, z: 50.000000}
+    Position: {x: 0.000000, y: 5.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2439,7 +2444,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 16.650000, z: 0.000000}
+    Position: {x: 0.000000, y: 7.650000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2670,7 +2675,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 110.000000, y: -57.549999, z: -130.000000}
+    Position: {x: 100.000000, y: -57.549999, z: -130.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2795,7 +2800,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 46.200001, z: 0.000000}
+    Position: {x: 0.000000, y: 37.200001, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2845,7 +2850,7 @@
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 85.000000, z: 0.000000}
-    Rotation: {x: 25.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
@@ -2943,7 +2948,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 30.000000, y: -63.349998, z: -130.000000}
+    Position: {x: 34.000000, y: -63.349998, z: -130.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3009,7 +3014,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -15.000000, y: -50.000000, z: -130.000000}
+    Position: {x: 0.000000, y: -50.000000, z: -130.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3135,8 +3140,9 @@
   ScriptInputs:
     "":
       applianceHalfWidthCm: 3.150000
+      applianceHalfDepthCm: !<float> 7.000000
       cardSide: !<float> 1.000000
-      cardCenterYCm: !<float> 13.000000
+      cardCenterYCm: !<float> 6.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -3234,12 +3240,14 @@
   ScriptAsset: !<reference> 0016e392-9e92-4090-84b8-630c8ca3ee14
   ScriptInputsDefault:
     plateAlpha: true
+    tiltDegrees: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
       plateAlpha: 0.140000
+      tiltDegrees: !<float> 25.000000
   ScriptTypes:
     "":
       {}
@@ -4355,7 +4363,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 22.500000, z: 0.000000}
+    Position: {x: 0.000000, y: 13.450000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -4372,7 +4380,6 @@
   ScriptInputsDefault:
     chipSeconds: true
     placeRoomAtUserStart: true
-    roomOffsetCm: true
     viewHalfWidthDeg: true
     viewHalfHeightDeg: true
   ScriptTypesDefault:
@@ -4385,7 +4392,7 @@
       chime: !<reference.AudioComponent> 1aa586f0-08c1-409d-afdf-ee98ba215280
       chipSeconds: !<float> 4.000000
       placeRoomAtUserStart: true
-      roomOffsetCm: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
+      roomOffsetCm: !<Vec3> {x: -52.500000, y: 0.000000, z: -120.000000}
       viewHalfWidthDeg: !<float> 18.000000
       viewHalfHeightDeg: !<float> 16.000000
   ScriptTypes:
@@ -4419,8 +4426,9 @@
   ScriptInputs:
     "":
       applianceHalfWidthCm: 6.050000
+      applianceHalfDepthCm: !<float> 14.000000
       cardSide: !<float> -1.000000
-      cardCenterYCm: !<float> 5.000000
+      cardCenterYCm: !<float> 9.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -4627,7 +4635,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 10.000000, z: -95.000000}
+    Position: {x: 52.500000, y: 25.000000, z: -95.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false

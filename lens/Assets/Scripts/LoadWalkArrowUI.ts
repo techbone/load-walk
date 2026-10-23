@@ -28,11 +28,11 @@ export class LoadWalkArrowUI extends BaseScriptComponent {
     const pivot = global.scene.createSceneObject("ArrowGlyph");
     pivot.setParent(this.sceneObject);
     this.arrowRoot = pivot;
-    makeText(pivot, ">", "Title2", 6, COLORS.warn, { name: "ArrowChevron" });
+    makeText(pivot, ">", "Arrow", 10, COLORS.warn, { name: "ArrowChevron" });
     const labelObj = global.scene.createSceneObject("ArrowLabel");
     labelObj.setParent(this.sceneObject);
     labelObj.getTransform().setLocalPosition(new vec3(0, -4, 0));
-    this.label = makeText(labelObj, "", "Body", 16, COLORS.warn, { name: "ArrowText" });
+    this.label = makeText(labelObj, "", "Label", 24, COLORS.warn, { name: "ArrowText" });
     this.sceneObject.enabled = false;
     this.createEvent("UpdateEvent").bind(() => this.follow());
   }

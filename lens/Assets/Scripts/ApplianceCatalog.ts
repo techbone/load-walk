@@ -14,7 +14,7 @@ export const CATALOG: ApplianceSpec[] = [
   { id: "fan", name: "Fan", runningW: 12, surgeFactor: 1 },
   { id: "phone-charger", name: "Phone charger", runningW: 12, surgeFactor: 1 },
   { id: "power-bank", name: "Power bank", runningW: 18, surgeFactor: 1, estimate: true },
-  { id: "laptop", name: "Laptop", runningW: 140, surgeFactor: 1, note: "Adapter maximum" },
+  { id: "laptop", name: "Laptop", runningW: 140, surgeFactor: 1, note: "Adapter max" },
   { id: "freezer", name: "Freezer", runningW: 350, surgeFactor: 3 },
   { id: "fridge", name: "Fridge", runningW: 150, surgeFactor: 3, estimate: true, notInBrief: true },
   { id: "pump", name: "Water pump", runningW: 750, surgeFactor: 3, estimate: true, notInBrief: true },

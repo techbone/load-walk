@@ -30,6 +30,7 @@
   ScriptInputsHidden:
     numberFont: false
     plateAlpha: false
+    tiltDegrees: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -41,6 +42,7 @@
   DefaultScriptInputs:
     - numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
       plateAlpha: 0.140000
+      tiltDegrees: !<float> 25.000000
   ScriptTypes:
     -
       {}
@@ -50,4 +52,5 @@
     - '// @ui {"widget":"group_start", "label":"Settings"}'
     - '// @input Asset.Font numberFont {"hint":"Optional monospaced font for the figures."}'
     - '// @input float plateAlpha = 0.14 {"hint":"Opacity of the light plate behind the text. 0 drops the plate and leaves bright text.", "widget":"slider", "min":0, "max":0.5, "step":0.02}'
+    - '// @input float tiltDegrees = 25 {"hint":"How far the meter face is tipped back toward the user, in degrees.", "widget":"slider", "min":0, "max":45, "step":1}'
     - '// @ui {"widget":"group_end"}'
