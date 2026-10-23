@@ -38,7 +38,9 @@ Mid-outage, you toggle an appliance and the overload warning fires: the load chi
 - Scan: pinch an appliance → small card opens beside it with a few big buttons → pinch the appliance name to tag it
 - Toggle: pinch the big button on an appliance's tag to turn it on/off
 - Targets are big and highlight when aimed at.
-- No voice or custom gestures — pinch covers both scanning and toggling.
+- Voice (added after a preview test, see below): say "turn on the fan", "on the fan", "switch off the iron" or "off the iron" and it does the same as pinching that appliance's toggle. On and off set the state, they don't flip it, so a repeated command is harmless. Say "can I run the iron?" and that appliance's tag highlights with its fits or too-big answer, without toggling anything.
+- The button that does the same job: every voice command has a pinch alternative (the Turn on / Turn off button on the tag, or reading the tag). Voice is off by default behind a visible Voice toggle near the power station meter; the Lens only acts on the final transcript, and shows what it's hearing as small live text near the meter that fades after a few seconds.
+- No custom gestures — pinch covers scanning and toggling.
 
 ## When things show
 - Appliance tag: appears once the appliance is scanned and tagged; stays as long as the appliance is tagged (persists for the session).
@@ -54,12 +56,14 @@ Each one can be checked in Lens Studio's preview.
 3. **Meter at the power station.** Walk to the power station; the meter floating ~70 cm above it reads "182 W / 200 W" in the near-limit colour, with ~3h 58m of battery left.
 4. **Overload.** Toggle the iron (~1,100 W) → chip turns the warning colour and reads "1,282 W / 200 W", the iron glows, a chime plays, meter switches to overload state.
 5. **Recovery.** Toggle the iron off → glow and warning clear, chip and meter return to "182 W / 200 W" and ~3h 58m.
+6. **Voice does what the pinch does.** Switch Voice on, then say "on the fan" → the fan turns on exactly as if its button was pinched (chip "12 W / 200 W · 60h 13m"). Say "on the fan" again → nothing changes. Say "can I run the iron?" → the iron's tag highlights and says it's too big for the 200 W unit, and the total doesn't change. Verified in the preview with spoken words; the LEAF test injects the transcript text instead, so it needs no microphone.
 
 ## Out of scope
 - Real camera recognition of appliances — this version uses the pinch-and-pick stand-in.
 - Reading wattage off a physical label.
 - Any memory between sessions — tags reset each time the Lens is reopened.
-- Voice input or custom/two-hand gestures.
+- Custom/two-hand gestures.
+- Voice commands beyond on, off and "can I run" for the listed appliances. No wake word, no continuous listening: voice only runs while the Voice toggle is on.
 
 ## Risks and open questions
 - Power bank's 18 W is an estimate, since it has no label to read.
@@ -67,6 +71,7 @@ Each one can be checked in Lens Studio's preview.
 - Laptop's 140 W is the charger's adapter maximum, not typical draw — real charging tapers below that.
 - Comfort over time and real hand tracking are feel-unproven; only real glasses can confirm them.
 - The out-of-view arrow has no done criterion covering it.
+- Voice needs an internet connection and a signed-in Lens Studio account, and sends audio to Snap's speech service. The module has no language setting and guesses the language, and a noisy room once returned Russian text. Tested with one speaker and one accent in a quiet room. Pinch always works without it.
 
 ## Build notes for CLAD
 - Build for SPECS so it runs and can be demonstrated in Lens Studio's preview. No SPECS device is available.
@@ -78,6 +83,7 @@ Each one can be checked in Lens Studio's preview.
 - The display is additive: black renders as transparent. Don't rely on black or very dark content to be seen; keep text light and readable from where the user stands.
 - Get the basic flow working first, then add detail.
 - Write LEAF scenarios for each done criterion, run them in preview, and report which pass. Say which criteria have no test.
+- Voice: use Assets/Scripts/VoiceCommands.ts (parseCommand) as is; don't edit it or LoadEngine.ts. Act on final transcripts only. Voice is off by default behind a visible toggle. Remove the VoiceSpike script and scene object once the real voice script works.
 - Don't record, identify, or follow people.
 
 ## After the build: judge it
