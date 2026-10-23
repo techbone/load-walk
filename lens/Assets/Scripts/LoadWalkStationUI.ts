@@ -11,10 +11,10 @@ import { Button } from "SpectaclesUIKit.lspkg/Scripts/Components/Button/Button";
 import { Billboard } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Billboard/Billboard";
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import animate from "SpectaclesInteractionKit.lspkg/Utils/animate";
-import { COLORS, Level, levelColor, makeText, setNumberFont, setPanelOpacity, setPlateAlpha, stylePlate, textWidthCm } from "./LoadWalkTheme";
+import { COLORS, Level, levelColor, makeText, setNumberFont, setPanelOpacity, setPlateAlpha, stylePlate, stylePlateWhenReady, textWidthCm } from "./LoadWalkTheme";
 
 export type CardOption = { id: string; label: string };
-export type TagView = { title: string; note?: string; on: boolean };
+export type TagView = { title: string; notes: string[]; on: boolean };
 
 type Panel = { so: SceneObject; flex: FlexLayout };
 
@@ -24,13 +24,17 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   @ui.separator
   @ui.group_start("Settings")
   @input
-  @hint("Sideways offset of the scan card from the tag position, in cm. Positive is to the right as the user sees it.")
-  @widget(new SliderWidget(-30, 30, 1))
-  cardSideOffsetCm: number = 0;
+  @hint("Half the appliance's width in cm; the scan card opens just outside it.")
+  @widget(new SliderWidget(0, 80, 0.5))
+  applianceHalfWidthCm: number = 10;
   @input
-  @hint("How far the scan card sits below the tag position, in cm (negative raises it), so it opens beside the appliance.")
+  @hint("Which side the scan card opens on: 1 is right as the user sees it, -1 is left.")
+  @widget(new SliderWidget(-1, 1, 2))
+  cardSide: number = 1;
+  @input
+  @hint("Height of the scan card's centre above the appliance's centre, in cm.")
   @widget(new SliderWidget(-30, 60, 1))
-  cardDropCm: number = 0;
+  cardCenterYCm: number = 0;
   @input
   @hint("Opacity of the light plates behind text. 0 drops the plates and leaves bright text.")
   @widget(new SliderWidget(0, 0.5, 0.02))
@@ -54,13 +58,14 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   private tagTitle: Text | null = null;
   private toggleLabel: Text | null = null;
   private tagW = 0;
+  private tagH = 0;
+  private chipH = 0;
   private chip: SceneObject | null = null;
   private chipW = 0;
   private fadeEvent: DelayedCallbackEvent;
 
   onAwake() {
     this.sceneObject.createComponent("Component.Canvas");
-    this.sceneObject.createComponent(Billboard.getTypeName());
     if (this.numberFont) setNumberFont(this.numberFont);
     setPlateAlpha(this.plateAlpha);
     this.fadeEvent = this.createEvent("DelayedCallbackEvent");
@@ -70,14 +75,19 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   // ---- scan stand-in card -------------------------------------------------------------------------------
   showCard(options: CardOption[]): void {
     this.hideCard();
-    const titleText = "Scan stand-in: what is this?";
-    const widest = Math.max(textWidthCm(titleText, "Caption"), ...options.map((o) => textWidthCm(o.label, "Body") + 4));
-    const panel = this.makePanel("ScanCard", () => {});
-    panel.so.getTransform().setLocalPosition(new vec3(this.cardSideOffsetCm, -this.cardDropCm, 0));
+    const titleText = "What is this?";
+    const widest = Math.max(textWidthCm(titleText, "Caption"), ...options.map((o) => textWidthCm(o.label, "Body") + 3));
+    // Beside the appliance: just outside its width on the chosen side, centred at cardCenterYCm above its centre.
+    const panel = this.makePanel("ScanCard", (cw) => {
+      if (isNull(panel.so)) return;
+      const root = this.sceneObject.getTransform().getLocalPosition();
+      const x = this.cardSide * (this.applianceHalfWidthCm + cw / 2 + 2);
+      panel.so.getTransform().setLocalPosition(new vec3(x, this.cardCenterYCm - root.y, 0));
+    });
     this.card = panel.so;
-    makeText(panel.so, titleText, "Caption", widest, COLORS.dim);
+    makeText(panel.so, titleText, "Caption", widest, COLORS.text);
     for (const opt of options) {
-      this.makeButton(panel.so, opt.label, widest, 4.4, () => this._onPick.invoke(opt.id));
+      this.makeButton(panel.so, opt.label, widest, 7.5, () => this._onPick.invoke(opt.id));
     }
   }
 
@@ -92,14 +102,15 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   showTag(view: TagView): void {
     this.hideCard();
     if (this.tag) this.retire(this.tag.so);
-    const widest = Math.max(textWidthCm(view.title, "Body"), view.note ? textWidthCm(view.note, "Caption") : 0, 12);
-    this.tag = this.makePanel("Tag", (w) => {
+    const widest = Math.max(textWidthCm(view.title, "Body"), ...view.notes.map((n) => textWidthCm(n, "Caption")), 18);
+    this.tag = this.makePanel("Tag", (w, h) => {
       this.tagW = w;
+      this.tagH = h;
       this.placeChip();
     });
     this.tagTitle = makeText(this.tag.so, view.title, "Body", widest, COLORS.text, { numbers: true, name: "TagTitle" });
-    if (view.note) makeText(this.tag.so, view.note, "Caption", widest, COLORS.near, { name: "TagNote" });
-    const btn = this.makeButton(this.tag.so, "Turn on", widest, 4.4, () => this._onToggle.invoke(), "ToggleButton");
+    view.notes.forEach((n, k) => makeText(this.tag!.so, n, "Caption", widest, COLORS.text, { name: k === 0 ? "TagNote" : "TagNote" + (k + 1) }));
+    const btn = this.makeButton(this.tag.so, "Turn on", Math.min(widest, 20), 7.5, () => this._onToggle.invoke(), "ToggleButton");
     this.toggleLabel = btn;
     this.setOn(view.on);
   }
@@ -113,9 +124,10 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   // fadeAfterSec 0 keeps the chip until hideChip() (used for the overload warning).
   showChip(text: string, level: Level, fadeAfterSec: number): void {
     this.dropChip();
-    const w = textWidthCm(text, "Subheadline");
-    const panel = this.makePanel("Chip", (cw) => {
+    const w = textWidthCm(text, "Subheadline") + 2;
+    const panel = this.makePanel("Chip", (cw, ch) => {
       this.chipW = cw;
+      this.chipH = ch;
       this.placeChip();
     });
     this.chip = panel.so;
@@ -175,18 +187,21 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     });
   }
 
+  // The chip sits directly above the tag (a row of tags is too tight for chips beside them at this text size).
   private placeChip(): void {
     if (!this.chip) return;
-    const x = this.tag ? this.tagW / 2 + this.chipW / 2 + 1.2 : 0;
-    this.chip.getTransform().setLocalPosition(new vec3(x, 0, 0));
+    const y = this.tag ? this.tagH / 2 + this.chipH / 2 + 0.6 : 0;
+    this.chip.getTransform().setLocalPosition(new vec3(0, y, 0));
   }
 
   // ---- building blocks ------------------------------------------------------------------------------------
   private makePanel(name: string, onSize: (w: number, h: number) => void): Panel {
     const so = global.scene.createSceneObject(name);
     so.setParent(this.sceneObject);
+    // Each panel turns to face the user on its own, so the card and chip offsets stay fixed in room space.
+    so.createComponent(Billboard.getTypeName());
     const plate = so.createComponent(BackPlate.getTypeName()) as BackPlate;
-    stylePlate(so);
+    stylePlateWhenReady(this, so, plate);
     const flex = so.createComponent(FlexLayout.getTypeName()) as FlexLayout;
     flex.onLayoutComplete.add((r) => {
       plate.size = new vec2(r.containerWidth, r.containerHeight);
@@ -195,11 +210,11 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     flex.direction = FlexDirection.Column;
     flex.alignItems = FlexAlign.Center;
     flex.justifyContent = FlexJustify.Center;
-    flex.rowGap = 0.6;
-    flex.paddingTop = 0.9;
-    flex.paddingBottom = 0.9;
-    flex.paddingLeft = 1.2;
-    flex.paddingRight = 1.2;
+    flex.rowGap = 0.3;
+    flex.paddingTop = 0.5;
+    flex.paddingBottom = 0.5;
+    flex.paddingLeft = 0.8;
+    flex.paddingRight = 0.8;
     flex.width = -1;
     flex.height = -1;
     return { so, flex };

@@ -28,8 +28,9 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    cardDropCm: false
-    cardSideOffsetCm: false
+    applianceHalfWidthCm: false
+    cardCenterYCm: false
+    cardSide: false
     numberFont: false
     plateAlpha: false
   ScriptTypesHidden:
@@ -41,8 +42,9 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - cardSideOffsetCm: !<float> 0.000000
-      cardDropCm: !<float> 0.000000
+    - applianceHalfWidthCm: !<float> 10.000000
+      cardSide: !<float> 1.000000
+      cardCenterYCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
@@ -52,8 +54,9 @@
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkStationUI – card, tag and chip for one appliance</span>"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"group_start", "label":"Settings"}'
-    - '// @input float cardSideOffsetCm {"hint":"Sideways offset of the scan card from the tag position, in cm. Positive is to the right as the user sees it.", "widget":"slider", "min":-30, "max":30, "step":1}'
-    - '// @input float cardDropCm {"hint":"How far the scan card sits below the tag position, in cm (negative raises it), so it opens beside the appliance.", "widget":"slider", "min":-30, "max":60, "step":1}'
+    - "// @input float applianceHalfWidthCm = 10 {\"hint\":\"Half the appliance's width in cm; the scan card opens just outside it.\", \"widget\":\"slider\", \"min\":0, \"max\":80, \"step\":0.5}"
+    - '// @input float cardSide = 1 {"hint":"Which side the scan card opens on: 1 is right as the user sees it, -1 is left.", "widget":"slider", "min":-1, "max":1, "step":2}'
+    - "// @input float cardCenterYCm {\"hint\":\"Height of the scan card's centre above the appliance's centre, in cm.\", \"widget\":\"slider\", \"min\":-30, \"max\":60, \"step\":1}"
     - '// @input float plateAlpha = 0.14 {"hint":"Opacity of the light plates behind text. 0 drops the plates and leaves bright text.", "widget":"slider", "min":0, "max":0.5, "step":0.02}'
     - '// @input Asset.Font numberFont {"hint":"Optional monospaced font for the figures (W, hours)."}'
     - '// @ui {"widget":"group_end"}'

@@ -29,10 +29,8 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     applianceKind: false
-    bodyColor: false
-    bodyVisual: false
+    bodyRoot: false
     debugColliders: false
-    glowVisual: false
     sizeCm: false
     targetPaddingCm: false
     ui: false
@@ -47,11 +45,9 @@
   DefaultScriptInputs:
     - applianceKind: fan
       ui: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      bodyVisual: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
-      glowVisual: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
+      bodyRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       sizeCm: !<Vec3> {x: 20.000000, y: 20.000000, z: 20.000000}
       targetPaddingCm: !<float> 3.000000
-      bodyColor: !<Vec4> {x: 0.620000, y: 0.640000, z: 0.660000, w: 1.000000}
       debugColliders: false
   ScriptTypes:
     -
@@ -62,13 +58,11 @@
     - '// @ui {"widget":"group_start", "label":"References"}'
     - '// @input string applianceKind = "fan" {"hint":"Id of the real appliance this stand-in represents, e.g. freezer, fan, iron."}'
     - '// @input AssignableType_1 ui {"hint":"Tag, card and chip UI for this appliance."}'
-    - '// @input Component.RenderMeshVisual bodyVisual {"hint":"Visible body of the appliance."}'
-    - '// @input Component.RenderMeshVisual glowVisual {"hint":"Slightly larger halo shown while this appliance is overloading the unit."}'
+    - "// @input SceneObject bodyRoot {\"hint\":\"Root of the appliance's 3D model. Every mesh under it is tinted for hover and overload glow.\"}"
     - '// @ui {"widget":"group_end"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"group_start", "label":"Settings"}'
     - '// @input vec3 sizeCm = {20,20,20} {"hint":"Size of the appliance in cm (width, height, depth); also sizes the pinch target."}'
     - '// @input float targetPaddingCm = 3 {"hint":"Extra pinch-target padding around the appliance, in cm. Small appliances need a bigger target.", "widget":"slider", "min":0, "max":12, "step":1}'
-    - '// @input vec4 bodyColor = {0.62,0.64,0.66,1} {"hint":"Body colour at rest. Light neutral so it reads on the additive display.", "widget":"color"}'
     - '// @input bool debugColliders {"hint":"Show the collider wireframe for debugging."}'
     - '// @ui {"widget":"group_end"}'

@@ -5,7 +5,7 @@
 import { FlexLayout } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexLayout";
 import { FlexAlign, FlexDirection, FlexJustify } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexTypes";
 import { BackPlate } from "SpectaclesUIKit.lspkg/Scripts/BackPlate";
-import { COLORS, setPlateAlpha, stylePlate, Level, levelColor, makeText, setNumberFont } from "./LoadWalkTheme";
+import { COLORS, setPlateAlpha, stylePlateWhenReady, Level, levelColor, makeText, setNumberFont } from "./LoadWalkTheme";
 
 export type MeterView = { loadText: string; statusText: string; hoursText: string; level: Level };
 
@@ -33,8 +33,7 @@ export class LoadWalkMeterUI extends BaseScriptComponent {
     if (this.numberFont) setNumberFont(this.numberFont);
     const plate = this.sceneObject.createComponent(BackPlate.getTypeName()) as BackPlate;
     setPlateAlpha(this.plateAlpha);
-    // BackPlate applies its own dark style when it starts; restyle after that.
-    this.createEvent("OnStartEvent").bind(() => stylePlate(this.sceneObject));
+    stylePlateWhenReady(this, this.sceneObject, plate);
     const flex = this.sceneObject.createComponent(FlexLayout.getTypeName()) as FlexLayout;
     flex.onLayoutComplete.add((r) => {
       plate.size = new vec2(r.containerWidth, r.containerHeight);
@@ -42,18 +41,18 @@ export class LoadWalkMeterUI extends BaseScriptComponent {
     flex.direction = FlexDirection.Column;
     flex.alignItems = FlexAlign.Center;
     flex.justifyContent = FlexJustify.Center;
-    flex.rowGap = 0.8;
-    flex.paddingTop = 1.4;
-    flex.paddingBottom = 1.4;
-    flex.paddingLeft = 1.8;
-    flex.paddingRight = 1.8;
+    flex.rowGap = 0.3;
+    flex.paddingTop = 0.6;
+    flex.paddingBottom = 0.6;
+    flex.paddingLeft = 1.0;
+    flex.paddingRight = 1.0;
     flex.width = -1;
     flex.height = -1;
 
-    makeText(this.sceneObject, "POWER STATION LOAD", "Caption", 18, COLORS.dim, { name: "MeterCaption" });
-    this.load = makeText(this.sceneObject, "0 W / 200 W", "Headline1", 18, COLORS.text, { numbers: true, name: "MeterLoad" });
-    this.status = makeText(this.sceneObject, "Nothing switched on", "Body", 18, COLORS.dim, { name: "MeterStatus" });
-    this.hours = makeText(this.sceneObject, "--", "Subheadline", 18, COLORS.text, { numbers: true, name: "MeterHours" });
+    makeText(this.sceneObject, "POWER STATION LOAD", "Caption", 26, COLORS.text, { name: "MeterCaption" });
+    this.load = makeText(this.sceneObject, "1,282 W / 200 W", "Headline1", 26, COLORS.text, { numbers: true, name: "MeterLoad" });
+    this.status = makeText(this.sceneObject, "Overload. Switch off Iron", "Body", 26, COLORS.text, { name: "MeterStatus" });
+    this.hours = makeText(this.sceneObject, "Battery left: 17h 12m", "Subheadline", 26, COLORS.text, { numbers: true, name: "MeterHours" });
   }
 
   setView(v: MeterView): void {
@@ -61,7 +60,7 @@ export class LoadWalkMeterUI extends BaseScriptComponent {
     this.load.text = v.loadText;
     this.load.textFill.color = c;
     this.status.text = v.statusText;
-    this.status.textFill.color = v.level === "overload" || v.level === "near" ? c : COLORS.dim;
+    this.status.textFill.color = v.level === "idle" ? COLORS.text : c;
     this.hours.text = v.hoursText;
   }
 

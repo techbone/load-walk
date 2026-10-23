@@ -21,11 +21,8 @@ export class LoadWalkStation extends BaseScriptComponent {
   @hint("Tag, card and chip UI for this appliance.")
   ui: LoadWalkStationUI;
   @input
-  @hint("Visible body of the appliance.")
-  bodyVisual: RenderMeshVisual;
-  @input
-  @hint("Slightly larger halo shown while this appliance is overloading the unit.")
-  glowVisual: RenderMeshVisual;
+  @hint("Root of the appliance's 3D model. Every mesh under it is tinted for hover and overload glow.")
+  bodyRoot: SceneObject;
   @ui.group_end
   @ui.separator
   @ui.group_start("Settings")
@@ -37,10 +34,6 @@ export class LoadWalkStation extends BaseScriptComponent {
   @widget(new SliderWidget(0, 12, 1))
   targetPaddingCm: number = 3;
   @input
-  @hint("Body colour at rest. Light neutral so it reads on the additive display.")
-  @widget(new ColorWidget())
-  bodyColor: vec4 = new vec4(0.62, 0.64, 0.66, 1);
-  @input
   @hint("Show the collider wireframe for debugging.")
   debugColliders: boolean = false;
   @ui.group_end
@@ -50,8 +43,10 @@ export class LoadWalkStation extends BaseScriptComponent {
     return this._onScan.publicApi();
   }
 
-  private bodyMat: Material;
-  private glowMat: Material;
+  private mats: Material[] = [];
+  private baseColors: vec4[] = [];
+  private baseEmissive: vec4[] = [];
+  private baseScale: vec3 = vec3.one();
   private glowing = false;
   private hovered = false;
   private t = 0;
@@ -62,12 +57,8 @@ export class LoadWalkStation extends BaseScriptComponent {
 
   onAwake() {
     LoadWalkStation.all.push(this);
-    this.bodyMat = this.bodyVisual.mainMaterial.clone();
-    this.bodyVisual.mainMaterial = this.bodyMat;
-    this.glowMat = this.glowVisual.mainMaterial.clone();
-    this.glowVisual.mainMaterial = this.glowMat;
-    this.glowMat.mainPass.blendMode = BlendMode.Add;
-    this.glowVisual.getSceneObject().enabled = false;
+    this.baseScale = this.bodyRoot.getTransform().getLocalScale();
+    this.collectMaterials(this.bodyRoot);
     this.paintBody();
 
     // Collider on this unit-scale wrapper; the visual (scaled) lives on a child.
@@ -100,7 +91,6 @@ export class LoadWalkStation extends BaseScriptComponent {
 
   setGlow(on: boolean): void {
     this.glowing = on;
-    this.glowVisual.getSceneObject().enabled = on;
     this.t = 0;
     this.paintBody();
   }
@@ -109,21 +99,49 @@ export class LoadWalkStation extends BaseScriptComponent {
     return this.glowing;
   }
 
-  private paintBody(): void {
-    const c = this.glowing ? COLORS.warn : this.bodyColor;
-    const lift = this.hovered ? 0.3 : 0;
-    this.bodyMat.mainPass.baseColor = new vec4(
-      Math.min(1, c.x + lift),
-      Math.min(1, c.y + lift),
-      Math.min(1, c.z + lift),
-      1
-    );
+  // Each mesh gets its own material copy so tinting one appliance never touches another.
+  private collectMaterials(root: SceneObject): void {
+    const rmv = root.getComponent("Component.RenderMeshVisual") as RenderMeshVisual | null;
+    if (rmv) {
+      const clones: Material[] = [];
+      for (let i = 0; i < rmv.getMaterialsCount(); i++) {
+        const m = rmv.getMaterial(i).clone();
+        clones.push(m);
+        this.mats.push(m);
+        const pass = m.mainPass as any;
+        this.baseColors.push(pass.baseColorFactor ? new vec4(pass.baseColorFactor.x, pass.baseColorFactor.y, pass.baseColorFactor.z, pass.baseColorFactor.w) : new vec4(1, 1, 1, 1));
+        this.baseEmissive.push(pass.emissiveFactor ? new vec4(pass.emissiveFactor.x, pass.emissiveFactor.y, pass.emissiveFactor.z, 1) : new vec4(0, 0, 0, 1));
+      }
+      rmv.materials = clones;
+    }
+    for (let c = 0; c < root.getChildrenCount(); c++) this.collectMaterials(root.getChild(c));
+  }
+
+  // Overload glow: the model turns red and emits red. Hover: a small scale lift.
+  private paintBody(intensity: number = 1): void {
+    for (let i = 0; i < this.mats.length; i++) {
+      const pass = this.mats[i].mainPass as any;
+      const b = this.baseColors[i];
+      if (pass.baseColorFactor) {
+        pass.baseColorFactor = this.glowing
+          ? new vec4(b.x * 0.35 + COLORS.warn.x * 0.65, b.y * 0.2, b.z * 0.2, b.w)
+          : b;
+      }
+      if (pass.emissiveFactor) {
+        const e = this.baseEmissive[i];
+        const lit = pass.emissiveFactor.w !== undefined;
+        const r = this.glowing ? COLORS.warn.x * intensity : e.x;
+        const g = this.glowing ? COLORS.warn.y * intensity : e.y;
+        const bl = this.glowing ? COLORS.warn.z * intensity : e.z;
+        pass.emissiveFactor = lit ? new vec4(r, g, bl, 1) : new vec3(r, g, bl);
+      }
+    }
+    this.bodyRoot.getTransform().setLocalScale(this.baseScale.uniformScale(this.hovered ? 1.04 : 1));
   }
 
   private pulse(): void {
     if (!this.glowing) return;
     this.t += getDeltaTime();
-    const k = 0.55 + 0.45 * Math.sin(this.t * 6);
-    this.glowMat.mainPass.baseColor = new vec4(COLORS.warn.x * k, COLORS.warn.y * k, COLORS.warn.z * k, 1);
+    this.paintBody(0.6 + 0.4 * Math.sin(this.t * 6));
   }
 }

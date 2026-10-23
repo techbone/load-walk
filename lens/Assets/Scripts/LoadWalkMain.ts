@@ -41,6 +41,9 @@ export class LoadWalkMain extends BaseScriptComponent {
   @hint("Place the whole room in front of wherever the user starts (the preview camera does not start at the world origin). Turn off to keep the room at the origin.")
   placeRoomAtUserStart: boolean = true;
   @input
+  @hint("Extra offset of the room from where the user starts, in cm (x right, y up, z back). Push the room away to see more of it at once.")
+  roomOffsetCm: vec3 = new vec3(0, 0, 0);
+  @input
   @hint("Horizontal half-angle of the view in degrees; a culprit outside it gets the arrow.")
   @widget(new SliderWidget(10, 40, 1))
   viewHalfWidthDeg: number = 18;
@@ -90,14 +93,17 @@ export class LoadWalkMain extends BaseScriptComponent {
     const fwd = cam.getWorldRotation().multiplyVec3(new vec3(0, 0, -1));
     const yaw = Math.atan2(-fwd.x, -fwd.z);
     const t = this.sceneObject.getTransform();
-    t.setWorldPosition(new vec3(pos.x, 0, pos.z));
-    t.setWorldRotation(quat.angleAxis(yaw, vec3.up()));
+    const rot = quat.angleAxis(yaw, vec3.up());
+    t.setWorldPosition(new vec3(pos.x, 0, pos.z).add(rot.multiplyVec3(this.roomOffsetCm)));
+    t.setWorldRotation(rot);
     print("[LoadWalk] room placed at " + t.getWorldPosition());
   }
 
   // ---- scan stand-in ------------------------------------------------------------------------------------
   private onScan(s: LoadWalkStation): void {
     if (this.state.isTagged(s.slotId)) return;
+    // Only one card is ever open: scanning something else closes the previous card.
+    for (const other of this.stations) if (other !== s) other.ui.hideCard();
     const ids = PICKER_GROUPS[s.applianceKind] ?? [s.applianceKind];
     s.ui.showCard(ids.map((id) => ({ id, label: specById(id).name })));
     this.hint.hide();
@@ -108,11 +114,12 @@ export class LoadWalkMain extends BaseScriptComponent {
     const spec = specById(specId);
     const cap = capacityW(POWER_STATION);
     let title = spec.name + " · " + fmtW(spec.runningW);
-    if (spec.estimate) title += " (estimate)";
     if (spec.surgeFactor > 1) title += " · surges about " + spec.surgeFactor + "×";
-    let note: string | undefined = spec.note;
-    if (this.state.tooBigAlone(s.slotId)) note = fmtW(spec.runningW) + " alone is too big for this " + cap + " W unit.";
-    s.ui.showTag({ title, note, on: false });
+    const notes: string[] = [];
+    if (spec.estimate) notes.push("Estimate");
+    if (this.state.tooBigAlone(s.slotId)) notes.push("Too big for this " + cap + " W unit");
+    if (spec.note) notes.push(spec.note);
+    s.ui.showTag({ title, notes, on: false });
   }
 
   // ---- toggle -------------------------------------------------------------------------------------------
@@ -146,7 +153,7 @@ export class LoadWalkMain extends BaseScriptComponent {
     this.meter.setView({
       loadText,
       statusText,
-      hoursText: r.status === "overload" ? "Battery time not shown over capacity" : r.runningW > 0 ? hours + " of battery left" : "--",
+      hoursText: r.status === "overload" || r.runningW === 0 ? "Battery left: --" : "Battery left: " + hours,
       level,
     });
 

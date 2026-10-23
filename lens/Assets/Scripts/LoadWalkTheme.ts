@@ -1,8 +1,9 @@
 // Owns: Load Walk colours, number formatting and the small text helper shared by the UI modules.
-// Colours: one accent for "on / within capacity", one near-limit amber, one warning red. Neutrals are white at
-// reduced alpha because black is transparent on the additive display.
+// Colours: one accent for "on / within capacity", one near-limit amber, one warning red. Everything else is bright
+// white: black is transparent on the additive display and grey text would carry no meaning there.
 
 import { FlexItem } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexItem";
+import { BackPlate } from "SpectaclesUIKit.lspkg/Scripts/BackPlate";
 import { RoundedRectangle } from "SpectaclesUIKit.lspkg/Scripts/Visuals/RoundedRectangle/RoundedRectangle";
 
 export type Level = "idle" | "ok" | "near" | "overload";
@@ -12,7 +13,6 @@ export const COLORS = {
   near: new vec4(1.0, 0.78, 0.2, 1), // near the limit (amber)
   warn: new vec4(1.0, 0.33, 0.28, 1), // overload (red)
   text: new vec4(1, 1, 1, 1),
-  dim: new vec4(1, 1, 1, 0.72),
 };
 
 export function levelColor(level: Level): vec4 {
@@ -39,12 +39,13 @@ export function fmtW(w: number): string {
 }
 
 export type TextRole = "Title2" | "Headline1" | "Subheadline" | "Body" | "Caption";
+// About twice the stock type scale (readable at arm's length on the glasses), all bold.
 const TYPE_SCALE: Record<TextRole, { size: number; weight: number }> = {
-  Title2: { size: 93, weight: 700 },
-  Headline1: { size: 54, weight: 700 },
-  Subheadline: { size: 41, weight: 700 },
-  Body: { size: 39, weight: 500 },
-  Caption: { size: 38, weight: 500 },
+  Title2: { size: 186, weight: 700 },
+  Headline1: { size: 108, weight: 700 },
+  Subheadline: { size: 82, weight: 700 },
+  Body: { size: 78, weight: 700 },
+  Caption: { size: 76, weight: 700 },
 };
 
 // Optional monospaced face for figures; set by a UI module when one is wired in the Inspector.
@@ -60,8 +61,8 @@ export function applyTextRole(t: Text, role: TextRole): void {
 
 // Width of a label in cm at the type scale (about 0.52 cm per glyph) plus padding.
 export function textWidthCm(s: string, role: TextRole): number {
-  const per = role === "Headline1" ? 0.72 : role === "Title2" ? 1.2 : 0.55;
-  return Math.max(4, s.length * per + 1);
+  const per = role === "Headline1" ? 1.5 : role === "Title2" ? 2.5 : role === "Subheadline" ? 1.2 : 1.15;
+  return Math.max(6, s.length * per + 0.6);
 }
 
 export function makeText(
@@ -83,7 +84,7 @@ export function makeText(
   t.verticalAlignment = VerticalAlignment.Center;
   t.horizontalOverflow = HorizontalOverflow.Overflow;
   t.verticalOverflow = VerticalOverflow.Overflow;
-  t.layoutRect = Rect.create(-widthCm / 2, widthCm / 2, -1.2, 1.2);
+  t.layoutRect = Rect.create(-widthCm / 2, widthCm / 2, -2.2, 2.2);
   t.textFill.color = color;
   if (opts?.numbers && numberFont) t.font = numberFont;
   so.createComponent(FlexItem.getTypeName());
@@ -121,4 +122,19 @@ export function setPanelOpacity(panel: SceneObject, a: number): void {
     for (let i = 0; i < so.getChildrenCount(); i++) walk(so.getChild(i));
   };
   walk(panel);
+}
+
+// BackPlate applies its own dark style on its first frame, so restyle once it reports initialized.
+export function stylePlateWhenReady(owner: BaseScriptComponent, plateSO: SceneObject, plate: BackPlate): void {
+  const ev = owner.createEvent("UpdateEvent");
+  ev.bind(() => {
+    if (isNull(plateSO) || isNull(plate)) {
+      ev.enabled = false;
+      return;
+    }
+    if (plate.initialized) {
+      stylePlate(plateSO);
+      ev.enabled = false;
+    }
+  });
 }

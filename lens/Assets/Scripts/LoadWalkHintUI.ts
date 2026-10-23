@@ -5,7 +5,7 @@ import { FlexLayout } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Fl
 import { FlexAlign, FlexDirection, FlexJustify } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexTypes";
 import { BackPlate } from "SpectaclesUIKit.lspkg/Scripts/BackPlate";
 import { Billboard } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Billboard/Billboard";
-import { COLORS, setPlateAlpha, stylePlate, makeText } from "./LoadWalkTheme";
+import { COLORS, setPlateAlpha, stylePlateWhenReady, makeText, textWidthCm } from "./LoadWalkTheme";
 
 @component
 export class LoadWalkHintUI extends BaseScriptComponent {
@@ -20,7 +20,7 @@ export class LoadWalkHintUI extends BaseScriptComponent {
   lineOne: string = "Pinch an appliance to scan it.";
   @input
   @hint("Second body line.")
-  lineTwo: string = "The finished Lens would recognise it with the camera.";
+  lineTwo: string = "The real Lens uses the camera.";
   @input
   @hint("Opacity of the light plate behind the text. 0 drops the plate and leaves bright text.")
   @widget(new SliderWidget(0, 0.5, 0.02))
@@ -35,8 +35,7 @@ export class LoadWalkHintUI extends BaseScriptComponent {
     this.sceneObject.createComponent(Billboard.getTypeName());
     const plate = this.sceneObject.createComponent(BackPlate.getTypeName()) as BackPlate;
     setPlateAlpha(this.plateAlpha);
-    // BackPlate applies its own dark style when it starts; restyle after that.
-    this.createEvent("OnStartEvent").bind(() => stylePlate(this.sceneObject));
+    stylePlateWhenReady(this, this.sceneObject, plate);
     const flex = this.sceneObject.createComponent(FlexLayout.getTypeName()) as FlexLayout;
     flex.onLayoutComplete.add((r) => {
       plate.size = new vec2(r.containerWidth, r.containerHeight);
@@ -44,16 +43,17 @@ export class LoadWalkHintUI extends BaseScriptComponent {
     flex.direction = FlexDirection.Column;
     flex.alignItems = FlexAlign.Center;
     flex.justifyContent = FlexJustify.Center;
-    flex.rowGap = 0.5;
-    flex.paddingTop = 1.0;
-    flex.paddingBottom = 1.0;
-    flex.paddingLeft = 1.4;
-    flex.paddingRight = 1.4;
+    flex.rowGap = 0.3;
+    flex.paddingTop = 0.6;
+    flex.paddingBottom = 0.6;
+    flex.paddingLeft = 1.0;
+    flex.paddingRight = 1.0;
     flex.width = -1;
     flex.height = -1;
-    makeText(this.sceneObject, this.heading, "Body", 30, COLORS.near, { name: "HintHeading" });
-    makeText(this.sceneObject, this.lineOne, "Caption", 30, COLORS.text, { name: "HintLineOne" });
-    makeText(this.sceneObject, this.lineTwo, "Caption", 30, COLORS.dim, { name: "HintLineTwo" });
+    const w = Math.max(textWidthCm(this.heading, "Body"), textWidthCm(this.lineOne, "Caption"), textWidthCm(this.lineTwo, "Caption"));
+    makeText(this.sceneObject, this.heading, "Body", w, COLORS.text, { name: "HintHeading" });
+    makeText(this.sceneObject, this.lineOne, "Caption", w, COLORS.text, { name: "HintLineOne" });
+    makeText(this.sceneObject, this.lineTwo, "Caption", w, COLORS.text, { name: "HintLineTwo" });
   }
 
   hide(): void {
