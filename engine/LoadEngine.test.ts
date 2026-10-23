@@ -98,9 +98,11 @@ test("formatHours", () => {
   assert.equal(formatHours(0.5), "30m");
 });
 
-test("Lens copy matches the engine (run npm run sync:lens)", async () => {
+test("Lens copies match the engine (run npm run sync:lens)", async () => {
   const { readFileSync } = await import("node:fs");
-  const engine = readFileSync(new URL("./LoadEngine.ts", import.meta.url), "utf8");
-  const lens = readFileSync(new URL("../lens/Assets/Scripts/LoadEngine.ts", import.meta.url), "utf8");
-  assert.equal(lens, engine);
+  for (const file of ["LoadEngine.ts", "VoiceCommands.ts"]) {
+    const engine = readFileSync(new URL(`./${file}`, import.meta.url), "utf8");
+    const lens = readFileSync(new URL(`../lens/Assets/Scripts/${file}`, import.meta.url), "utf8");
+    assert.equal(lens, engine, file);
+  }
 });
