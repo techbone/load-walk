@@ -32,4 +32,19 @@ Anything without a known appliance and a clear verb does nothing. Better to igno
 
 ## Result
 
-_Not run yet._
+**Passed (2026-10-23).** `LensStudio:AsrModule` runs in the preview on Musa's Mac (Lens Studio 5.23.2, signed in, preview mic on). English phrases came back correct, as partial updates followed by a `(final)` line after a pause:
+
+| Said | Final transcript |
+|---|---|
+| Turn on the fan | Turn on the fan. |
+| On the fan | On the fan. |
+| Off the iron | Off the iron. |
+| Turn on the laptop | Turn on the laptop. (3 takes) |
+| Can I run the freezer? | Can I run the freezer? |
+
+Findings:
+- The module has no language option (`AsrTranscriptionOptions`: `silenceUntilTerminationMs`, `mode`, and the two event callbacks). Language is auto-detected. An earlier run with background noise returned Russian ("Точно."), so keep the room quiet.
+- Recognition streams to Snap's service, so latency follows the network. Act on the `final` transcript; show partials on screen so it feels responsive.
+- Needs a signed-in Lens Studio account (401 before login).
+- Not tested: "plug in the phone charger", noisy rooms, other accents. One speaker, one session.
+- Leaving the speech object enabled across preview refreshes produced `CANCELLED` / `Pipe was already closed` noise and, once, a hung app (cause unproven). Keep voice behind a toggle.
