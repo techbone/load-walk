@@ -3,7 +3,7 @@ import { expect } from "Leaf.lspkg/Utils/common/Expect";
 import { findSceneObjectByName, sleep } from "Leaf.lspkg/Utils/common/Utils";
 import { findInteractableByName } from "Leaf.lspkg/Interactors/InteractableUtils";
 import {
-  LoadWalkLeafInteractor, child, chipColor, chipText, close, isOn, meter, switchOnSmallLoads, textOf, uiRoot,
+  LoadWalkLeafInteractor, child, chipColor, chipText, close, glowing, isOn, meter, switchOnSmallLoads, textOf, uiRoot,
 } from "./LoadWalkLeafInteractor";
 import { COLORS } from "../Scripts/LoadWalkTheme";
 
@@ -18,7 +18,7 @@ export class OverloadScenario extends Scenario {
     await sleep(300);
     expect(chipText("Iron")).toBe("1,282 W / 200 W");
     expect(close(chipColor("Iron"), COLORS.warn)).toBe(true);
-    expect(findSceneObjectByName("IronGlow")!.enabled).toBe(true);
+    expect(glowing("Iron")).toBe(true);
     const chime = findSceneObjectByName("OverloadChime")!.getComponent("Component.AudioComponent") as AudioComponent;
     expect(chime.isPlaying()).toBe(true);
     expect(meter("MeterLoad")).toBe("1,282 W / 200 W");

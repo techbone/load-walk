@@ -21,7 +21,7 @@ export class LiveTotalScenario extends Scenario {
     await i.toggle("PowerBank");
     expect(chipText("PowerBank")).toBe("42 W / 200 W · 17h 12m");
     // The power bank figure is marked as an estimate on its tag.
-    expect((textOf(uiRoot("PowerBank"), "TagTitle") ?? "").includes("(estimate)")).toBe(true);
+    expect(textOf(uiRoot("PowerBank"), "TagNote")).toBe("Estimate");
     await i.toggle("Laptop");
     expect(chipText("Laptop")).toBe("182 W / 200 W · 3h 58m");
     expect(close(chipColor("Laptop"), COLORS.near)).toBe(true);

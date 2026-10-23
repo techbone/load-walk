@@ -4,6 +4,8 @@
 import { DefaultLeafInteractor } from "Leaf.lspkg/Interactors/interactor/DefaultLeafInteractor";
 import { findInteractableByName } from "Leaf.lspkg/Interactors/InteractableUtils";
 import { findSceneObjectByName, sleep } from "Leaf.lspkg/Utils/common/Utils";
+import { expect } from "Leaf.lspkg/Utils/common/Expect";
+import { LoadWalkStation } from "../Scripts/LoadWalkStation";
 
 export function child(root: SceneObject | null | undefined, name: string): SceneObject | null {
   if (!root) return null;
@@ -73,7 +75,9 @@ export class LoadWalkLeafInteractor extends DefaultLeafInteractor {
   async ensureTagged(slot: string, label: string): Promise<void> {
     if (isTagged(slot)) return;
     await this.scan(slot);
+    expectCardNear(slot);
     await this.pick(slot, label);
+    expectTagNear(slot);
   }
 
   async toggle(slot: string): Promise<void> {
@@ -125,3 +129,49 @@ export async function switchOnSmallLoads(i: LoadWalkLeafInteractor): Promise<voi
   await i.toggle("Laptop");
 }
 
+
+// ---- placement measurements ------------------------------------------------------------------------------
+// Distance from a point to the appliance's bounding box (0 when inside).
+export function distanceToAppliance(slot: string, point: vec3): number {
+  const so = findSceneObjectByName(slot)!;
+  const c = so.getTransform().getWorldPosition();
+  const size = (so.getComponent(LoadWalkStation.getTypeName()) as LoadWalkStation).sizeCm;
+  const dx = Math.max(Math.abs(point.x - c.x) - size.x / 2, 0);
+  const dy = Math.max(Math.abs(point.y - c.y) - size.y / 2, 0);
+  const dz = Math.max(Math.abs(point.z - c.z) - size.z / 2, 0);
+  return Math.sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+export const MAX_PANEL_DISTANCE_CM = 20;
+
+function panelDistance(slot: string, panelName: string): number {
+  const panel = child(uiRoot(slot), panelName);
+  if (!panel) throw new Error(slot + " has no " + panelName);
+  const d = distanceToAppliance(slot, panel.getTransform().getWorldPosition());
+  print("[LEAF-MEASURE] " + panelName + " " + slot + " centre is " + d.toFixed(1) + " cm from the appliance");
+  return d;
+}
+
+export function expectTagNear(slot: string): void {
+  expect(panelDistance(slot, "Tag") <= MAX_PANEL_DISTANCE_CM).toBe(true);
+}
+
+export function expectCardNear(slot: string): void {
+  expect(panelDistance(slot, "ScanCard") <= MAX_PANEL_DISTANCE_CM).toBe(true);
+}
+
+// Highest point of every mesh under a scene object.
+export function topOf(root: SceneObject): number {
+  let top = -1e9;
+  const walk = (so: SceneObject) => {
+    const rmv = so.getComponent("Component.RenderMeshVisual") as RenderMeshVisual | null;
+    if (rmv) top = Math.max(top, rmv.worldAabbMax().y);
+    for (let i = 0; i < so.getChildrenCount(); i++) walk(so.getChild(i));
+  };
+  walk(root);
+  return top;
+}
+
+export function glowing(slot: string): boolean {
+  return (findSceneObjectByName(slot)!.getComponent(LoadWalkStation.getTypeName()) as LoadWalkStation).isGlowing;
+}

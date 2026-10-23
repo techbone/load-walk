@@ -3,7 +3,7 @@ import { expect } from "Leaf.lspkg/Utils/common/Expect";
 import { findSceneObjectByName, sleep } from "Leaf.lspkg/Utils/common/Utils";
 import { findInteractableByName } from "Leaf.lspkg/Interactors/InteractableUtils";
 import {
-  LoadWalkLeafInteractor, child, chipColor, chipText, close, isOn, meter, switchOnSmallLoads, textOf, uiRoot,
+  LoadWalkLeafInteractor, child, chipColor, chipText, close, isOn, meter, switchOnSmallLoads, textOf, topOf, uiRoot,
 } from "./LoadWalkLeafInteractor";
 import { COLORS } from "../Scripts/LoadWalkTheme";
 
@@ -19,9 +19,8 @@ export class MeterScenario extends Scenario {
     expect(meter("MeterHours").includes("3h 58m")).toBe(true);
     const load = findSceneObjectByName("MeterLoad")!.getComponent("Component.Text") as Text;
     expect(close(load.textFill.color, COLORS.near)).toBe(true);
-    const body = findSceneObjectByName("PowerStationBody")!.getTransform();
     const above = findSceneObjectByName("LoadMeter")!.getTransform().getWorldPosition().y
-      - (body.getWorldPosition().y + body.getWorldScale().y / 2);
+      - topOf(findSceneObjectByName("PowerStationModel")!);
     expect(above).toBeCloseTo(70, 0);
   }
 }

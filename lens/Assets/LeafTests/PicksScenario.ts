@@ -4,7 +4,7 @@ import { Scenario } from "Leaf.lspkg/Scenarios/scenario/Scenario";
 import { expect } from "Leaf.lspkg/Utils/common/Expect";
 import { findInteractableByName } from "Leaf.lspkg/Interactors/InteractableUtils";
 import { sleep } from "Leaf.lspkg/Utils/common/Utils";
-import { LoadWalkLeafInteractor, isTagged, textOf, uiRoot } from "./LoadWalkLeafInteractor";
+import { LoadWalkLeafInteractor, expectCardNear, expectTagNear, isTagged, textOf, uiRoot } from "./LoadWalkLeafInteractor";
 
 @component
 export class PicksScenario extends Scenario {
@@ -12,20 +12,23 @@ export class PicksScenario extends Scenario {
     await sleep(1500);
     const i = new LoadWalkLeafInteractor();
     const cases: [string, string[], string, string][] = [
-      ["Fridge", ["Fridge", "Freezer", "Water pump"], "Fridge", "Fridge · 150 W (estimate) · surges about 3×"],
-      ["WaterPump", ["Water pump", "Freezer", "Fridge"], "Water pump", "Water pump · 750 W (estimate) · surges about 3×"],
-      ["Iron", ["Iron", "Kettle", "Microwave"], "Iron", "Iron · 1,100 W (estimate)"],
+      ["Fridge", ["Fridge", "Freezer", "Water pump"], "Fridge", "Fridge · 150 W · surges about 3×"],
+      ["WaterPump", ["Water pump", "Freezer", "Fridge"], "Water pump", "Water pump · 750 W · surges about 3×"],
+      ["Iron", ["Iron", "Kettle", "Microwave"], "Iron", "Iron · 1,100 W"],
     ];
     for (const [slot, offered, pick, title] of cases) {
       if (isTagged(slot)) continue;
       await i.scan(slot);
+      expectCardNear(slot);
       for (const label of offered) {
         expect(findInteractableByName("Btn-" + label, uiRoot(slot), true) !== undefined).toBe(true);
       }
       await i.pick(slot, pick);
       expect(textOf(uiRoot(slot), "TagTitle")).toBe(title);
+      expect(textOf(uiRoot(slot), "TagNote")).toBe("Estimate");
+      expectTagNear(slot);
     }
     // Iron trips the unit on its own, and says so before any toggle.
-    expect((textOf(uiRoot("Iron"), "TagNote") ?? "").includes("1,100 W alone is too big")).toBe(true);
+    expect(textOf(uiRoot("Iron"), "TagNote2")).toBe("Too big for this 200 W unit");
   }
 }

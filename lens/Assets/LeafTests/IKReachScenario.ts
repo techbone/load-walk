@@ -6,7 +6,7 @@ import { expect } from "Leaf.lspkg/Utils/common/Expect";
 import { sleep } from "Leaf.lspkg/Utils/common/Utils";
 import { findInteractableByName } from "Leaf.lspkg/Interactors/InteractableUtils";
 import { createIKInteractor } from "Leaf.lspkg/Interactors/interactor/ik/visualizer/BitmojiAvatar";
-import { child, uiRoot } from "./LoadWalkLeafInteractor";
+import { child, expectCardNear, uiRoot } from "./LoadWalkLeafInteractor";
 
 @component
 export class IKReachScenario extends Scenario {
@@ -18,6 +18,7 @@ export class IKReachScenario extends Scenario {
     expect(fan !== undefined).toBe(true);
     await this._ik.trigger(fan!);
     await sleep(500);
+    expectCardNear("Fan");
     // The scan card opened, so the fan was reachable and pinchable.
     expect(child(uiRoot("Fan"), "ScanCard") !== null || child(uiRoot("Fan"), "Tag") !== null).toBe(true);
   }
