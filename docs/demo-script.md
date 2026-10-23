@@ -1,12 +1,23 @@
 # Demo script (under 3:00)
 
-Recorded in Lens Studio's Interactive Preview. Real runs only; nothing sped up unless it says so on screen.
+Recorded from Lens Studio's Interactive Preview. Real runs only; nothing sped up unless it says so on screen. Numbers below are from the approved brief (200 W / 1,000 Wh unit); re-check them against the Lens before recording.
+
+Thesis: **Look around your house, see what your inverter can carry.**
 
 | Time | Screen | Narration | Must be true before recording |
 |---|---|---|---|
-| 0:00–0:15 | Dark room / real story | The night it tripped: what was running, what it cost, how long the battery really lasted. | Story written down (see `docs/research.md`) |
-| 0:15–0:30 | Preview: room with appliances | "Load Walk: look around your house, see what your inverter can carry." | Scene loads with appliances at real scale |
-| 0:30–1:30 | Scan → tags → toggles | Pinch appliances, tags appear on them, load meter climbs. | Done criteria 1–3 pass (LEAF) |
-| 1:30–2:15 | Overload moment | Freezer + iron together: chime, glow, arrow to the culprit, and the fix. | Overload criterion passes |
-| 2:15–2:40 | Battery hours | Final plan: "3h 40m tonight." | Battery maths matches the README example |
-| 2:40–3:00 | Design process | The brief, CLAD, LEAF pass count, what we learned. | Pass count in README is current |
+| 0:00–0:20 | The real story: a photo of the HeroEE 1 label, then the iron | "I live with power cuts. My power station gives me 200 watts. My iron wants over a thousand. I only find out when it trips." Use your own real night: what was running, what it cost. | Musa's story written down (see `docs/research.md`); label photo on hand |
+| 0:20–0:35 | Preview: the desk room at night | "Load Walk puts the answer on the appliances themselves." | Scene opens at the desk start view; plateAlpha and text readable at 2 m |
+| 0:35–1:00 | Pinch the freezer → card → pick Freezer | "Pinch it, say what it is. In real glasses the camera would recognise it; in the preview this pick is the stand-in." Tag: 350 W, too big for this unit alone, before any toggle. | Done criterion 1 passes; the "SCAN IS A STAND-IN" note is visible |
+| 1:00–1:40 | Toggle fan → phone charger → power bank → laptop | Chip each time: 12 W, 24 W (30h 6m), 42 W (17h 12m), 182 W / 200 W (3h 58m), near limit. "Charging my whole desk takes almost everything this unit has." | Criterion 2 passes; power bank marked as an estimate on screen |
+| 1:40–2:00 | Walk to the power station | Meter above it: 182 W / 200 W, 3h 58m left. | Criterion 3 passes; meter has clear space |
+| 2:00–2:25 | Toggle the iron | Chip 1,282 W / 200 W, iron glows, chime, meter in overload. Play the chime on camera. "It tells me before the unit trips." Optional: look away so the arrow shows. | Criterion 4 passes; audio is captured in the recording |
+| 2:25–2:35 | Toggle the iron off | Everything clears; back to 182 W and 3h 58m. | Criterion 5 passes |
+| 2:35–3:00 | Design process | "Planned with the Devpost skill pack, built by CLAD through the Lens Studio MCP, tested with LEAF. The load maths is a plain tested file the Lens shares with the repo." Show the brief, the LEAF results (8/8, or the current count), `npm test` (18/18). End on the thesis. | LEAF count in the README is current; if voice works in the preview it goes before this segment |
+
+## Recording notes
+
+- Record the preview window at full size with system audio on (the chime matters).
+- Don't speed anything up. If a take has the preview starting two Lens instances, restart the preview and record again.
+- Say plainly what's a stand-in: the scan pick, hard-coded wattages, no real camera. Judges reward honesty and the brief already says it.
+- Upload to YouTube as public, under 3 minutes, and embed it at the top of the README.
