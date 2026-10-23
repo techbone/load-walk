@@ -25,9 +25,11 @@ export class ScanAndPickScenario extends Scenario {
       await i.pick("Freezer", "Freezer");
     }
     const root = uiRoot("Freezer");
-    expect(textOf(root, "TagTitle")).toBe("Freezer · 350 W · surges about 3×");
-    const note = textOf(root, "TagNote") ?? "";
-    expect(note).toBe("Too big for this 200 W unit"); // 350 W (in the title) alone is more than the unit's 200 W
+    expect(textOf(root, "TagName")).toBe("Freezer");
+    expect(textOf(root, "TagWatts")).toBe("350 W");
+    expect(textOf(root, "TagNote")).toBe("Surges about 3×");
+    // 350 W alone is more than the unit's 200 W, said before any toggle.
+    expect(textOf(root, "TagNote2")).toBe("Too big for 200 W");
     expectTagNear("Freezer");
     // Before any toggle: freezer is off.
     expect(isOn("Freezer")).toBe(false);

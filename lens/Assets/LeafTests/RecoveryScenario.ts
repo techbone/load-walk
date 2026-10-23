@@ -22,7 +22,8 @@ export class RecoveryScenario extends Scenario {
     expect(isOn("Iron")).toBe(false);
     expect(glowing("Iron")).toBe(false);
     expect(chipText("Iron")).toBe("182 W / 200 W · 3h 58m");
-    expect(meter("MeterLoad")).toBe("182 W / 200 W");
+    expect(meter("MeterLoad")).toBe("182 W");
+    expect(meter("MeterLimit")).toBe("of 200 W");
     expect(meter("MeterHours").includes("3h 58m")).toBe(true);
   }
 }

@@ -21,7 +21,8 @@ export class OverloadScenario extends Scenario {
     expect(glowing("Iron")).toBe(true);
     const chime = findSceneObjectByName("OverloadChime")!.getComponent("Component.AudioComponent") as AudioComponent;
     expect(chime.isPlaying()).toBe(true);
-    expect(meter("MeterLoad")).toBe("1,282 W / 200 W");
+    expect(meter("MeterLoad")).toBe("1,282 W");
+    expect(meter("MeterLimit")).toBe("of 200 W");
     expect(meter("MeterStatus").includes("Overload")).toBe(true);
     const load = findSceneObjectByName("MeterLoad")!.getComponent("Component.Text") as Text;
     expect(close(load.textFill.color, COLORS.warn)).toBe(true);

@@ -11,6 +11,9 @@ import { OneCardScenario } from "./OneCardScenario";
 import { PlacementScenario } from "./PlacementScenario";
 import { MeterPlacementScenario } from "./MeterPlacementScenario";
 import { PicksScenario } from "./PicksScenario";
+import { MeasureTextScenario } from "./MeasureTextScenario";
+import { EvidenceNearScenario } from "./EvidenceNearScenario";
+import { EvidenceDeskScenario } from "./EvidenceDeskScenario";
 import { EvidenceCardScenario } from "./EvidenceCardScenario";
 import { EvidenceOverloadScenario } from "./EvidenceOverloadScenario";
 
@@ -29,6 +32,9 @@ export class LeafIndex extends BaseScriptComponent {
     { id: "extra-picks-fridge-pump-iron", typename: PicksScenario.getTypeName() },
     { id: "extra-placement-within-20cm", typename: PlacementScenario.getTypeName() },
     { id: "extra-meter-70cm-above", typename: MeterPlacementScenario.getTypeName() },
+    { id: "extra-measure-text", typename: MeasureTextScenario.getTypeName() },
+    { id: "extra-evidence-near", typename: EvidenceNearScenario.getTypeName() },
+    { id: "extra-evidence-desk", typename: EvidenceDeskScenario.getTypeName() },
     { id: "extra-evidence-card", typename: EvidenceCardScenario.getTypeName() },
     { id: "extra-evidence-overload", typename: EvidenceOverloadScenario.getTypeName() },
   ];

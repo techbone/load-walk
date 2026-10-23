@@ -26,7 +26,7 @@ export class LoadWalkScenarioRunner extends BaseScriptComponent {
     const manager = DefaultScenarioManager.getInstance();
     await sleep(1500);
     // extra-evidence-* scenarios only hold a state for screenshots; they run when selected by id.
-    const ids = manager.listScenarioIds().filter((id) => (this.onlyId === "" ? id.indexOf("extra-evidence") !== 0 : id === this.onlyId));
+    const ids = manager.listScenarioIds().filter((id) => (this.onlyId === "" ? id.indexOf("extra-evidence") !== 0 && id !== "extra-measure-text" : id === this.onlyId));
     print("[LEAF-RESULT] scenarios: " + ids.join(", "));
     for (const id of ids) {
       try {

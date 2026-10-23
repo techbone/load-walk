@@ -15,7 +15,8 @@ export class MeterScenario extends Scenario {
     await sleep(1500);
     const i = new LoadWalkLeafInteractor();
     await switchOnSmallLoads(i);
-    expect(meter("MeterLoad")).toBe("182 W / 200 W");
+    expect(meter("MeterLoad")).toBe("182 W");
+    expect(meter("MeterLimit")).toBe("of 200 W");
     expect(meter("MeterHours").includes("3h 58m")).toBe(true);
     const load = findSceneObjectByName("MeterLoad")!.getComponent("Component.Text") as Text;
     expect(close(load.textFill.color, COLORS.near)).toBe(true);

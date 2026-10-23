@@ -37,8 +37,12 @@ export function colorOf(root: SceneObject | null, name: string): vec4 {
   return (so.getComponent("Component.Text") as Text).textFill.color;
 }
 
+// The chip shows the load on one line and the battery time on a second; joined here so the brief's wording is testable.
 export function chipText(slot: string): string | null {
-  return textOf(uiRoot(slot), "ChipText");
+  const load = textOf(uiRoot(slot), "ChipText");
+  const hours = textOf(uiRoot(slot), "ChipHours");
+  if (load === null) return null;
+  return hours === null ? load : load + " · " + hours.replace(/ left$/, "");
 }
 
 export function chipColor(slot: string): vec4 {
