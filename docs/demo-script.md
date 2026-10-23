@@ -6,7 +6,7 @@ Thesis: **Look around your house, see what your inverter can carry.**
 
 | Time | Screen | Narration | Must be true before recording |
 |---|---|---|---|
-| 0:00–0:20 | The real story: a photo of the HeroEE 1 label, then the iron | "I live with power cuts. My power station gives me 200 watts. My iron wants over a thousand. I only find out when it trips." Use your own real night: what was running, what it cost. | Musa's story written down (see `docs/research.md`); label photo on hand |
+| 0:00–0:20 | The real story: a photo of the HeroEE 1 label, then the iron | "One night the power went out and I had to iron a shirt for work early the next morning. I plugged the iron into my inverter and it tripped. I had no idea why. My power station gives 200 watts; the iron wants over a thousand. Load Walk shows you that before you plug it in." | Label photo on hand (HeroEE 1 box, 200 W / 1 kWh) |
 | 0:20–0:35 | Preview: the desk room at night | "Load Walk puts the answer on the appliances themselves." | Scene opens at the desk start view; plateAlpha and text readable at 2 m |
 | 0:35–1:00 | Pinch the freezer → card → pick Freezer | "Pinch it, say what it is. In real glasses the camera would recognise it; in the preview this pick is the stand-in." Tag: 350 W, too big for this unit alone, before any toggle. | Done criterion 1 passes; the "SCAN IS A STAND-IN" note is visible |
 | 1:00–1:40 | Toggle fan → phone charger → power bank → laptop | Chip each time: 12 W, 24 W (30h 6m), 42 W (17h 12m), 182 W / 200 W (3h 58m), near limit. "Charging my whole desk takes almost everything this unit has." | Criterion 2 passes; power bank marked as an estimate on screen |

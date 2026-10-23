@@ -36,9 +36,11 @@ battery hours = 1,000 Wh × 0.85 usable (LiFePO4) × 0.85 conversion ÷ load W
 
 ## The problem
 
-> _Musa's own outage story goes here: one real night, what was running, what tripped, what it cost._
+One night the power went out and I had to iron a shirt for work early the next morning. I thought my inverter could take the iron, so I plugged it in and tried. It tripped, and I had no idea why.
 
-I run my home on a Home Power Dock HeroEE 1: **200 W output, 1 kWh lithium battery** (that's what the label on the box says). My desk alone (fan, phone charger, power bank, laptop) takes 182 W of it. My pressing iron wants about 1,100 W, so it trips the unit on its own the second it heats up.
+The reason is simple once you can see it:
+
+My power station is a Home Power Dock HeroEE 1: **200 W output, 1 kWh lithium battery** (that's what the label on the box says). My desk alone (fan, phone charger, power bank, laptop) takes 182 W of it. My pressing iron wants about 1,100 W, so it trips the unit on its own the second it heats up.
 
 Today the way to find out what you can run is a web calculator: type each appliance in, add it up, and hope you remembered the right number. Nigerian installer guides tell people to just buy double what they think they need. Nobody is standing at the calculator when the power goes; they're standing at the freezer with a torch.
 
