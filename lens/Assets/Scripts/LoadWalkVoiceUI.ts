@@ -11,6 +11,9 @@ import { Billboard } from "SpectaclesInteractionKit.lspkg/Components/Interaction
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import { COLORS, Level, levelColor, makeButton, makeText, setNumberFont, setPanelOpacity, setPlateAlpha, stylePlateWhenReady, textWidthCm } from "./LoadWalkTheme";
 
+export type VoiceStatus = "off" | "listening" | "restarting";
+const LABELS: Record<VoiceStatus, string> = { off: "Voice: off", listening: "Voice: listening", restarting: "Voice: restarting" };
+
 // The longest line either row shows; longer transcripts keep their last words.
 const MAX_CHARS = 30;
 const BUTTON_H = 10;
@@ -44,6 +47,7 @@ export class LoadWalkVoiceUI extends BaseScriptComponent {
   private heardPanel: SceneObject;
   private heard: Text;
   private answer: Text;
+  private answer2: Text;
   private heardH = 0;
   private age = 0;
   private visible = false;
@@ -56,7 +60,7 @@ export class LoadWalkVoiceUI extends BaseScriptComponent {
     setPlateAlpha(this.plateAlpha);
 
     const width = textWidthCm("x".repeat(MAX_CHARS), "Label");
-    const buttonWidth = textWidthCm("Voice: off", "Label") + 4;
+    const buttonWidth = Math.max(...Object.keys(LABELS).map((k) => textWidthCm(LABELS[k as VoiceStatus], "Label"))) + 4;
 
     // The button panel sits at this object's origin; the heard panel hangs just below it.
     let buttonH = 0;
@@ -64,7 +68,7 @@ export class LoadWalkVoiceUI extends BaseScriptComponent {
       buttonH = h;
       this.placeHeard(buttonH);
     });
-    this.toggleLabel = makeButton(buttonPanel, "Voice: off", buttonWidth, BUTTON_H, () => this._onToggle.invoke(), "VoiceToggle");
+    this.toggleLabel = makeButton(buttonPanel, LABELS.off, buttonWidth, BUTTON_H, () => this._onToggle.invoke(), "VoiceToggle");
 
     this.heardPanel = this.makePanel("VoiceHeardPanel", (_w, h) => {
       this.heardH = h;
@@ -73,27 +77,35 @@ export class LoadWalkVoiceUI extends BaseScriptComponent {
     });
     this.heard = makeText(this.heardPanel, " ", "Label", width, COLORS.text, { name: "VoiceHeard" });
     this.answer = makeText(this.heardPanel, " ", "Label", width, COLORS.text, { numbers: true, name: "VoiceAnswer" });
+    // A second answer row, so a long answer wraps instead of losing words.
+    this.answer2 = makeText(this.heardPanel, " ", "Label", width, COLORS.text, { numbers: true, name: "VoiceAnswer2" });
 
     this.createEvent("UpdateEvent").bind(() => this.fade());
   }
 
   // ---- what the Lens tells it -------------------------------------------------------------------------------
-  setListening(on: boolean): void {
-    this.toggleLabel.text = on ? "Voice: on" : "Voice: off";
-    this.toggleLabel.textFill.color = on ? COLORS.accent : COLORS.text;
+  // "listening" while a speech session is open, "restarting" in the second between a dropped session and the next.
+  setStatus(status: VoiceStatus): void {
+    this.toggleLabel.text = LABELS[status];
+    this.toggleLabel.textFill.color = status === "listening" ? COLORS.accent : COLORS.text;
   }
 
   // Live words, partial or final. Clears the last answer: it belongs to the previous command.
   showHeard(text: string): void {
     this.heard.text = this.fit(text);
     this.answer.text = " ";
+    this.answer2.text = " ";
     this.reveal();
   }
 
-  // The answer to a command, in the level's colour.
+  // The answer to a command, in the level's colour, on one row or wrapped onto two at a space.
   showAnswer(text: string, level: Level = "idle"): void {
-    this.answer.text = this.fit(text);
+    const t = text.trim();
+    const cut = t.length > MAX_CHARS ? t.lastIndexOf(" ", MAX_CHARS) : -1;
+    this.answer.text = cut > 0 ? t.slice(0, cut) : this.fit(t);
+    this.answer2.text = cut > 0 ? this.fit(t.slice(cut + 1)) : " ";
     this.answer.textFill.color = levelColor(level);
+    this.answer2.textFill.color = levelColor(level);
     this.reveal();
   }
 
@@ -102,7 +114,7 @@ export class LoadWalkVoiceUI extends BaseScriptComponent {
   }
 
   get answerText(): string {
-    return this.answer ? this.answer.text.trim() : "";
+    return this.answer ? (this.answer.text + " " + this.answer2.text).trim() : "";
   }
 
   get listeningText(): string {

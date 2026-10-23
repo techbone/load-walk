@@ -4,7 +4,7 @@
 
 import { capacityW } from "./LoadEngine";
 import type { LoadReport } from "./LoadEngine";
-import { POWER_STATION, PICKER_GROUPS, VOICE_APPLIANCES, specById } from "./ApplianceCatalog";
+import { POWER_STATION, VOICE_APPLIANCES, cardOptions, specById } from "./ApplianceCatalog";
 import { parseCommand } from "./VoiceCommands";
 import { LoadWalkState } from "./LoadWalkState";
 import { LoadWalkStation } from "./LoadWalkStation";
@@ -77,6 +77,7 @@ export class LoadWalkMain extends BaseScriptComponent {
       s.onScan.add(() => this.onScan(s));
       s.ui.onPick.add((id) => this.onPick(s, id));
       s.ui.onToggle.add(() => this.onToggle(s));
+      s.ui.onRename.add(() => this.openCard(s));
     }
     this.voice.onFinal.add((text) => this.onVoice(text));
     this.render(null);
@@ -106,16 +107,25 @@ export class LoadWalkMain extends BaseScriptComponent {
   }
 
   // ---- scan stand-in ------------------------------------------------------------------------------------
+  // Pinching a tagged appliance does nothing; pinching its tag's name reopens the card (onRename).
   private onScan(s: LoadWalkStation): void {
     if (this.state.isTagged(s.slotId)) return;
+    this.openCard(s);
+  }
+
+  private openCard(s: LoadWalkStation): void {
     // Only one card is ever open: scanning something else closes the previous card.
     for (const other of this.stations) if (other !== s) other.ui.hideCard();
-    const ids = PICKER_GROUPS[s.applianceKind] ?? [s.applianceKind];
-    s.ui.showCard(ids.map((id) => ({ id, label: specById(id).name })));
+    const options = cardOptions(s.applianceKind).map((id) => ({ id, label: specById(id).name }));
+    print("[LoadWalk] card " + s.slotId + ": " + options.map((o) => o.label).join(" / "));
+    s.ui.showCard(options);
     this.hint.hide();
   }
 
+  // A first pick tags the appliance; a later one replaces the tag and starts it switched off.
   private onPick(s: LoadWalkStation, specId: string): void {
+    const was = this.state.get(s.slotId);
+    print("[LoadWalk] pick " + s.slotId + " = " + specById(specId).name + (was ? " (was " + was.name + ")" : ""));
     this.state.tag(s.slotId, specId);
     const spec = specById(specId);
     const cap = capacityW(POWER_STATION);
@@ -125,6 +135,7 @@ export class LoadWalkMain extends BaseScriptComponent {
     if (this.state.tooBigAlone(s.slotId)) notes.push("Too big for " + cap + " W");
     if (spec.note) notes.push(spec.note);
     s.ui.showTag({ name: spec.name, watts: fmtW(spec.runningW), notes, on: false });
+    if (was?.on) this.render(s); // the old appliance's watts leave the total
   }
 
   // ---- toggle -------------------------------------------------------------------------------------------

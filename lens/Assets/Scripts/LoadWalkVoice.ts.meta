@@ -28,6 +28,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    idleRestartSeconds: false
     ui: false
   ScriptTypesHidden:
     {}
@@ -39,6 +40,7 @@
     []
   DefaultScriptInputs:
     - ui: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      idleRestartSeconds: !<float> 45.000000
   ScriptTypes:
     -
       {}
@@ -46,3 +48,4 @@
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkVoice – speech session behind the Voice switch</span>"}'
     - '// @ui {"widget":"separator"}'
     - '// @input AssignableType_1 ui {"hint":"Voice button and heard-words view."}'
+    - '// @input float idleRestartSeconds = 45 {"hint":"While Voice is on, restart the speech session after this many seconds with no words. A dropped stream gives no error, so this is how it recovers.", "widget":"slider", "min":10, "max":120, "step":5}'

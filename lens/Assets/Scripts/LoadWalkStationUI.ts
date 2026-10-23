@@ -19,6 +19,7 @@ type Panel = { so: SceneObject; flex: FlexLayout };
 // The on/off and picker buttons are about twice the old size (the old ones were 7.5 cm tall).
 const BUTTON_H = 13;
 const CARD_BUTTON_H = 10;
+const NAME_BUTTON_H = 7;
 
 @component
 export class LoadWalkStationUI extends BaseScriptComponent {
@@ -34,8 +35,8 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   @widget(new SliderWidget(0, 60, 0.5))
   applianceHalfDepthCm: number = 10;
   @input
-  @hint("Which side the scan card opens on: 1 is right as the user sees it, -1 is left.")
-  @widget(new SliderWidget(-1, 1, 2))
+  @hint("Where the scan card opens: 1 is right as the user sees it, -1 is left, 0 is centred above. Pick the side that keeps the card off every other appliance.")
+  @widget(new SliderWidget(-1, 1, 1))
   cardSide: number = 1;
   @input
   @hint("Height of the scan card's centre above the appliance's centre, in cm.")
@@ -50,13 +51,22 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   @hint("Optional monospaced font for the figures (W, hours).")
   numberFont: Font;
   @ui.group_end
+
+  // Padding the appliance adds around itself for its pinch target; set by LoadWalkStation, which owns the collider.
+  colliderPaddingCm = 0;
+
   private _onPick = new Event<string>();
   private _onToggle = new Event<void>();
+  private _onRename = new Event<void>();
   get onPick(): PublicApi<string> {
     return this._onPick.publicApi();
   }
   get onToggle(): PublicApi<void> {
     return this._onToggle.publicApi();
+  }
+  // The tag's name was pinched: the user wants to correct what this appliance is.
+  get onRename(): PublicApi<void> {
+    return this._onRename.publicApi();
   }
 
   private card: SceneObject | null = null;
@@ -87,18 +97,24 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     this.hideCard();
     const titleText = "What is this?";
     const widest = Math.max(textWidthCm(titleText, "Label"), ...options.map((o) => textWidthCm(o.label, "Label") + 3));
-    // Beside the appliance: just outside its width on the chosen side, centred at cardCenterYCm above its centre.
+    // Beside the appliance: just outside its width on the chosen side (or centred above it), at cardCenterYCm above
+    // its centre, and in front of its pinch target's front face so a pinch on the card can never reach the appliance.
     const panel = this.makePanel("ScanCard", (cw) => {
       if (isNull(panel.so)) return;
       const root = this.sceneObject.getTransform().getLocalPosition();
       const x = this.cardSide * (this.applianceHalfWidthCm + cw / 2 + 0.5);
-      panel.so.getTransform().setLocalPosition(new vec3(x, this.cardCenterYCm - root.y, this.frontZ()));
+      panel.so.getTransform().setLocalPosition(new vec3(x, this.cardCenterYCm - root.y, this.cardZ()));
     });
     this.card = panel.so;
     makeText(panel.so, titleText, "Label", widest, COLORS.text, { name: "CardTitle" });
+    // Each button's label and the id it reports come from the same option, so a pick is always what was shown.
     for (const opt of options) {
       makeButton(panel.so, opt.label, widest, CARD_BUTTON_H, () => this._onPick.invoke(opt.id));
     }
+  }
+
+  get cardOpen(): boolean {
+    return this.card !== null;
   }
 
   hideCard(): void {
@@ -128,7 +144,8 @@ export class LoadWalkStationUI extends BaseScriptComponent {
       if (this.tag) this.tag.so.getTransform().setLocalPosition(new vec3(0, h / 2, this.frontZ()));
       this.placeChip();
     });
-    makeText(this.tag.so, view.name, "Label", widest, COLORS.text, { name: "TagName" });
+    // The name is a button: pinching it reopens the scan card, so a wrong pick can be corrected.
+    makeButton(this.tag.so, view.name, widest, NAME_BUTTON_H, () => this._onRename.invoke(), "TagNameButton", "TagName");
     this.tagTitle = makeText(this.tag.so, view.watts, "Number", widest, COLORS.text, { numbers: true, name: "TagWatts" });
     view.notes.forEach((n, k) => makeText(this.tag!.so, n, "Label", widest, COLORS.text, { name: k === 0 ? "TagNote" : "TagNote" + (k + 1) }));
     const btnWidth = textWidthCm(button, "Label") + 4;
@@ -170,11 +187,15 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   private paintTag(color: vec4 | null): void {
     if (!this.tag) return;
     if (color) highlightPlate(this.tag.so, color);
-    for (let i = 0; i < this.tag.so.getChildrenCount(); i++) {
-      const c = this.tag.so.getChild(i);
-      const t = c.getComponent("Component.Text") as Text | null;
-      if (t && /^Tag(Name|Note)/.test(c.name)) t.textFill.color = color ?? COLORS.text;
-    }
+    const walk = (so: SceneObject) => {
+      for (let i = 0; i < so.getChildrenCount(); i++) {
+        const c = so.getChild(i);
+        const t = c.getComponent("Component.Text") as Text | null;
+        if (t && /^Tag(Name|Note)/.test(c.name)) t.textFill.color = color ?? COLORS.text;
+        walk(c); // the name sits inside its button
+      }
+    };
+    walk(this.tag.so);
   }
 
   // ---- live load chip -------------------------------------------------------------------------------------
@@ -248,6 +269,11 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   // Panels float 1 cm in front of the appliance's front face.
   private frontZ(): number {
     return this.applianceHalfDepthCm + 1;
+  }
+
+  // The scan card comes further forward, just in front of the appliance's padded pinch target.
+  private cardZ(): number {
+    return this.applianceHalfDepthCm + this.colliderPaddingCm + 1;
   }
 
   // The chip sits directly above the tag (a row of tags is too tight for chips beside them at this text size).

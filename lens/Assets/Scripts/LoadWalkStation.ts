@@ -55,6 +55,11 @@ export class LoadWalkStation extends BaseScriptComponent {
     return this.sceneObject.name;
   }
 
+  // The pinch target's box (the appliance plus padding), centred on this object.
+  get targetSizeCm(): vec3 {
+    return this.sizeCm.add(vec3.one().uniformScale(this.targetPaddingCm * 2));
+  }
+
   onAwake() {
     LoadWalkStation.all.push(this);
     this.baseScale = this.bodyRoot.getTransform().getLocalScale();
@@ -64,13 +69,15 @@ export class LoadWalkStation extends BaseScriptComponent {
     // Collider on this unit-scale wrapper; the visual (scaled) lives on a child.
     const collider = this.sceneObject.createComponent("Physics.ColliderComponent") as ColliderComponent;
     const shape = Shape.createBoxShape();
-    shape.size = this.sizeCm.add(vec3.one().uniformScale(this.targetPaddingCm * 2));
+    shape.size = this.targetSizeCm;
     collider.shape = shape;
     collider.debugDrawEnabled = this.debugColliders;
     const interactable = this.sceneObject.createComponent(Interactable.getTypeName()) as Interactable;
     interactable.targetingMode = 3;
 
     this.createEvent("OnStartEvent").bind(() => {
+      // So the scan card opens clear of this target. Set on start: the UI below this object wakes after it.
+      this.ui.colliderPaddingCm = this.targetPaddingCm;
       // Events from the tag UI children bubble up to this Interactable; only react to hits on the body itself.
       interactable.onTriggerStart.add((e) => {
         if (e.propagationPhase === "Target") this._onScan.invoke(this);

@@ -21,6 +21,10 @@ import { EvidenceDeskScenario } from "./EvidenceDeskScenario";
 import { EvidenceCardScenario } from "./EvidenceCardScenario";
 import { EvidenceOverloadScenario } from "./EvidenceOverloadScenario";
 import { EvidenceVoiceScenario } from "./EvidenceVoiceScenario";
+import { DeskCardsByLabelScenario } from "./DeskCardsByLabelScenario";
+import { RetagVoiceScenario } from "./RetagVoiceScenario";
+import { ReachScenario } from "./ReachScenario";
+import { VoiceRestartScenario } from "./VoiceRestartScenario";
 
 @component
 export class LeafIndex extends BaseScriptComponent {
@@ -37,6 +41,10 @@ export class LeafIndex extends BaseScriptComponent {
     { id: "criterion-6-voice", typename: VoiceCriterionScenario.getTypeName() },
     { id: "extra-voice-off-the-iron", typename: VoiceOffTheIronScenario.getTypeName() },
     { id: "extra-voice-can-i-run-freezer", typename: VoiceCanIRunScenario.getTypeName() },
+    { id: "extra-desk-cards-by-label", typename: DeskCardsByLabelScenario.getTypeName() },
+    { id: "extra-retag-then-voice", typename: RetagVoiceScenario.getTypeName() },
+    { id: "extra-reach-1m-to-3m", typename: ReachScenario.getTypeName() },
+    { id: "extra-voice-restarts", typename: VoiceRestartScenario.getTypeName() },
     { id: "extra-out-of-view-arrow", typename: OutOfViewArrowScenario.getTypeName() },
     { id: "extra-picks-fridge-pump-iron", typename: PicksScenario.getTypeName() },
     { id: "extra-placement-within-20cm", typename: PlacementScenario.getTypeName() },

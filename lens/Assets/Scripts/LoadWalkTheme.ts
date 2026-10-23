@@ -5,6 +5,7 @@
 import { FlexItem } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexItem";
 import { BackPlate } from "SpectaclesUIKit.lspkg/Scripts/BackPlate";
 import { Button } from "SpectaclesUIKit.lspkg/Scripts/Components/Button/Button";
+import { TargetingPriority } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Interactable/Interactable";
 import { RoundedRectangle } from "SpectaclesUIKit.lspkg/Scripts/Visuals/RoundedRectangle/RoundedRectangle";
 
 export type Level = "idle" | "ok" | "near" | "overload";
@@ -109,15 +110,30 @@ export function makeText(
   return t;
 }
 
-// Returns the label so callers can retitle it.
-export function makeButton(parent: SceneObject, label: string, widthCm: number, heightCm: number, onTap: () => void, name?: string): Text {
+// Returns the label so callers can retitle it. The label's handler is bound here, to the same call that draws it.
+export function makeButton(
+  parent: SceneObject,
+  label: string,
+  widthCm: number,
+  heightCm: number,
+  onTap: () => void,
+  name?: string,
+  labelName: string = "ButtonLabel"
+): Text {
   const so = global.scene.createSceneObject(name ?? "Btn-" + label);
   so.setParent(parent);
   so.getTransform().setLocalPosition(new vec3(0, 0, 0.6));
   const btn = so.createComponent(Button.getTypeName()) as Button;
   btn.setVariant({ theme: "SnapOS2", shape: "Rectangle", style: "Ghost" }); // outline and light hover wash, no dark fill
   btn.size = new vec3(widthCm, heightCm, 1);
-  const text = makeText(so, label, "Label", widthCm - 0.5, COLORS.text, { z: 0.08, name: "ButtonLabel" });
+  // Buttons outrank appliance bodies: SIK otherwise takes the nearest collider, and an appliance's padded pinch
+  // box in front of a button would swallow the click. The Interactable exists once the Button has initialized.
+  const raise = () => {
+    if (btn.interactable) btn.interactable.targetingPriority = TargetingPriority.High;
+  };
+  raise();
+  btn.onInitialized.add(raise);
+  const text = makeText(so, label, "Label", widthCm - 0.5, COLORS.text, { z: 0.08, name: labelName });
   so.createComponent(FlexItem.getTypeName());
   btn.onTriggerUp.add(() => onTap());
   return text;

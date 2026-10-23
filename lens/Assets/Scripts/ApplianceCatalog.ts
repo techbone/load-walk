@@ -25,8 +25,9 @@ export const CATALOG: ApplianceSpec[] = [
   { id: "microwave", name: "Microwave", runningW: 1000, surgeFactor: 1, estimate: true, notInBrief: true, aliases: ["microwave", "microwave oven"] },
 ];
 
-// Scan stand-in: the buttons offered when you pinch each appliance. Exactly the brief's groups;
-// the real appliance is always first in its own list.
+// Scan stand-in: the buttons offered when you pinch each appliance. Exactly the brief's groups, with the real
+// appliance always among them. Cards list them in catalog order (cardOptions), so a name always sits in the same
+// row whichever card it is on and however often it opens.
 export const PICKER_GROUPS: Record<string, string[]> = {
   freezer: ["freezer", "fridge", "pump"],
   fridge: ["fridge", "freezer", "pump"],
@@ -44,6 +45,12 @@ export const BATTERY: Battery = { wh: 1000, chemistry: "lithium" };
 
 // What the voice parser searches: every catalog entry, including the ones with no stand-in in the room.
 export const VOICE_APPLIANCES: VoiceAppliance[] = CATALOG.map((s) => ({ id: s.id, aliases: s.aliases }));
+
+// The ids a scan card offers for this kind of appliance, in the one fixed catalog order.
+export function cardOptions(kind: string): string[] {
+  const group = PICKER_GROUPS[kind] ?? [kind];
+  return CATALOG.map((s) => s.id).filter((id) => group.indexOf(id) >= 0);
+}
 
 export function specById(id: string): ApplianceSpec {
   const spec = CATALOG.find((s) => s.id === id);

@@ -58,7 +58,7 @@
     - '// @ui {"widget":"group_start", "label":"Settings"}'
     - "// @input float applianceHalfWidthCm = 10 {\"hint\":\"Half the appliance's width in cm; the scan card opens just outside it.\", \"widget\":\"slider\", \"min\":0, \"max\":80, \"step\":0.5}"
     - "// @input float applianceHalfDepthCm = 10 {\"hint\":\"Half the appliance's depth in cm; tags, chips and cards float just in front of its front face so the model never hides them.\", \"widget\":\"slider\", \"min\":0, \"max\":60, \"step\":0.5}"
-    - '// @input float cardSide = 1 {"hint":"Which side the scan card opens on: 1 is right as the user sees it, -1 is left.", "widget":"slider", "min":-1, "max":1, "step":2}'
+    - '// @input float cardSide = 1 {"hint":"Where the scan card opens: 1 is right as the user sees it, -1 is left, 0 is centred above. Pick the side that keeps the card off every other appliance.", "widget":"slider", "min":-1, "max":1, "step":1}'
     - "// @input float cardCenterYCm {\"hint\":\"Height of the scan card's centre above the appliance's centre, in cm.\", \"widget\":\"slider\", \"min\":-30, \"max\":60, \"step\":1}"
     - '// @input float plateAlpha = 0.14 {"hint":"Opacity of the light plates behind text. 0 drops the plates and leaves bright text.", "widget":"slider", "min":0, "max":0.5, "step":0.02}'
     - '// @input Asset.Font numberFont {"hint":"Optional monospaced font for the figures (W, hours)."}'

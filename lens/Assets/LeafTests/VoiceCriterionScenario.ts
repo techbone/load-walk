@@ -14,7 +14,7 @@ export class VoiceCriterionScenario extends Scenario {
     await resetSmallLoads(i);
     await voiceOn(i);
     try {
-      expect(voiceUI().listeningText).toBe("Voice: on");
+      expect(voiceUI().listeningText).toBe("Voice: listening");
 
       // Live words are shown but only a final transcript acts.
       await say("on the fan", false);
