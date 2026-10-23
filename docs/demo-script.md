@@ -13,7 +13,7 @@ Thesis: **Look around your house, see what your inverter can carry.**
 | 1:40–2:00 | Walk to the power station | Meter above it: 182 W / 200 W, 3h 58m left. | Criterion 3 passes; meter has clear space |
 | 2:00–2:25 | Toggle the iron | Chip 1,282 W / 200 W, iron glows, chime, meter in overload. Play the chime on camera. "It tells me before the unit trips." Optional: look away so the arrow shows. | Criterion 4 passes; audio is captured in the recording |
 | 2:25–2:35 | Toggle the iron off | Everything clears; back to 182 W and 3h 58m. | Criterion 5 passes |
-| 2:35–3:00 | Design process | "Planned with the Devpost skill pack, built by CLAD through the Lens Studio MCP, tested with LEAF. The load maths is a plain tested file the Lens shares with the repo." Show the brief, the LEAF results (8/8, or the current count), `npm test` (18/18). End on the thesis. | LEAF count in the README is current; if voice works in the preview it goes before this segment |
+| 2:35–3:00 | Design process | "Planned with the Devpost skill pack, built by CLAD through the Lens Studio MCP, tested with LEAF. The load maths is a plain tested file the Lens shares with the repo." Show the brief, the LEAF results (20/20, or the current count), `npm test` (21/21). End on the thesis. | LEAF count in the README is current; if voice works in the preview it goes before this segment |
 
 ## Recording notes
 
