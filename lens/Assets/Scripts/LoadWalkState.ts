@@ -8,6 +8,7 @@ import { BATTERY, POWER_STATION, specById } from "./ApplianceCatalog";
 export class LoadWalkState {
   // slot = a physical appliance in the room; its tagged spec decides the watts.
   private slots = new Map<string, Appliance>();
+  private specs = new Map<string, string>(); // slot -> the catalog id it was tagged as
 
   tag(slotId: string, specId: string): Appliance {
     const spec = specById(specId);
@@ -19,6 +20,7 @@ export class LoadWalkState {
       on: false,
     };
     this.slots.set(slotId, appliance);
+    this.specs.set(slotId, specId);
     return appliance;
   }
 
@@ -30,10 +32,21 @@ export class LoadWalkState {
     return this.slots.get(slotId);
   }
 
-  toggle(slotId: string): boolean {
+  // The slot tagged as this catalog entry, if any: "the fan" means whichever appliance was scanned as a fan.
+  slotOf(specId: string): string | null {
+    for (const [slotId, id] of this.specs) if (id === specId) return slotId;
+    return null;
+  }
+
+  isOn(slotId: string): boolean {
+    return this.slots.get(slotId)?.on ?? false;
+  }
+
+  // Sets the switch, never flips it, so the same command twice is harmless. Returns the new state.
+  setOn(slotId: string, on: boolean): boolean {
     const a = this.slots.get(slotId);
     if (!a) return false;
-    a.on = !a.on;
+    a.on = on;
     return a.on;
   }
 

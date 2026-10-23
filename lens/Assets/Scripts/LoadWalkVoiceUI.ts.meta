@@ -1,0 +1,56 @@
+- !<AssetImportMetadata/c3791d66-1465-425c-8a6a-c40e186b8771>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 3ef9c68a-d902-49a2-abc5-da3f7cc80bc9
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 3ef9c68a-d902-49a2-abc5-da3f7cc80bc9
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> cfa2f2a9-bd31-4eae-a3f6-c73dfdc10d13
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/cfa2f2a9-bd31-4eae-a3f6-c73dfdc10d13>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 77268583-3d50-4f12-bf90-ce37cbd6dd8b
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    heardSeconds: false
+    numberFont: false
+    plateAlpha: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
+      heardSeconds: !<float> 4.000000
+      plateAlpha: 0.140000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkVoiceUI – Voice button and heard words</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input Asset.Font numberFont {"hint":"Optional monospaced font for figures in the answer line."}'
+    - '// @input float heardSeconds = 4 {"hint":"How long the heard words and the answer stay before they fade, in seconds.", "widget":"slider", "min":1, "max":10, "step":0.5}'
+    - '// @input float plateAlpha = 0.14 {"hint":"Opacity of the light plates behind the text. 0 drops the plates and leaves bright text.", "widget":"slider", "min":0, "max":0.5, "step":0.02}'
+    - '// @ui {"widget":"group_end"}'

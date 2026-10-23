@@ -1,9 +1,10 @@
-// Owns: Load Walk colours, number formatting and the small text helper shared by the UI modules.
+// Owns: Load Walk colours, number formatting and the small text, button and plate helpers shared by the UI modules.
 // Colours: one accent for "on / within capacity", one near-limit amber, one warning red. Everything else is bright
 // white: black is transparent on the additive display and grey text would carry no meaning there.
 
 import { FlexItem } from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexItem";
 import { BackPlate } from "SpectaclesUIKit.lspkg/Scripts/BackPlate";
+import { Button } from "SpectaclesUIKit.lspkg/Scripts/Components/Button/Button";
 import { RoundedRectangle } from "SpectaclesUIKit.lspkg/Scripts/Visuals/RoundedRectangle/RoundedRectangle";
 
 export type Level = "idle" | "ok" | "near" | "overload";
@@ -108,6 +109,20 @@ export function makeText(
   return t;
 }
 
+// Returns the label so callers can retitle it.
+export function makeButton(parent: SceneObject, label: string, widthCm: number, heightCm: number, onTap: () => void, name?: string): Text {
+  const so = global.scene.createSceneObject(name ?? "Btn-" + label);
+  so.setParent(parent);
+  so.getTransform().setLocalPosition(new vec3(0, 0, 0.6));
+  const btn = so.createComponent(Button.getTypeName()) as Button;
+  btn.setVariant({ theme: "SnapOS2", shape: "Rectangle", style: "Ghost" }); // outline and light hover wash, no dark fill
+  btn.size = new vec3(widthCm, heightCm, 1);
+  const text = makeText(so, label, "Label", widthCm - 0.5, COLORS.text, { z: 0.08, name: "ButtonLabel" });
+  so.createComponent(FlexItem.getTypeName());
+  btn.onTriggerUp.add(() => onTap());
+  return text;
+}
+
 // ---- plates ---------------------------------------------------------------------------------------------
 // Additive display: black is transparent, so plates are a faint white wash with a brighter rim, never dark.
 // Alpha 0 drops the plates entirely and leaves bright text.
@@ -124,6 +139,16 @@ export function stylePlate(plateSO: SceneObject): void {
   rr.border = plateAlpha > 0;
   rr.borderSize = 0.12;
   rr.borderColor = new vec4(1, 1, 1, Math.min(1, plateAlpha * 4));
+}
+
+// Light a plate in an answer colour; stylePlate puts it back.
+export function highlightPlate(plateSO: SceneObject, color: vec4): void {
+  const rr = plateSO.getComponent(RoundedRectangle.getTypeName()) as RoundedRectangle | null;
+  if (!rr) return;
+  rr.backgroundColor = new vec4(color.x, color.y, color.z, 0.3);
+  rr.border = true;
+  rr.borderSize = 0.4;
+  rr.borderColor = color;
 }
 
 // Fade a panel by opacity: the plate and every text under it.

@@ -1,0 +1,48 @@
+- !<AssetImportMetadata/06743ccf-e1dd-489f-89ac-52dc0b276dac>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 7c450a9d-eb5d-47e2-b6f6-6a071a31b5c8
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 7c450a9d-eb5d-47e2-b6f6-6a071a31b5c8
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 97662077-e20e-42a4-a7f0-604b48bd985a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/97662077-e20e-42a4-a7f0-604b48bd985a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: dbbcd966-9208-41b2-a16d-7a206ccc407d
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    ui: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - ui: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LoadWalkVoice – speech session behind the Voice switch</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @input AssignableType_1 ui {"hint":"Voice button and heard-words view."}'

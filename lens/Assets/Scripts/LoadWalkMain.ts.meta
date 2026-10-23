@@ -37,6 +37,7 @@
     roomOffsetCm: false
     viewHalfHeightDeg: false
     viewHalfWidthDeg: false
+    voice: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -49,6 +50,7 @@
     - meter: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       arrow: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       hint: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      voice: !<MappingBased.AssignableType_4> 00000000-0000-0000-0000-000000000000
       chime: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
       chipSeconds: !<float> 4.000000
       placeRoomAtUserStart: true
@@ -65,6 +67,7 @@
     - '// @input AssignableType_1 meter {"hint":"Load meter floating above the power station."}'
     - '// @input AssignableType_2 arrow {"hint":"Out-of-view arrow."}'
     - '// @input AssignableType_3 hint {"hint":"Note that the scan is a stand-in."}'
+    - '// @input AssignableType_4 voice {"hint":"Voice switch and speech session; its final transcripts are read as commands."}'
     - '// @input Component.AudioComponent chime {"hint":"Plays on the instant a toggle overloads the unit."}'
     - '// @ui {"widget":"group_end"}'
     - '// @ui {"widget":"separator"}'

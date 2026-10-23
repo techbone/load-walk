@@ -1,15 +1,17 @@
-// Owns: the Load Walk flow -- scan, tag, toggle, live load, overload alert and recovery.
-// Inputs: meter, arrow, hint UI modules; chime audio; chipSeconds.
+// Owns: the Load Walk flow -- scan, tag, toggle (by pinch or voice), live load, overload alert and recovery.
+// Inputs: meter, arrow, hint UI modules; voice; chime audio; chipSeconds.
 // Must not: render text or build UI (UI modules do); reimplement load maths (LoadEngine does).
 
 import { capacityW } from "./LoadEngine";
 import type { LoadReport } from "./LoadEngine";
-import { POWER_STATION, PICKER_GROUPS, specById } from "./ApplianceCatalog";
+import { POWER_STATION, PICKER_GROUPS, VOICE_APPLIANCES, specById } from "./ApplianceCatalog";
+import { parseCommand } from "./VoiceCommands";
 import { LoadWalkState } from "./LoadWalkState";
 import { LoadWalkStation } from "./LoadWalkStation";
 import { LoadWalkMeterUI } from "./LoadWalkMeterUI";
 import { LoadWalkArrowUI } from "./LoadWalkArrowUI";
 import { LoadWalkHintUI } from "./LoadWalkHintUI";
+import { LoadWalkVoice } from "./LoadWalkVoice";
 import { Level, fmtNum, fmtW } from "./LoadWalkTheme";
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider";
 
@@ -27,6 +29,9 @@ export class LoadWalkMain extends BaseScriptComponent {
   @input
   @hint("Note that the scan is a stand-in.")
   hint: LoadWalkHintUI;
+  @input
+  @hint("Voice switch and speech session; its final transcripts are read as commands.")
+  voice: LoadWalkVoice;
   @input
   @hint("Plays on the instant a toggle overloads the unit.")
   chime: AudioComponent;
@@ -73,6 +78,7 @@ export class LoadWalkMain extends BaseScriptComponent {
       s.ui.onPick.add((id) => this.onPick(s, id));
       s.ui.onToggle.add(() => this.onToggle(s));
     }
+    this.voice.onFinal.add((text) => this.onVoice(text));
     this.render(null);
     print("[LoadWalk] ready, stations: " + this.stations.map((s) => s.slotId).join(", "));
   }
@@ -123,9 +129,47 @@ export class LoadWalkMain extends BaseScriptComponent {
 
   // ---- toggle -------------------------------------------------------------------------------------------
   private onToggle(s: LoadWalkStation): void {
-    const on = this.state.toggle(s.slotId);
+    this.setSwitch(s, !this.state.isOn(s.slotId));
+  }
+
+  // The one place a switch changes. The tag button and voice both come here, so they can never disagree.
+  private setSwitch(s: LoadWalkStation, on: boolean): void {
+    this.state.setOn(s.slotId, on);
     s.ui.setOn(on);
     this.render(s);
+  }
+
+  // ---- voice ----------------------------------------------------------------------------------------------
+  // Only final transcripts get here. "On" and "off" set the switch; "can I run" answers on the tag and changes nothing.
+  private onVoice(text: string): void {
+    const cmd = parseCommand(text, VOICE_APPLIANCES);
+    if (!cmd) {
+      this.voice.say("No appliance command heard");
+      return;
+    }
+    const spec = specById(cmd.applianceId);
+    const slot = this.state.slotOf(cmd.applianceId);
+    const s = slot ? this.stations.find((st) => st.slotId === slot) : undefined;
+    if (!s) {
+      // Voice works on what has been scanned, like the tag button does.
+      const inRoom = this.stations.some((st) => st.applianceKind === cmd.applianceId);
+      this.voice.say(spec.name + (inRoom ? " is not scanned. Pinch it first." : " is not in this room."));
+      return;
+    }
+    if (cmd.action === "ask") {
+      const tooBig = this.state.tooBigAlone(s.slotId);
+      const cap = fmtW(capacityW(POWER_STATION));
+      s.ui.highlightTag(tooBig ? "overload" : "ok", this.chipSeconds);
+      this.voice.say(spec.name + " " + fmtW(spec.runningW) + (tooBig ? " is over " : " fits within ") + cap, tooBig ? "overload" : "ok");
+      return;
+    }
+    const on = cmd.action === "on";
+    if (this.state.isOn(s.slotId) === on) {
+      this.voice.say(spec.name + " is already " + (on ? "on" : "off"));
+      return;
+    }
+    this.setSwitch(s, on);
+    this.voice.say(spec.name + (on ? " on" : " off"));
   }
 
   private levelOf(r: LoadReport): Level {
