@@ -6,8 +6,8 @@
     - !<own> f5d74682-203a-4970-81ea-9fa7b88c96bb
     - !<own> f7baeb89-8a88-4667-bd3d-0d42dd3fb18d
     - !<own> 495064af-f482-418d-9fba-c840c6585a43
-    - !<own> b9527af1-926c-47d3-9dd6-ab9e4c710f37
     - !<own> b258ef1a-2599-451c-b583-5abfc905a50c
+    - !<own> f36216f4-8199-453e-af2c-60e5ae95e021
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - id: 1
@@ -230,7 +230,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 305.000000, y: -65.000000, z: -206.300003}
+    Position: {x: -225.000000, y: -95.000000, z: -60.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -725,7 +725,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 215.000000, y: -87.000000, z: -130.000000}
+    Position: {x: 115.000000, y: -116.500000, z: -270.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 110.000000, y: 4.000000, z: 50.000000}
     HasSegmentScaleCompensation: false
@@ -748,22 +748,6 @@
     []
   Components:
     []
-- !<ScriptComponent/1a645c5c-546f-4f71-bc50-a11a344c137c>
-  PrefabRemaps:
-    []
-  Name: MessagingBridge
-  Enabled: true
-  ScriptAsset: !<reference> 9aa407db-2872-4afc-a162-cf7faf2a0f29
-  ScriptInputsDefault:
-    {}
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      {}
-  ScriptTypes:
-    "":
-      {}
 - !<AudioComponent/1aa586f0-08c1-409d-afdf-ee98ba215280>
   PrefabRemaps:
     []
@@ -788,7 +772,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -60.000000, y: -135.000000, z: -90.000000}
+    Position: {x: -150.000000, y: -165.000000, z: -410.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -1006,7 +990,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 163.000000, y: -119.500000, z: -152.000000}
+    Position: {x: 63.000000, y: -149.000000, z: -292.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 5.000000, y: 61.000000, z: 5.000000}
     HasSegmentScaleCompensation: false
@@ -1040,7 +1024,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 208.000000, y: -72.500000, z: -130.000000}
+    Position: {x: 108.000000, y: -102.000000, z: -270.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 100.000000, y: 100.000000, z: 100.000000}
     HasSegmentScaleCompensation: false
@@ -1192,7 +1176,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 267.000000, y: -119.500000, z: -152.000000}
+    Position: {x: 167.000000, y: -149.000000, z: -292.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 5.000000, y: 61.000000, z: 5.000000}
     HasSegmentScaleCompensation: false
@@ -1829,7 +1813,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -167.000000, y: -113.800003, z: -100.000000}
+    Position: {x: -215.000000, y: -143.800003, z: -170.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2067,6 +2051,22 @@
       mouseTargetingMode: !<float> 2.000000
       moveInDepth: false
       moveInDepthAmount: !<float> 5.000000
+  ScriptTypes:
+    "":
+      {}
+- !<ScriptComponent/5fd2b7a8-be82-4c03-bb4f-5fe0c484ceb7>
+  PrefabRemaps:
+    []
+  Name: MessagingBridge
+  Enabled: true
+  ScriptAsset: !<reference> 9aa407db-2872-4afc-a162-cf7faf2a0f29
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      {}
   ScriptTypes:
     "":
       {}
@@ -2763,7 +2763,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 100.000000, y: -57.549999, z: -130.000000}
+    Position: {x: 65.000000, y: -129.500000, z: -466.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2907,7 +2907,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 245.000000, y: -70.199997, z: -130.000000}
+    Position: {x: 145.000000, y: -99.699997, z: -270.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 100.000000, y: 100.000000, z: 100.000000}
     HasSegmentScaleCompensation: false
@@ -3036,7 +3036,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 34.000000, y: -63.349998, z: -130.000000}
+    Position: {x: -1.000000, y: -135.300003, z: -466.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3102,7 +3102,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: -50.000000, z: -130.000000}
+    Position: {x: -35.000000, y: -122.000000, z: -466.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3316,7 +3316,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 65.000000, y: -68.750000, z: -130.000000}
+    Position: {x: 30.000000, y: -140.800003, z: -454.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3427,7 +3427,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 40.000000, y: 40.000000, z: -90.000000}
+    Position: {x: 15.000000, y: -32.000000, z: -426.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3442,7 +3442,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 267.000000, y: -119.500000, z: -108.000000}
+    Position: {x: 167.000000, y: -149.000000, z: -248.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 5.000000, y: 61.000000, z: 5.000000}
     HasSegmentScaleCompensation: false
@@ -3687,7 +3687,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 178.000000, y: -75.650002, z: -130.000000}
+    Position: {x: 78.000000, y: -105.199997, z: -270.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3823,21 +3823,6 @@
     - !<own> 11ac73c9-b802-4eb6-abf5-f73054ca7e20
   Components:
     []
-- !<SceneObject/b9527af1-926c-47d3-9dd6-ab9e4c710f37>
-  PrefabRemaps:
-    []
-  Name: LEAF Plugin Bridge
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 1a645c5c-546f-4f71-bc50-a11a344c137c
 - !<SceneObject/bb75b5ea-8baf-4d8d-bcf8-49bd79873881>
   PrefabRemaps:
     []
@@ -3960,7 +3945,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 163.000000, y: -119.500000, z: -108.000000}
+    Position: {x: 63.000000, y: -149.000000, z: -248.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 5.000000, y: 61.000000, z: 5.000000}
     HasSegmentScaleCompensation: false
@@ -4430,20 +4415,13 @@
   Children:
     - !<own> 82341b2a-2dd6-4c6f-827e-ff2e860b665a
     - !<own> 26193832-8b40-43b3-8c3b-d7ac761cff46
-    - !<own> 7d8ee9b0-f09d-47a4-aeaf-2602e6178ea2
-    - !<own> aadee226-ff6c-4e5e-bd48-efe9ee69de9c
-    - !<own> d5bd7079-a494-482c-bd47-536c14c7cc0d
-    - !<own> d84c6389-906a-42d3-b1b9-0beb0d5dd3fa
-    - !<own> cf9604c1-6a7d-48d2-916f-4a6f0a941a1f
-    - !<own> ffb45ff6-da74-4526-b1d3-57bcc0ed9d64
-    - !<own> 8c585f63-d3b9-4fba-bad8-444641f1d5e1
-    - !<own> 5a988add-73e6-49a3-a7b8-f0d914d7cf79
     - !<own> 16b9cb26-f427-49d4-b87e-5236ae727697
     - !<own> 241756f9-c6ec-43b2-ac6b-fb6357c4fc79
     - !<own> 2cea0497-373b-4475-9d82-2a7ba33cbaaf
     - !<own> c2fe5d61-a7f5-49f2-a472-78a1e0791ba6
     - !<own> a0b3a9d2-237f-467d-b9ba-3fb270989bec
     - !<own> 9fd7ac62-d12b-4fe1-8da7-08e43af33419
+    - !<own> f131c940-1164-4b16-bb68-1ad3d911179f
   Components:
     []
 - !<SceneObject/dcc36a33-e23d-48f3-8e96-f9c9fd3cd030>
@@ -4519,7 +4497,7 @@
   ScriptAsset: !<reference> 84365d80-d87f-42f8-9378-491f49a3c0a9
   ScriptInputsDefault:
     chipSeconds: true
-    placeRoomAtUserStart: true
+    roomOffsetCm: true
     viewHalfWidthDeg: true
     viewHalfHeightDeg: true
   ScriptTypesDefault:
@@ -4532,8 +4510,8 @@
       voice: !<MappingBased.AssignableType_4> 7bf8d7d1-dd99-4471-b6fa-60acf8d7ad09
       chime: !<reference.AudioComponent> 1aa586f0-08c1-409d-afdf-ee98ba215280
       chipSeconds: !<float> 4.000000
-      placeRoomAtUserStart: true
-      roomOffsetCm: !<Vec3> {x: -52.500000, y: 0.000000, z: -120.000000}
+      placeRoomAtUserStart: false
+      roomOffsetCm: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
       viewHalfWidthDeg: !<float> 18.000000
       viewHalfHeightDeg: !<float> 16.000000
   ScriptTypes:
@@ -4758,6 +4736,43 @@
     []
   Components:
     []
+- !<SceneObject/f131c940-1164-4b16-bb68-1ad3d911179f>
+  PrefabRemaps:
+    []
+  Name: OwnRoomShell
+  Enabled: false
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 7d8ee9b0-f09d-47a4-aeaf-2602e6178ea2
+    - !<own> aadee226-ff6c-4e5e-bd48-efe9ee69de9c
+    - !<own> d5bd7079-a494-482c-bd47-536c14c7cc0d
+    - !<own> d84c6389-906a-42d3-b1b9-0beb0d5dd3fa
+    - !<own> cf9604c1-6a7d-48d2-916f-4a6f0a941a1f
+    - !<own> ffb45ff6-da74-4526-b1d3-57bcc0ed9d64
+    - !<own> 8c585f63-d3b9-4fba-bad8-444641f1d5e1
+    - !<own> 5a988add-73e6-49a3-a7b8-f0d914d7cf79
+  Components:
+    []
+- !<SceneObject/f36216f4-8199-453e-af2c-60e5ae95e021>
+  PrefabRemaps:
+    []
+  Name: LEAF Plugin Bridge
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 5fd2b7a8-be82-4c03-bb4f-5fe0c484ceb7
 - !<SceneObject/f36287fd-ed56-442d-ba20-78f9ef6f3502>
   PrefabRemaps:
     []
@@ -4781,7 +4796,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 52.500000, y: 25.000000, z: -95.000000}
+    Position: {x: 0.000000, y: 25.000000, z: -215.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -5059,7 +5074,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -165.000000, y: -135.000000, z: -10.000000}
+    Position: {x: -215.000000, y: -165.000000, z: -260.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
