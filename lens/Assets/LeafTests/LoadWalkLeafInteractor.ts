@@ -11,6 +11,7 @@ import { InteractorInputType, TargetingMode } from "SpectaclesInteractionKit.lsp
 import TargetProvider from "SpectaclesInteractionKit.lspkg/Providers/TargetProvider/TargetProvider";
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider";
 import { BackPlate } from "SpectaclesUIKit.lspkg/Scripts/BackPlate";
+import { LoadWalkMain } from "../Scripts/LoadWalkMain";
 import { LoadWalkStation } from "../Scripts/LoadWalkStation";
 import { LoadWalkStationUI } from "../Scripts/LoadWalkStationUI";
 import { LoadWalkVoice, Transcriber } from "../Scripts/LoadWalkVoice";
@@ -47,12 +48,15 @@ export function colorOf(root: SceneObject | null, name: string): vec4 {
   return (so.getComponent("Component.Text") as Text).textFill.color;
 }
 
-// The chip shows the load on one line and the battery time on a second; joined here so the brief's wording is testable.
+// The chip shows the load on one line and, on a second, the battery time or (over capacity) what to switch off;
+// joined here so the brief's wording is testable.
 export function chipText(slot: string): string | null {
   const load = textOf(uiRoot(slot), "ChipText");
   const hours = textOf(uiRoot(slot), "ChipHours");
+  const action = textOf(uiRoot(slot), "ChipAction");
   if (load === null) return null;
-  return hours === null ? load : load + " · " + hours.replace(/ left$/, "");
+  if (hours !== null) return load + " · " + hours.replace(/ left$/, "");
+  return action === null ? load : load + " · " + action;
 }
 
 export function chipColor(slot: string): vec4 {
@@ -163,6 +167,8 @@ export function distanceToAppliance(slot: string, point: vec3): number {
 export const MAX_PANEL_DISTANCE_CM = 20;
 // The laptop tag was raised 10 cm so it clears the lid; its centre is now about 26 cm from the laptop.
 const TAG_DISTANCE_CM: Record<string, number> = { Laptop: 30 };
+// The iron's card opens in the gap between the tables, off the line of sight to the iron; its centre is about 29 cm away.
+const CARD_DISTANCE_CM: Record<string, number> = { Iron: 30 };
 
 function panelDistance(slot: string, panelName: string): number {
   const panel = child(uiRoot(slot), panelName);
@@ -177,7 +183,7 @@ export function expectTagNear(slot: string): void {
 }
 
 export function expectCardNear(slot: string): void {
-  expect(panelDistance(slot, "ScanCard") <= MAX_PANEL_DISTANCE_CM).toBe(true);
+  expect(panelDistance(slot, "ScanCard") <= (CARD_DISTANCE_CM[slot] ?? MAX_PANEL_DISTANCE_CM)).toBe(true);
 }
 
 // Highest point of every mesh under a scene object.
@@ -312,6 +318,34 @@ export function rayTarget(from: vec3, to: vec3): Promise<Interactable | null> {
 // Where the user's eyes are now.
 export function eye(): vec3 {
   return WorldCameraFinderProvider.getInstance().getTransform().getWorldPosition();
+}
+
+// Where the user stood when the Lens started: the room is placed roomOffsetCm in front of that spot, level and facing
+// the way they faced, so the spot can be recovered from the room even after the camera has moved.
+export function startPose(): { pos: vec3; rot: quat } {
+  const room = findSceneObjectByName("LoadWalk")!;
+  const t = room.getTransform();
+  const main = room.getComponent(LoadWalkMain.getTypeName()) as LoadWalkMain;
+  const rot = t.getWorldRotation();
+  const pos = t.getWorldPosition().sub(rot.multiplyVec3(main.roomOffsetCm));
+  return { pos: new vec3(pos.x, eye().y, pos.z), rot };
+}
+
+// Where a world point lands on the display seen from a pose: (0,0) top left to (1,1) bottom right, or null if behind.
+export function onDisplay(pose: { pos: vec3; rot: quat }, p: vec3): vec2 | null {
+  const cam = WorldCameraFinderProvider.getInstance().getComponent();
+  const local = pose.rot.invert().multiplyVec3(p.sub(pose.pos));
+  if (local.z >= 0) return null;
+  const tanY = Math.tan(cam.fov / 2);
+  const tanX = tanY * cam.aspect;
+  return new vec2(0.5 + local.x / -local.z / (2 * tanX), 0.5 - local.y / -local.z / (2 * tanY));
+}
+
+// The four corners of a panel's plate, in world space.
+export function plateCorners(panel: SceneObject): vec3[] {
+  const size = (panel.getComponent(BackPlate.getTypeName()) as BackPlate).size;
+  const t = panel.getTransform();
+  return [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([sx, sy]) => t.getWorldTransform().multiplyPoint(new vec3((sx * size.x) / 2, (sy * size.y) / 2, 0)));
 }
 
 // A point `metres` from the target, straight out in front of the room's desk side and at the user's eye height.

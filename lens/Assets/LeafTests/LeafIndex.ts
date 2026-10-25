@@ -25,6 +25,9 @@ import { DeskCardsByLabelScenario } from "./DeskCardsByLabelScenario";
 import { RetagVoiceScenario } from "./RetagVoiceScenario";
 import { ReachScenario } from "./ReachScenario";
 import { VoiceRestartScenario } from "./VoiceRestartScenario";
+import { BodyPinchScenario } from "./BodyPinchScenario";
+import { StartViewScenario } from "./StartViewScenario";
+import { EvidenceFreezerScenario } from "./EvidenceFreezerScenario";
 
 @component
 export class LeafIndex extends BaseScriptComponent {
@@ -42,6 +45,8 @@ export class LeafIndex extends BaseScriptComponent {
     { id: "extra-voice-off-the-iron", typename: VoiceOffTheIronScenario.getTypeName() },
     { id: "extra-voice-can-i-run-freezer", typename: VoiceCanIRunScenario.getTypeName() },
     { id: "extra-desk-cards-by-label", typename: DeskCardsByLabelScenario.getTypeName() },
+    { id: "extra-body-pinch-picks-nothing", typename: BodyPinchScenario.getTypeName() },
+    { id: "extra-start-view-fits", typename: StartViewScenario.getTypeName() },
     { id: "extra-retag-then-voice", typename: RetagVoiceScenario.getTypeName() },
     { id: "extra-reach-1m-to-3m", typename: ReachScenario.getTypeName() },
     { id: "extra-voice-restarts", typename: VoiceRestartScenario.getTypeName() },
@@ -55,5 +60,6 @@ export class LeafIndex extends BaseScriptComponent {
     { id: "extra-evidence-card", typename: EvidenceCardScenario.getTypeName() },
     { id: "extra-evidence-overload", typename: EvidenceOverloadScenario.getTypeName() },
     { id: "extra-evidence-voice", typename: EvidenceVoiceScenario.getTypeName() },
+    { id: "extra-evidence-freezer-card", typename: EvidenceFreezerScenario.getTypeName() },
   ];
 }

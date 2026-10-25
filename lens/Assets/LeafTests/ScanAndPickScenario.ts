@@ -3,7 +3,7 @@ import { expect } from "Leaf.lspkg/Utils/common/Expect";
 import { findSceneObjectByName, sleep } from "Leaf.lspkg/Utils/common/Utils";
 import { findInteractableByName } from "Leaf.lspkg/Interactors/InteractableUtils";
 import {
-  LoadWalkLeafInteractor, child, expectCardNear, expectTagNear, chipColor, chipText, close, isOn, meter, switchOnSmallLoads, textOf, uiRoot,
+  LoadWalkLeafInteractor, child, colorOf, expectCardNear, expectTagNear, chipColor, chipText, close, isOn, meter, switchOnSmallLoads, textOf, uiRoot,
 } from "./LoadWalkLeafInteractor";
 import { COLORS } from "../Scripts/LoadWalkTheme";
 
@@ -30,6 +30,8 @@ export class ScanAndPickScenario extends Scenario {
     expect(textOf(root, "TagNote")).toBe("Surges about 3×");
     // 350 W alone is more than the unit's 200 W, said before any toggle.
     expect(textOf(root, "TagNote2")).toBe("Too big for 200 W");
+    expect(close(colorOf(root, "TagNote2"), COLORS.warn)).toBe(true);
+    expect(close(colorOf(root, "TagNote"), COLORS.text)).toBe(true);
     expectTagNear("Freezer");
     // Before any toggle: freezer is off.
     expect(isOn("Freezer")).toBe(false);
