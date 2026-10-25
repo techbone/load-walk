@@ -12,7 +12,9 @@ import animate from "SpectaclesInteractionKit.lspkg/Utils/animate";
 import { COLORS, Level, highlightPlate, levelColor, makeButton, makeText, setNumberFont, setPanelOpacity, setPlateAlpha, stylePlate, stylePlateWhenReady, textWidthCm, rowHeightCm } from "./LoadWalkTheme";
 
 export type CardOption = { id: string; label: string };
-export type TagView = { name: string; watts: string; notes: string[]; on: boolean };
+// warn: the note is a warning ("Too big for 200 W") and shows in the warning colour.
+export type TagNote = { text: string; warn?: boolean };
+export type TagView = { name: string; watts: string; notes: TagNote[]; on: boolean };
 
 type Panel = { so: SceneObject; flex: FlexLayout };
 
@@ -39,9 +41,21 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   @widget(new SliderWidget(-1, 1, 1))
   cardSide: number = 1;
   @input
+  @hint("Where the scan card floats front to back: 1 is just in front of the pinch target, -1 is just behind the appliance's back edge. Use -1 with a card centred above a big, bright appliance, so the card reads against the wall instead of the appliance.")
+  @widget(new SliderWidget(-1, 1, 2))
+  cardDepth: number = 1;
+  @input
+  @hint("Space between the appliance and its scan card, in cm. Widen it so the card stays off the line of sight to the appliance from where the user stands.")
+  @widget(new SliderWidget(0, 30, 0.5))
+  cardGapCm: number = 0.5;
+  @input
   @hint("Height of the scan card's centre above the appliance's centre, in cm.")
   @widget(new SliderWidget(-30, 60, 1))
   cardCenterYCm: number = 0;
+  @input
+  @hint("Moves the live load chip sideways from the centre of the tag, in cm (negative is left), to keep it inside the view from the start spot.")
+  @widget(new SliderWidget(-30, 30, 0.5))
+  chipOffsetXCm: number = 0;
   @input
   @hint("Opacity of the light plates behind text. 0 drops the plates and leaves bright text.")
   @widget(new SliderWidget(0, 0.5, 0.02))
@@ -73,6 +87,9 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   private tag: Panel | null = null;
   private tagTitle: Text | null = null;
   private toggleLabel: Text | null = null;
+  private warnNotes: string[] = [];
+  private on = false;
+  private culprit = false;
   private tagW = 0;
   private tagH = 0;
   private chipH = 0;
@@ -102,7 +119,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     const panel = this.makePanel("ScanCard", (cw) => {
       if (isNull(panel.so)) return;
       const root = this.sceneObject.getTransform().getLocalPosition();
-      const x = this.cardSide * (this.applianceHalfWidthCm + cw / 2 + 0.5);
+      const x = this.cardSide * (this.applianceHalfWidthCm + cw / 2 + this.cardGapCm);
       panel.so.getTransform().setLocalPosition(new vec3(x, this.cardCenterYCm - root.y, this.cardZ()));
     });
     this.card = panel.so;
@@ -135,9 +152,10 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     const widest = Math.max(
       textWidthCm(view.name, "Label"),
       textWidthCm(view.watts, "Number", true),
-      ...view.notes.map((n) => textWidthCm(n, "Label")),
+      ...view.notes.map((n) => textWidthCm(n.text, "Label")),
       textWidthCm(button, "Label") + 4
     );
+    this.culprit = false;
     this.tag = this.makePanel("Tag", (w, h) => {
       this.tagW = w;
       this.tagH = h;
@@ -147,15 +165,31 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     // The name is a button: pinching it reopens the scan card, so a wrong pick can be corrected.
     makeButton(this.tag.so, view.name, widest, NAME_BUTTON_H, () => this._onRename.invoke(), "TagNameButton", "TagName");
     this.tagTitle = makeText(this.tag.so, view.watts, "Number", widest, COLORS.text, { numbers: true, name: "TagWatts" });
-    view.notes.forEach((n, k) => makeText(this.tag!.so, n, "Label", widest, COLORS.text, { name: k === 0 ? "TagNote" : "TagNote" + (k + 1) }));
+    this.warnNotes = [];
+    view.notes.forEach((n, k) => {
+      const name = k === 0 ? "TagNote" : "TagNote" + (k + 1);
+      if (n.warn) this.warnNotes.push(name);
+      makeText(this.tag!.so, n.text, "Label", widest, n.warn ? COLORS.warn : COLORS.text, { name });
+    });
     const btnWidth = textWidthCm(button, "Label") + 4;
     this.toggleLabel = makeButton(this.tag.so, "Turn on", btnWidth, BUTTON_H, () => this._onToggle.invoke(), "ToggleButton");
     this.setOn(view.on);
   }
 
   setOn(on: boolean): void {
+    this.on = on;
     if (this.toggleLabel) this.toggleLabel.text = on ? "Turn off" : "Turn on";
-    if (this.tagTitle) this.tagTitle.textFill.color = on ? COLORS.accent : COLORS.text;
+    this.paintWatts();
+  }
+
+  // This appliance is what pushed the unit over: its wattage turns the warning colour until it is switched off.
+  setCulprit(culprit: boolean): void {
+    this.culprit = culprit;
+    this.paintWatts();
+  }
+
+  private paintWatts(): void {
+    if (this.tagTitle) this.tagTitle.textFill.color = this.culprit ? COLORS.warn : this.on ? COLORS.accent : COLORS.text;
   }
 
   // ---- voice answer ---------------------------------------------------------------------------------------
@@ -183,7 +217,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     }
   }
 
-  // Colour the tag's name and notes; null puts them back to white and the plate back to normal.
+  // Colour the tag's name and notes; null puts them back (white, warnings in the warning colour) and the plate back to normal.
   private paintTag(color: vec4 | null): void {
     if (!this.tag) return;
     if (color) highlightPlate(this.tag.so, color);
@@ -191,7 +225,8 @@ export class LoadWalkStationUI extends BaseScriptComponent {
       for (let i = 0; i < so.getChildrenCount(); i++) {
         const c = so.getChild(i);
         const t = c.getComponent("Component.Text") as Text | null;
-        if (t && /^Tag(Name|Note)/.test(c.name)) t.textFill.color = color ?? COLORS.text;
+        const rest = this.warnNotes.indexOf(c.name) >= 0 ? COLORS.warn : COLORS.text;
+        if (t && /^Tag(Name|Note)/.test(c.name)) t.textFill.color = color ?? rest;
         walk(c); // the name sits inside its button
       }
     };
@@ -199,10 +234,15 @@ export class LoadWalkStationUI extends BaseScriptComponent {
   }
 
   // ---- live load chip -------------------------------------------------------------------------------------
-  // fadeAfterSec 0 keeps the chip until hideChip() (used for the overload warning).
-  showChip(text: string, hours: string | null, level: Level, fadeAfterSec: number): void {
+  // fadeAfterSec 0 keeps the chip until hideChip() (used for the overload warning). The second line is either the
+  // battery time (hours, a figure) or what to do about an overload (action, words).
+  showChip(text: string, hours: string | null, level: Level, fadeAfterSec: number, action: string | null = null): void {
     this.dropChip();
-    const w = Math.max(textWidthCm(text, "Number", true), hours ? textWidthCm(hours, "Label", true) : 0);
+    const w = Math.max(
+      textWidthCm(text, "Number", true),
+      hours ? textWidthCm(hours, "Label", true) : 0,
+      action ? textWidthCm(action, "Label") : 0
+    );
     const panel = this.makePanel("Chip", (cw, ch) => {
       this.chipW = cw;
       this.chipH = ch;
@@ -211,6 +251,7 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     this.chip = panel.so;
     makeText(panel.so, text, "Number", w, levelColor(level), { numbers: true, name: "ChipText" });
     if (hours) makeText(panel.so, hours, "Label", w, levelColor(level), { numbers: true, name: "ChipHours" });
+    if (action) makeText(panel.so, action, "Label", w, levelColor(level), { name: "ChipAction" });
     this.placeChip();
     if (fadeAfterSec > 0) {
       this.fadeEvent.enabled = true;
@@ -271,16 +312,17 @@ export class LoadWalkStationUI extends BaseScriptComponent {
     return this.applianceHalfDepthCm + 1;
   }
 
-  // The scan card comes further forward, just in front of the appliance's padded pinch target.
+  // The scan card sits just outside the appliance's padded pinch target: in front of it, or behind it (cardDepth -1).
   private cardZ(): number {
-    return this.applianceHalfDepthCm + this.colliderPaddingCm + 1;
+    return (this.cardDepth < 0 ? -1 : 1) * (this.applianceHalfDepthCm + this.colliderPaddingCm + 1);
   }
 
-  // The chip sits directly above the tag (a row of tags is too tight for chips beside them at this text size).
+  // The chip sits directly above the tag (a row of tags is too tight for chips beside them at this text size),
+  // shifted sideways by chipOffsetXCm where the start view would otherwise cut it off.
   private placeChip(): void {
     if (!this.chip) return;
     const y = (this.tag ? this.tagH + 0.6 : 0) + this.chipH / 2;
-    this.chip.getTransform().setLocalPosition(new vec3(0, y, this.frontZ()));
+    this.chip.getTransform().setLocalPosition(new vec3(this.chipOffsetXCm, y, this.frontZ()));
   }
 
   // ---- building blocks ------------------------------------------------------------------------------------

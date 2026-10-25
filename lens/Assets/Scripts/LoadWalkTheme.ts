@@ -135,7 +135,15 @@ export function makeButton(
   btn.onInitialized.add(raise);
   const text = makeText(so, label, "Label", widthCm - 0.5, COLORS.text, { z: 0.08, name: labelName });
   so.createComponent(FlexItem.getTypeName());
-  btn.onTriggerUp.add(() => onTap());
+  // Act only on a pinch that began on this button. SIK sends the release to whatever the ray is on at that moment,
+  // so a scan card that opens under the hand mid-pinch would otherwise take the release as a pick.
+  let pressed = false;
+  btn.onTriggerDown.add(() => (pressed = true));
+  btn.onTriggerUp.add(() => {
+    if (!pressed) return;
+    pressed = false;
+    onTap();
+  });
   return text;
 }
 

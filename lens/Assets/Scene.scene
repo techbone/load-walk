@@ -7,7 +7,7 @@
     - !<own> f7baeb89-8a88-4667-bd3d-0d42dd3fb18d
     - !<own> 495064af-f482-418d-9fba-c840c6585a43
     - !<own> b9527af1-926c-47d3-9dd6-ab9e4c710f37
-    - !<own> 7f4c3ab0-2832-459e-b469-c003a3cef60a
+    - !<own> b258ef1a-2599-451c-b583-5abfc905a50c
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - id: 1
@@ -106,7 +106,7 @@
   Enabled: true
   renderLayer: 1310719
   LightType: Directional
-  Intensity: 0.550000
+  Intensity: 0.150000
   ShadowDensity: 0.440000
   ShadowBlurRadius: 4.000000
   ShadowTextureSize: 512
@@ -153,7 +153,7 @@
   Enabled: true
   renderLayer: 1310719
   LightType: Ambient
-  Intensity: 0.450000
+  Intensity: 0.150000
   ShadowDensity: 1.000000
   ShadowBlurRadius: 0.000000
   ShadowTextureSize: 512
@@ -506,7 +506,8 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
-    cardSide: true
+    cardGapCm: true
+    chipOffsetXCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
@@ -514,8 +515,11 @@
     "":
       applianceHalfWidthCm: !<float> 31.000000
       applianceHalfDepthCm: !<float> 50.000000
-      cardSide: !<float> 1.000000
-      cardCenterYCm: !<float> 20.000000
+      cardSide: !<float> 0.000000
+      cardDepth: !<float> -1.000000
+      cardGapCm: 0.500000
+      cardCenterYCm: !<float> 55.000000
+      chipOffsetXCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -592,6 +596,9 @@
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
     cardSide: true
+    cardDepth: true
+    cardGapCm: true
+    chipOffsetXCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
@@ -600,7 +607,10 @@
       applianceHalfWidthCm: 11.800000
       applianceHalfDepthCm: !<float> 20.000000
       cardSide: !<float> 1.000000
+      cardDepth: !<float> 1.000000
+      cardGapCm: 0.500000
       cardCenterYCm: !<float> 8.000000
+      chipOffsetXCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -778,7 +788,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -90.000000, y: -135.000000, z: -90.000000}
+    Position: {x: -60.000000, y: -135.000000, z: -90.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -904,6 +914,9 @@
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
     cardSide: true
+    cardDepth: true
+    cardGapCm: true
+    chipOffsetXCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
@@ -912,7 +925,10 @@
       applianceHalfWidthCm: 36.700001
       applianceHalfDepthCm: 41.700001
       cardSide: !<float> 1.000000
+      cardDepth: !<float> 1.000000
+      cardGapCm: 0.500000
       cardCenterYCm: !<float> 20.000000
+      chipOffsetXCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -1361,6 +1377,8 @@
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
     cardSide: true
+    cardDepth: true
+    cardGapCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
@@ -1369,7 +1387,10 @@
       applianceHalfWidthCm: !<float> 17.000000
       applianceHalfDepthCm: 15.950000
       cardSide: !<float> 1.000000
+      cardDepth: !<float> 1.000000
+      cardGapCm: 0.500000
       cardCenterYCm: !<float> 10.000000
+      chipOffsetXCm: !<float> -10.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -1506,22 +1527,6 @@
     - !<own> 7aa85bd8-d423-42cd-b190-473711e94929
   Components:
     []
-- !<ScriptComponent/412526c5-8be9-47cc-9dc5-1d9ee5f29cb3>
-  PrefabRemaps:
-    []
-  Name: AgentInspectScript
-  Enabled: true
-  ScriptAsset: !<reference> 0b25079c-f5bf-4c6d-96c4-f43b89dfa213
-  ScriptInputsDefault:
-    {}
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      {}
-  ScriptTypes:
-    "":
-      {}
 - !<ScriptComponent/41cf3329-4301-4af0-bad9-a27d1cc6442b>
   PrefabRemaps:
     []
@@ -1529,6 +1534,9 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
+    cardDepth: true
+    cardGapCm: true
+    chipOffsetXCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
@@ -1537,7 +1545,10 @@
       applianceHalfWidthCm: 14.500000
       applianceHalfDepthCm: 10.850000
       cardSide: !<float> -1.000000
+      cardDepth: !<float> 1.000000
+      cardGapCm: 0.500000
       cardCenterYCm: !<float> 5.000000
+      chipOffsetXCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -1722,6 +1733,22 @@
     []
   Components:
     - !<own> 5f153ad7-2baa-4fd9-a298-0dcfad86da3b
+- !<ScriptComponent/4e373c10-73e2-4726-aa2a-819f63196767>
+  PrefabRemaps:
+    []
+  Name: AgentInspectScript
+  Enabled: true
+  ScriptAsset: !<reference> 0b25079c-f5bf-4c6d-96c4-f43b89dfa213
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      {}
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/4ed826ec-9153-4921-a79e-325bb6eaeff6>
   PrefabRemaps:
     []
@@ -2263,6 +2290,9 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
+    cardDepth: true
+    cardGapCm: true
+    chipOffsetXCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
@@ -2271,7 +2301,10 @@
       applianceHalfWidthCm: 3.650000
       applianceHalfDepthCm: !<float> 8.000000
       cardSide: !<float> 0.000000
+      cardDepth: !<float> 1.000000
+      cardGapCm: 0.500000
       cardCenterYCm: !<float> 25.000000
+      chipOffsetXCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -2788,22 +2821,6 @@
     - !<own> ebe77ccd-7c6a-4bf7-924e-48f13fdd0f8e
   Components:
     []
-- !<SceneObject/7f4c3ab0-2832-459e-b469-c003a3cef60a>
-  PrefabRemaps:
-    []
-  Name: AiPreviewAgent Handler
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 412526c5-8be9-47cc-9dc5-1d9ee5f29cb3
-    - !<own> d978fc5f-8d82-4c81-adad-ca4cfbe7ae3e
 - !<SceneObject/7fb3591f-54a2-4aee-b07d-fd10d56538c8>
   PrefabRemaps:
     []
@@ -3053,7 +3070,7 @@
   Enabled: true
   renderLayer: 1
   LightType: Point
-  Intensity: 0.900000
+  Intensity: 1.300000
   ShadowDensity: 1.000000
   ShadowBlurRadius: 0.000000
   ShadowTextureSize: 512
@@ -3076,7 +3093,7 @@
   InnerConeAngle: 0.000000
   OuterConeAngle: 45.000000
   FalloffType: None
-  FalloffRange: .inf
+  FalloffRange: 230.000000
   ShadowType: None
 - !<SceneObject/8911e279-5e0d-4d06-87b1-0b70df4c1329>
   PrefabRemaps:
@@ -3204,6 +3221,9 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
+    cardDepth: true
+    cardGapCm: true
+    chipOffsetXCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
@@ -3212,7 +3232,10 @@
       applianceHalfWidthCm: 3.150000
       applianceHalfDepthCm: !<float> 7.000000
       cardSide: !<float> 0.000000
+      cardDepth: !<float> 1.000000
+      cardGapCm: 0.500000
       cardCenterYCm: !<float> 20.000000
+      chipOffsetXCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:
@@ -3641,6 +3664,22 @@
     - !<own> 3de2c7ea-1525-465a-9056-68565a4014a7
   Components:
     []
+- !<SceneObject/b258ef1a-2599-451c-b583-5abfc905a50c>
+  PrefabRemaps:
+    []
+  Name: AiPreviewAgent Handler
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 4e373c10-73e2-4726-aa2a-819f63196767
+    - !<own> d922fc19-2b29-4d37-9b5e-3d7fe428f09f
 - !<SceneObject/b33f7732-1ec1-42cf-ba48-4c70fdbf027a>
   PrefabRemaps:
     []
@@ -4311,7 +4350,7 @@
     - !<own> 74d13517-1dbf-42e6-b536-27afc4909c65
   Components:
     []
-- !<ScriptComponent/d978fc5f-8d82-4c81-adad-ca4cfbe7ae3e>
+- !<ScriptComponent/d922fc19-2b29-4d37-9b5e-3d7fe428f09f>
   PrefabRemaps:
     []
   Name: AgentInteractScript
@@ -4522,6 +4561,8 @@
   Enabled: true
   ScriptAsset: !<reference> 329320ec-5838-4a89-9dac-767b7ccee1d4
   ScriptInputsDefault:
+    cardDepth: true
+    chipOffsetXCm: true
     plateAlpha: true
   ScriptTypesDefault:
     {}
@@ -4530,7 +4571,10 @@
       applianceHalfWidthCm: 6.050000
       applianceHalfDepthCm: !<float> 14.000000
       cardSide: !<float> -1.000000
-      cardCenterYCm: !<float> 9.000000
+      cardDepth: !<float> 1.000000
+      cardGapCm: !<float> 10.000000
+      cardCenterYCm: !<float> 25.000000
+      chipOffsetXCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 8c616e88-d6c2-473f-9d16-4dfc5fc96f7c
   ScriptTypes:

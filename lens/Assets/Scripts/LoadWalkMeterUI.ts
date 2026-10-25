@@ -54,18 +54,19 @@ export class LoadWalkMeterUI extends BaseScriptComponent {
     flex.justifyContent = FlexJustify.Center;
     flex.rowGap = 0.2;
     flex.paddingTop = 0.5;
-    flex.paddingBottom = 0.5;
+    // The mono face draws its glyphs lower in their row than the sans does, so the battery line needs more room below.
+    flex.paddingBottom = 1.6;
     flex.paddingLeft = 0.8;
     flex.paddingRight = 0.8;
     flex.width = -1;
     flex.height = -1;
 
     // Widths are those of the longest string each row can show, so the plate does not jump as values change.
-    const wide = Math.max(textWidthCm("Overload: switch off Iron", "Label"), textWidthCm("Battery left: 17h 12m", "Label", true));
+    const wide = Math.max(textWidthCm("Overload: switch off the iron", "Label"), textWidthCm("Battery left: 17h 12m", "Label", true));
     makeText(face, "POWER STATION LOAD", "Label", wide, COLORS.text, { name: "MeterCaption" });
     this.load = makeText(face, "1,282 W", "Meter", wide, COLORS.text, { numbers: true, name: "MeterLoad" });
     this.limit = makeText(face, "of 200 W", "Number", wide, COLORS.text, { numbers: true, name: "MeterLimit" });
-    this.status = makeText(face, "Overload: switch off Iron", "Label", wide, COLORS.text, { name: "MeterStatus" });
+    this.status = makeText(face, "Overload: switch off the iron", "Label", wide, COLORS.text, { name: "MeterStatus" });
     this.hours = makeText(face, "Battery left: 17h 12m", "Label", wide, COLORS.text, { numbers: true, name: "MeterHours" });
   }
 

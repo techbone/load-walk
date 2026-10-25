@@ -31,7 +31,10 @@
     applianceHalfDepthCm: false
     applianceHalfWidthCm: false
     cardCenterYCm: false
+    cardDepth: false
+    cardGapCm: false
     cardSide: false
+    chipOffsetXCm: false
     numberFont: false
     plateAlpha: false
   ScriptTypesHidden:
@@ -46,7 +49,10 @@
     - applianceHalfWidthCm: !<float> 10.000000
       applianceHalfDepthCm: !<float> 10.000000
       cardSide: !<float> 1.000000
+      cardDepth: !<float> 1.000000
+      cardGapCm: 0.500000
       cardCenterYCm: !<float> 0.000000
+      chipOffsetXCm: !<float> 0.000000
       plateAlpha: 0.140000
       numberFont: !<reference.Font> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
@@ -59,7 +65,10 @@
     - "// @input float applianceHalfWidthCm = 10 {\"hint\":\"Half the appliance's width in cm; the scan card opens just outside it.\", \"widget\":\"slider\", \"min\":0, \"max\":80, \"step\":0.5}"
     - "// @input float applianceHalfDepthCm = 10 {\"hint\":\"Half the appliance's depth in cm; tags, chips and cards float just in front of its front face so the model never hides them.\", \"widget\":\"slider\", \"min\":0, \"max\":60, \"step\":0.5}"
     - '// @input float cardSide = 1 {"hint":"Where the scan card opens: 1 is right as the user sees it, -1 is left, 0 is centred above. Pick the side that keeps the card off every other appliance.", "widget":"slider", "min":-1, "max":1, "step":1}'
+    - "// @input float cardDepth = 1 {\"hint\":\"Where the scan card floats front to back: 1 is just in front of the pinch target, -1 is just behind the appliance's back edge. Use -1 with a card centred above a big, bright appliance, so the card reads against the wall instead of the appliance.\", \"widget\":\"slider\", \"min\":-1, \"max\":1, \"step\":2}"
+    - '// @input float cardGapCm = 0.5 {"hint":"Space between the appliance and its scan card, in cm. Widen it so the card stays off the line of sight to the appliance from where the user stands.", "widget":"slider", "min":0, "max":30, "step":0.5}'
     - "// @input float cardCenterYCm {\"hint\":\"Height of the scan card's centre above the appliance's centre, in cm.\", \"widget\":\"slider\", \"min\":-30, \"max\":60, \"step\":1}"
+    - '// @input float chipOffsetXCm {"hint":"Moves the live load chip sideways from the centre of the tag, in cm (negative is left), to keep it inside the view from the start spot.", "widget":"slider", "min":-30, "max":30, "step":0.5}'
     - '// @input float plateAlpha = 0.14 {"hint":"Opacity of the light plates behind text. 0 drops the plates and leaves bright text.", "widget":"slider", "min":0, "max":0.5, "step":0.02}'
     - '// @input Asset.Font numberFont {"hint":"Optional monospaced font for the figures (W, hours)."}'
     - '// @ui {"widget":"group_end"}'

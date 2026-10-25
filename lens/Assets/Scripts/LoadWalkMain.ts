@@ -13,6 +13,7 @@ import { LoadWalkArrowUI } from "./LoadWalkArrowUI";
 import { LoadWalkHintUI } from "./LoadWalkHintUI";
 import { LoadWalkVoice } from "./LoadWalkVoice";
 import { Level, fmtNum, fmtW } from "./LoadWalkTheme";
+import type { TagNote } from "./LoadWalkStationUI";
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider";
 
 @component
@@ -129,11 +130,12 @@ export class LoadWalkMain extends BaseScriptComponent {
     this.state.tag(s.slotId, specId);
     const spec = specById(specId);
     const cap = capacityW(POWER_STATION);
-    const notes: string[] = [];
-    if (spec.surgeFactor > 1) notes.push("Surges about " + spec.surgeFactor + "×");
-    if (spec.estimate) notes.push("Estimate");
-    if (this.state.tooBigAlone(s.slotId)) notes.push("Too big for " + cap + " W");
-    if (spec.note) notes.push(spec.note);
+    const notes: TagNote[] = [];
+    if (spec.surgeFactor > 1) notes.push({ text: "Surges about " + spec.surgeFactor + "×" });
+    if (spec.estimate) notes.push({ text: "Estimate" });
+    // Said in the warning colour at scan time, before anything is switched on.
+    if (this.state.tooBigAlone(s.slotId)) notes.push({ text: "Too big for " + cap + " W", warn: true });
+    if (spec.note) notes.push({ text: spec.note });
     s.ui.showTag({ name: spec.name, watts: fmtW(spec.runningW), notes, on: false });
     if (was?.on) this.render(s); // the old appliance's watts leave the total
   }
@@ -199,13 +201,15 @@ export class LoadWalkMain extends BaseScriptComponent {
     const meterLimit = "of " + cap + " W";
     const hours = this.state.hoursText(r);
     this.culprits = r.culpritIds;
-    const names = r.culpritIds.map((id) => this.state.get(id)?.name ?? id).join(", ");
+    const nameOf = (id: string) => "the " + (this.state.get(id)?.name ?? id).toLowerCase();
+    const names = r.culpritIds.map(nameOf);
+    const offList = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names.join("");
 
     let statusText = "Nothing switched on";
     if (r.status === "ok") statusText = "Within capacity";
     else if (r.status === "near") statusText = "Near the limit";
     else if (r.status === "surge-risk") statusText = "Startup surge may trip it";
-    else if (r.status === "overload") statusText = "Overload: switch off " + names;
+    else if (r.status === "overload") statusText = "Overload: switch off " + offList;
     this.meter.setView({
       loadText: meterWatts,
       limitText: meterLimit,
@@ -214,12 +218,14 @@ export class LoadWalkMain extends BaseScriptComponent {
       level,
     });
 
-    // The chip: hours are dropped once over capacity (time-to-trip is meaningless past the limit).
+    // The chip: hours are dropped once over capacity (time-to-trip is meaningless past the limit). A culprit's chip
+    // says what to do instead, on the appliance itself, and its wattage turns the warning colour.
     const chipHours = level === "overload" ? null : hours + " left";
     for (const s of this.stations) {
       const isCulprit = level === "overload" && r.culpritIds.indexOf(s.slotId) >= 0;
       s.setGlow(isCulprit);
-      if (isCulprit) s.ui.showChip(loadText, null, "overload", 0);
+      s.ui.setCulprit(isCulprit);
+      if (isCulprit) s.ui.showChip(loadText, null, "overload", 0, "Switch off " + nameOf(s.slotId));
       else if (s === toggled) s.ui.showChip(loadText, chipHours, level === "idle" ? "ok" : level, level === "overload" ? 0 : this.chipSeconds);
       else s.ui.hideChip();
     }
