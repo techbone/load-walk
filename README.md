@@ -121,7 +121,7 @@ Everything that surprised us is in [`docs/build-log.md`](docs/build-log.md).
 ## Run it locally
 
 1. Install **Lens Studio 5.23.2** (macOS arm or Windows) and sign in.
-2. Open `lens/lens.esproj`. Open the Preview panel (Window → Default Layout) with the device set to SPECS.
+2. Open `lens/lens.esproj`. Open the Preview panel (Window → Default Layout) with the device set to SPECS 27 and the environment set to **Evening Room** (the dropdown at the top of the Preview panel).
 3. Walk with WASD or a trackpad swipe, look with right-drag, click to pinch. Scan the fan, phone charger, power bank and laptop, then the iron.
 4. Voice (optional): turn on the preview's microphone and the Lens's Voice toggle, then speak and pause.
 5. Engine tests: `npm test` (Node 22.18+, no dependencies). Demo numbers: `npm run scenario`.
