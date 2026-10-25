@@ -6,8 +6,8 @@
     - !<own> f5d74682-203a-4970-81ea-9fa7b88c96bb
     - !<own> f7baeb89-8a88-4667-bd3d-0d42dd3fb18d
     - !<own> 495064af-f482-418d-9fba-c840c6585a43
-    - !<own> b258ef1a-2599-451c-b583-5abfc905a50c
     - !<own> f36216f4-8199-453e-af2c-60e5ae95e021
+    - !<own> 8bb876fb-4fed-4258-a82b-bb23959719d9
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - id: 1
@@ -230,7 +230,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -225.000000, y: -95.000000, z: -60.000000}
+    Position: {x: -225.000000, y: -95.000000, z: -330.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -439,6 +439,22 @@
   BlendNormals: false
   BlendShapes:
     {}
+- !<ScriptComponent/086e1a17-912a-4723-9280-81789efeba28>
+  PrefabRemaps:
+    []
+  Name: AgentInspectScript
+  Enabled: true
+  ScriptAsset: !<reference> 0b25079c-f5bf-4c6d-96c4-f43b89dfa213
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      {}
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/08e3cc22-f2e1-49fb-9ddc-145fe6547ce3>
   PrefabRemaps:
     []
@@ -1024,7 +1040,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 108.000000, y: -102.000000, z: -270.000000}
+    Position: {x: -24.000000, y: -131.500000, z: -318.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 100.000000, y: 100.000000, z: 100.000000}
     HasSegmentScaleCompensation: false
@@ -1717,12 +1733,12 @@
     []
   Components:
     - !<own> 5f153ad7-2baa-4fd9-a298-0dcfad86da3b
-- !<ScriptComponent/4e373c10-73e2-4726-aa2a-819f63196767>
+- !<ScriptComponent/4e54bc00-f93d-460c-9974-2bc8b3c2c6b6>
   PrefabRemaps:
     []
-  Name: AgentInspectScript
+  Name: AgentInteractScript
   Enabled: true
-  ScriptAsset: !<reference> 0b25079c-f5bf-4c6d-96c4-f43b89dfa213
+  ScriptAsset: !<reference> 29091811-e792-46be-bfa4-28ddec5f11be
   ScriptInputsDefault:
     {}
   ScriptTypesDefault:
@@ -1813,7 +1829,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -215.000000, y: -143.800003, z: -170.000000}
+    Position: {x: -215.000000, y: -143.800003, z: -60.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2907,7 +2923,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 145.000000, y: -99.699997, z: -270.000000}
+    Position: {x: 12.000000, y: -128.699997, z: -312.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 100.000000, y: 100.000000, z: 100.000000}
     HasSegmentScaleCompensation: false
@@ -3126,6 +3142,22 @@
     []
   Components:
     - !<own> e96fa241-3fac-465c-ad2e-b71442b16bde
+- !<SceneObject/8bb876fb-4fed-4258-a82b-bb23959719d9>
+  PrefabRemaps:
+    []
+  Name: AiPreviewAgent Handler
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 086e1a17-912a-4723-9280-81789efeba28
+    - !<own> 4e54bc00-f93d-460c-9974-2bc8b3c2c6b6
 - !<RenderMeshVisual/8c3be019-7b67-4fb9-8158-1262f117b8e1>
   PrefabRemaps:
     []
@@ -3664,22 +3696,6 @@
     - !<own> 3de2c7ea-1525-465a-9056-68565a4014a7
   Components:
     []
-- !<SceneObject/b258ef1a-2599-451c-b583-5abfc905a50c>
-  PrefabRemaps:
-    []
-  Name: AiPreviewAgent Handler
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 4e373c10-73e2-4726-aa2a-819f63196767
-    - !<own> d922fc19-2b29-4d37-9b5e-3d7fe428f09f
 - !<SceneObject/b33f7732-1ec1-42cf-ba48-4c70fdbf027a>
   PrefabRemaps:
     []
@@ -3687,7 +3703,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 78.000000, y: -105.199997, z: -270.000000}
+    Position: {x: -20.000000, y: -134.660004, z: -275.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -4335,22 +4351,6 @@
     - !<own> 74d13517-1dbf-42e6-b536-27afc4909c65
   Components:
     []
-- !<ScriptComponent/d922fc19-2b29-4d37-9b5e-3d7fe428f09f>
-  PrefabRemaps:
-    []
-  Name: AgentInteractScript
-  Enabled: true
-  ScriptAsset: !<reference> 29091811-e792-46be-bfa4-28ddec5f11be
-  ScriptInputsDefault:
-    {}
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      {}
-  ScriptTypes:
-    "":
-      {}
 - !<SceneObject/da214b27-43a7-4db4-90fd-993798e859d9>
   PrefabRemaps:
     []
@@ -4415,11 +4415,6 @@
   Children:
     - !<own> 82341b2a-2dd6-4c6f-827e-ff2e860b665a
     - !<own> 26193832-8b40-43b3-8c3b-d7ac761cff46
-    - !<own> 16b9cb26-f427-49d4-b87e-5236ae727697
-    - !<own> 241756f9-c6ec-43b2-ac6b-fb6357c4fc79
-    - !<own> 2cea0497-373b-4475-9d82-2a7ba33cbaaf
-    - !<own> c2fe5d61-a7f5-49f2-a472-78a1e0791ba6
-    - !<own> a0b3a9d2-237f-467d-b9ba-3fb270989bec
     - !<own> 9fd7ac62-d12b-4fe1-8da7-08e43af33419
     - !<own> f131c940-1164-4b16-bb68-1ad3d911179f
   Components:
@@ -4756,6 +4751,11 @@
     - !<own> ffb45ff6-da74-4526-b1d3-57bcc0ed9d64
     - !<own> 8c585f63-d3b9-4fba-bad8-444641f1d5e1
     - !<own> 5a988add-73e6-49a3-a7b8-f0d914d7cf79
+    - !<own> 16b9cb26-f427-49d4-b87e-5236ae727697
+    - !<own> 241756f9-c6ec-43b2-ac6b-fb6357c4fc79
+    - !<own> 2cea0497-373b-4475-9d82-2a7ba33cbaaf
+    - !<own> c2fe5d61-a7f5-49f2-a472-78a1e0791ba6
+    - !<own> a0b3a9d2-237f-467d-b9ba-3fb270989bec
   Components:
     []
 - !<SceneObject/f36216f4-8199-453e-af2c-60e5ae95e021>
@@ -5074,7 +5074,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -215.000000, y: -165.000000, z: -260.000000}
+    Position: {x: -150.000000, y: -165.000000, z: -60.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
