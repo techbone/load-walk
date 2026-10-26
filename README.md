@@ -2,7 +2,7 @@
 
 ![Load Walk in Lens Studio's preview: the iron pushes the desk to 1,282 W on a 200 W power station, and the meter turns red](docs/evidence/fix-round-3/after-overload-desk.png)
 
-![LEAF](https://img.shields.io/badge/LEAF-20%2F20%20passing-2ea44f) ![engine tests](https://img.shields.io/badge/engine%20tests-21%2F21-2ea44f) ![built with CLAD](https://img.shields.io/badge/built%20with-CLAD-black) ![platform](https://img.shields.io/badge/platform-SPECS%20%C2%B7%20Lens%20Studio%205.23.2-black)
+![LEAF](https://img.shields.io/badge/LEAF-28%20scenarios-2ea44f) ![engine tests](https://img.shields.io/badge/engine%20tests-21%2F21-2ea44f) ![built with CLAD](https://img.shields.io/badge/built%20with-CLAD-black) ![platform](https://img.shields.io/badge/platform-SPECS%20%C2%B7%20Lens%20Studio%205.23.2-black)
 
 ### Look around your house, see what your inverter can carry.
 
@@ -20,8 +20,10 @@ _YouTube link and embed go here (under 3 minutes, recorded from Lens Studio's pr
 |---|---|---|
 | The load maths is right | `npm test` | 21/21 pass |
 | The demo story's numbers | `npm run scenario` → [`docs/evidence/engine-scenario.txt`](docs/evidence/engine-scenario.txt) | 182 W / 200 W, 3h 58m; iron → 1,282 W, overload, "switch off: iron" |
-| The Lens meets its done criteria | LEAF in Lens Studio, see [`docs/evidence/leaf-run-4.md`](docs/evidence/leaf-run-4.md) and the build log | 20/20 scenarios pass, including all 6 done criteria |
+| The Lens meets its done criteria | LEAF in Lens Studio, see [`docs/evidence/leaf-run-4.md`](docs/evidence/leaf-run-4.md) and the build log | 28 scenarios; all 6 done criteria pass on every run (28/28 and 27/28 back to back, see note below) |
 | What it looks like | [`docs/evidence/fix-round-3/`](docs/evidence/fix-round-3/) and [`docs/evidence/visual-pass/`](docs/evidence/visual-pass/) | before/after captures for every visual round |
+
+**LEAF note, honestly:** two full runs back to back gave 28/28 and 27/28. The one failure was `extra-ik-reach-fan`, an extra test that drives a full-arm avatar to pinch the fan. It sometimes fails on a cold start when the avatar's pinch never registers; it always passes when re-run, and one failing trace averaged 98 ms per editor frame against about 22 ms in passing runs. It isn't one of the six done criteria, and every done-criterion scenario passed in both runs. Details in [`docs/evidence/leaf-run-5.md`](docs/evidence/leaf-run-5.md).
 
 The numbers you see in the Lens come from one formula, shared by the tests and the Lens (a test fails if the two copies ever differ):
 
@@ -74,7 +76,7 @@ flowchart LR
     Engine --> UI["Tags · chip · meter · glow · chime · arrow"]
   end
   Engine -. "same file, drift test" .- Tests["engine/ · npm test (21)"]
-  LEAF["LEAF scenarios (20)"] -. "pinch along SIK's ray, inject transcripts" .-> Lens
+  LEAF["LEAF scenarios (28)"] -. "pinch along SIK's ray, inject transcripts" .-> Lens
 ```
 
 Pinch and voice both call the same `setSwitch()`, so they can't disagree. On and off set the state rather than flipping it, so a repeated voice command is harmless. More in [ARCHITECTURE.md](ARCHITECTURE.md).
@@ -114,7 +116,7 @@ Pinch and voice both call the same `setSwitch()`, so they can't disagree. On and
 1. **Research and a problem gate** before any code ([`docs/research.md`](docs/research.md)): who has the problem, what it costs, what exists, why it needs glasses.
 2. **The `plan-lens` interview** from the Devpost Learn skill pack produced [the design brief](lens/devpost/design-brief.md): the one spatial moment, placement, the scan stand-in, and five checkable done criteria with real numbers from my power station's label. Voice was added later as a sixth.
 3. **CLAD built the Lens** in Lens Studio through the Lens Studio MCP, then four design rounds driven by preview captures and my own walk-throughs.
-4. **LEAF** checks every done criterion (20 scenarios). The engine has its own tests so the maths can be trusted outside Lens Studio.
+4. **LEAF** checks every done criterion (28 scenarios in total). The engine has its own tests so the maths can be trusted outside Lens Studio.
 
 Everything that surprised us is in [`docs/build-log.md`](docs/build-log.md).
 

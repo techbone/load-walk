@@ -23,7 +23,7 @@ Thesis: **Look around your house, see what your inverter can carry.**
 | 1:35–1:50 | Turn to the power station on the floor | Meter: 182 W of 200 W, near the limit, 3h 58m left. | Criterion 3 |
 | 1:50–2:15 | Toggle the iron | The iron's own tag turns red, chip 1,282 W / 200 W and "Switch off the iron", chime. Turn toward the meter: overload, arrow to the iron. "It tells me before the unit trips." | Criterion 4; chime audible |
 | 2:15–2:25 | Say "off the iron" (or pinch Turn off) | Everything clears; back to 182 W and 3h 58m. "Hands full, holding a torch, I just say it." | Criterion 5 (and 6 if voice works) |
-| 2:25–2:40 | A LEAF scenario pinching the Lens by itself; a glimpse of the CLAD session calling Lens Studio through the MCP | "Planned with the Devpost skill pack, built by CLAD through the Lens Studio MCP, and every done criterion is a LEAF test: 20 of 20 pass." | Fresh full LEAF run passed on screen |
+| 2:25–2:40 | A LEAF scenario pinching the Lens by itself; a glimpse of the CLAD session calling Lens Studio through the MCP | "Planned with the Devpost skill pack, built by CLAD through the Lens Studio MCP, and every done criterion is a LEAF test, and all of them pass." | Fresh full LEAF run passed on screen |
 | 2:40–2:55 | The fan tag reading "Power bank", then fixed | "My favourite bug: the charger's card opened over the fan, so picking Fan hit the fan instead. Buttons now win, and any tag can be re-picked." | Optional; cut first if over time |
 | 2:55–3:00 | Back to the room | "Load Walk. Look around your house, see what your inverter can carry." | |
 
