@@ -80,6 +80,24 @@ export function close(a: vec4, b: vec4): boolean {
 }
 
 export class LoadWalkLeafInteractor extends DefaultLeafInteractor {
+  // A pinch can retire the very button it hit: picking a name closes the scan card, and the Lens destroys the card
+  // 0.3 s later (a button must not be destroyed inside its own trigger event). LEAF keeps waiting a few frames after the
+  // pinch and then reads the button's name to log "complete"; on slow frames the destroy lands first and that read throws
+  // "Object is null" although the pinch went through. Once the button's own trigger-end has fired the pinch is done, so a
+  // button that is gone by then is not a failure.
+  async trigger(target: Interactable, config?: Parameters<DefaultLeafInteractor["trigger"]>[1]): Promise<void> {
+    let ended = false;
+    const onEnd = () => (ended = true);
+    target.onTriggerEnd.add(onEnd);
+    try {
+      await super.trigger(target, config);
+    } catch (e) {
+      if (!(ended && isNull(target))) throw e;
+    } finally {
+      if (!isNull(target)) target.onTriggerEnd.remove(onEnd);
+    }
+  }
+
   async scan(slot: string): Promise<void> {
     const station = findInteractableByName(slot);
     if (!station) throw new Error("No interactable for " + slot);
@@ -357,6 +375,18 @@ export function eyeInFrontOf(target: SceneObject, metres: number): vec3 {
   const d = metres * 100;
   const flat = Math.sqrt(Math.max(d * d - (eyeY - t.y) * (eyeY - t.y), 100));
   return room.getWorldTransform().multiplyPoint(new vec3(t.x, eyeY, t.z + flat));
+}
+
+// Like eyeInFrontOf, but `metres` are measured along the floor. A target a metre or more below the eye has no point
+// `metres` away in a straight line: eyeInFrontOf then gives up and puts the eye 10 cm out, so the ray drops straight
+// down through a tag's name button onto the toggle under it. Measured along the floor, a user standing `metres` from
+// the sideboard looks down at it the way a person really would.
+export function eyeAlongFloorFrom(target: SceneObject, metres: number): vec3 {
+  const room = findSceneObjectByName("LoadWalk")!.getTransform();
+  const toRoom = room.getInvertedWorldTransform();
+  const t = toRoom.multiplyPoint(target.getTransform().getWorldPosition());
+  const eyeY = toRoom.multiplyPoint(eye()).y;
+  return room.getWorldTransform().multiplyPoint(new vec3(t.x, eyeY, t.z + metres * 100));
 }
 
 // Aim at the target's centre from `from` and pinch what the ray hits. Returns the name of what was clicked.

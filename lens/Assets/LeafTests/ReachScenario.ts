@@ -3,14 +3,16 @@ import { expect } from "Leaf.lspkg/Utils/common/Expect";
 import { findSceneObjectByName, sleep } from "Leaf.lspkg/Utils/common/Utils";
 import { LoadWalkVoice } from "../Scripts/LoadWalkVoice";
 import {
-  LoadWalkLeafInteractor, NAMES, cardButton, child, clickFrom, eyeInFrontOf, fakeMic, isOn, rayReachCm, rayTarget, tagName, uiRoot,
-  voice, voiceToggle,
+  LoadWalkLeafInteractor, NAMES, cardButton, child, clickFrom, eyeAlongFloorFrom, eyeInFrontOf, fakeMic, isOn, rayReachCm, rayTarget,
+  tagName, uiRoot, voice, voiceToggle,
 } from "./LoadWalkLeafInteractor";
 
 // Hand-test bug: clicks stopped working after stepping back. From 1, 2, 2.5 and 3 m in front, every control is
 // pinched along the real ray: scan an appliance, pick its name, switch it on and off, and the Voice toggle.
-const STEPS: { metres: number; slot: string }[] = [
-  { metres: 1, slot: "Fan" },
+// The desk items sit more than a metre below the eye, so a straight-line metre does not exist there: the 1 m step is
+// measured along the floor (alongFloor); the others are straight-line distances, as before.
+const STEPS: { metres: number; slot: string; alongFloor?: boolean }[] = [
+  { metres: 1, slot: "Fan", alongFloor: true },
   { metres: 2, slot: "PhoneCharger" },
   { metres: 2.5, slot: "PowerBank" },
   { metres: 3, slot: "Laptop" },
@@ -24,10 +26,11 @@ export class ReachScenario extends Scenario {
     print("[LEAF-MEASURE] SIK hand/mouse ray reach is " + rayReachCm() + " cm");
     LoadWalkVoice.transcriber = fakeMic;
     try {
-      for (const { metres, slot } of STEPS) {
+      for (const { metres, slot, alongFloor } of STEPS) {
         const station = findSceneObjectByName(slot)!;
-        const from = eyeInFrontOf(station, metres);
-        const at = metres + " m";
+        const spot = alongFloor ? eyeAlongFloorFrom : eyeInFrontOf;
+        const from = spot(station, metres);
+        const at = metres + " m" + (alongFloor ? " along the floor" : "");
 
         expect(await clickFrom(i, station, from)).toBe(slot);
         expect(child(uiRoot(slot), "ScanCard") !== null).toBe(true);
@@ -40,7 +43,7 @@ export class ReachScenario extends Scenario {
         expect(await clickFrom(i, toggle(), from)).toBe("ToggleButton");
         expect(isOn(slot)).toBe(false);
 
-        const vFrom = eyeInFrontOf(voiceToggle(), metres);
+        const vFrom = spot(voiceToggle(), metres);
         expect(await clickFrom(i, voiceToggle(), vFrom)).toBe("VoiceToggle");
         expect(voice().listening).toBe(true);
         expect(await clickFrom(i, voiceToggle(), vFrom)).toBe("VoiceToggle");
@@ -54,7 +57,7 @@ export class ReachScenario extends Scenario {
         print("[LEAF-MEASURE] Voice toggle from " + metres + " m: " + (hit ? "reached " + hit.sceneObject.name : "out of reach"));
       }
     } finally {
-      if (voice().listening) await clickFrom(i, voiceToggle(), eyeInFrontOf(voiceToggle(), 1));
+      if (voice().listening) await clickFrom(i, voiceToggle(), eyeAlongFloorFrom(voiceToggle(), 1));
       LoadWalkVoice.transcriber = null;
     }
   }
