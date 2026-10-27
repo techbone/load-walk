@@ -14,7 +14,7 @@ A SPECS Lens for the Devpost "Learn AR with SPECS" hackathon. Deadline **9 Nov 2
 No SPECS device. Everything must run and be demonstrable in Lens Studio's Interactive Preview.
 
 - Appliance recognition is a stand-in (pinch to scan). Never claim live camera vision.
-- AI calls (Remote Service Gateway → Gemini) always have a hard-coded fallback.
+- Voice (Snap ASR Module) is off by default and every voice command has a pinch alternative.
 - No memory between sessions in the demo path.
 - Standard SIK / UI Kit interactions only, so the mouse and LEAF can drive them.
 
@@ -45,7 +45,7 @@ The source of truth is `engine/LoadEngine.ts`. It has no imports beyond types an
 
 ## Secrets
 
-The Remote Service Gateway token lives in the `RemoteServiceGatewayCredentials` object. Never commit it; check `git diff` on scene and prefab files before committing.
+No API keys are used. `.mcp.json` (Lens Studio's local MCP token) is ignored by `lens/.gitignore`; never commit it, and check `git diff` on scene files before committing.
 
 ## Git
 

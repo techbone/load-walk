@@ -1,6 +1,6 @@
 # Load Walk
 
-![Load Walk in Lens Studio's preview: the iron pushes the desk to 1,282 W on a 200 W power station, and the meter turns red](docs/evidence/fix-round-3/after-overload-desk.png)
+![Load Walk in Lens Studio's preview: the iron pushes the load to 1,282 W on a 200 W power station; its tag turns red and says switch off the iron](docs/evidence/screenshots/iron-overload.png)
 
 ![LEAF](https://img.shields.io/badge/LEAF-28%20scenarios-2ea44f) ![engine tests](https://img.shields.io/badge/engine%20tests-21%2F21-2ea44f) ![built with CLAD](https://img.shields.io/badge/built%20with-CLAD-black) ![platform](https://img.shields.io/badge/platform-SPECS%20%C2%B7%20Lens%20Studio%205.23.2-black)
 
@@ -14,16 +14,20 @@ Load Walk is a SPECS Lens for households that live with power cuts and run on a 
 
 _YouTube link and embed go here (under 3 minutes, recorded from Lens Studio's preview, nothing sped up)._
 
+| Desk at 182 of 200 W | Iron overload | Meter by the power station |
+|---|---|---|
+| ![Desk](docs/evidence/screenshots/desk-182w.png) | ![Overload](docs/evidence/screenshots/iron-overload.png) | ![Meter](docs/evidence/screenshots/meter-overload.png) |
+
 ## Judge it in 90 seconds
 
 | Check | How | Result |
 |---|---|---|
 | The load maths is right | `npm test` | 21/21 pass |
 | The demo story's numbers | `npm run scenario` → [`docs/evidence/engine-scenario.txt`](docs/evidence/engine-scenario.txt) | 182 W / 200 W, 3h 58m; iron → 1,282 W, overload, "switch off: iron" |
-| The Lens meets its done criteria | LEAF in Lens Studio, see [`docs/evidence/leaf-run-4.md`](docs/evidence/leaf-run-4.md) and the build log | 28 scenarios; all 6 done criteria pass on every run (28/28 and 27/28 back to back, see note below) |
-| What it looks like | [`docs/evidence/fix-round-3/`](docs/evidence/fix-round-3/) and [`docs/evidence/visual-pass/`](docs/evidence/visual-pass/) | before/after captures for every visual round |
+| The Lens meets its done criteria | LEAF in Lens Studio, see [`docs/evidence/leaf-results.md`](docs/evidence/leaf-results.md) | 28 scenarios; all 6 done criteria pass on every run (28/28 and 27/28 back to back, see note below) |
+| What it looks like | [`docs/evidence/screenshots/`](docs/evidence/screenshots/) | Final captures from the preview, plus the first build for comparison |
 
-**LEAF note, honestly:** two full runs back to back gave 28/28 and 27/28. The one failure was `extra-ik-reach-fan`, an extra test that drives a full-arm avatar to pinch the fan. It sometimes fails on a cold start when the avatar's pinch never registers; it always passes when re-run, and one failing trace averaged 98 ms per editor frame against about 22 ms in passing runs. It isn't one of the six done criteria, and every done-criterion scenario passed in both runs. Details in [`docs/evidence/leaf-run-5.md`](docs/evidence/leaf-run-5.md).
+**LEAF note, honestly:** two full runs back to back gave 28/28 and 27/28. The one failure was `extra-ik-reach-fan`, an extra test that drives a full-arm avatar to pinch the fan. It sometimes fails on a cold start when the avatar's pinch never registers; it always passes when re-run, and one failing trace averaged 98 ms per editor frame against about 22 ms in passing runs. It isn't one of the six done criteria, and every done-criterion scenario passed in both runs. Details in [`docs/evidence/leaf-results.md`](docs/evidence/leaf-results.md).
 
 The numbers you see in the Lens come from one formula, shared by the tests and the Lens (a test fails if the two copies ever differ):
 
@@ -87,7 +91,10 @@ Pinch and voice both call the same `setSwitch()`, so they can't disagree. On and
 | `engine/VoiceCommands.ts` | Transcript → on / off / ask. Understands "on the fan" and "off the light" as well as "turn on" |
 | `lens/` | The Lens Studio project (scene, scripts, generated models, LEAF scenarios) |
 | `lens/devpost/design-brief.md` | The brief from the Devpost Learn `plan-lens` interview |
-| `docs/` | Research, build log, evidence, voice spike, demo script |
+| `docs/research.md` | The problem check done before any code |
+| `docs/build-log.md` | Every surprise, dead end and fix, in order |
+| `docs/voice-spike.md` | The test that proved speech works in the preview |
+| `docs/evidence/` | LEAF results, engine output, screenshots |
 
 ## The hard problems
 
@@ -95,9 +102,9 @@ Pinch and voice both call the same `setSwitch()`, so they can't disagree. On and
 
 **The login that blocked the whole platform.** Lens Studio 5.24.1's sign-in failed in every browser. The SPECS team's workaround was to downgrade to 5.23.2, and a project saved in 5.24 warns it may be unstable in 5.23, so the project was rebuilt from a fresh 5.23.2 Base Template and the brief and engine moved in. Speech recognition also returned 401 until signed in.
 
-**Readable on an additive display.** The first build was correct and unreadable: grey boxes, a grey void, 2 cm text. Three design rounds later: generated models, a warm room, wattage as the biggest line on each tag (~4 cm digits, measured from rendered pixels), unlit text, plates that fit their content. Every round has before/after captures in `docs/evidence/`.
+**Readable on an additive display.** The first build was correct and unreadable: grey boxes, a grey void, 2 cm text. Three design rounds later: generated models, a warm room, wattage as the biggest line on each tag (~4 cm digits, measured from rendered pixels), unlit text, plates that fit their content. Compare [`first-build.png`](docs/evidence/screenshots/first-build.png) with [`desk-182w.png`](docs/evidence/screenshots/desk-182w.png).
 
-**Voice with no language setting.** Snap's speech module guesses the language; a noisy room once came back in Russian. It also has no "ended" event, so a dropped stream is silent. The Lens acts only on final transcripts, restarts the session after 45 s of silence or after an error, and keeps voice off by default behind a toggle. The spike that proved it works in the preview is in [`docs/spikes/voice.md`](docs/spikes/voice.md).
+**Voice with no language setting.** Snap's speech module guesses the language; a noisy room once came back in Russian. It also has no "ended" event, so a dropped stream is silent. The Lens acts only on final transcripts, restarts the session after 45 s of silence or after an error, and keeps voice off by default behind a toggle. The spike that proved it works in the preview is in [`docs/voice-spike.md`](docs/voice-spike.md).
 
 ## What's real vs simplified
 

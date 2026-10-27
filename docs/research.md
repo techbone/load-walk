@@ -1,6 +1,6 @@
 # Load Walk: research and problem gate
 
-> Source of truth for the problem and angle. The design itself comes from `devpost/design-brief.md`.
+> Written on 21 Oct 2026, before any code. It's the problem and angle check. The design itself is in [`lens/devpost/design-brief.md`](../lens/devpost/design-brief.md). Some ideas here were not built, such as the AI label reader, and some numbers changed once I read my own power station's label (200 W, 1 kWh).
 > Hackathon: Learn AR with SPECS (Devpost). Deadline **9 Nov 2026, 23:00 GMT+1**.
 
 ## Thesis
