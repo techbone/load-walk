@@ -86,3 +86,45 @@ In this order:
 ## Video demo link
 
 _YouTube link goes here_
+
+---
+
+## Public code repository URL
+
+https://github.com/techbone/load-walk
+
+(Lens Studio project in `lens/`, design brief in `lens/devpost/design-brief.md`, research and evidence in `docs/`.)
+
+## How the project meets the main technology requirement
+
+**Devpost Learn skill pack (`plan-lens`).** I ran the interview and it wrote `lens/devpost/design-brief.md`: the one spatial moment, where things live, how hands work, and five done criteria checkable in the preview (a sixth for voice was added later). I answered every question myself; the brief uses the real numbers from my power station's label.
+
+**CLAD (`ls-clad` plugin, `specs-experience-builder` agent).** Built the Lens from that brief: the scene, the scripts (state, tags, chip, meter, arrow, voice), the 3D appliance models it generated, and the overload chime. I then drove four design rounds through it from preview captures and my own walk-throughs.
+
+**Lens Studio MCP.** How CLAD and Claude Code reached Lens Studio: scene queries, creating and editing objects, compiling TypeScript, capturing the preview, driving pinches in the preview, and collecting logs.
+
+**LEAF.** 28 scenarios, one per done criterion plus extras (placement, reach from 1 to 3 m, voice, retagging). They pinch the real Lens along SIK's ray and inject voice transcripts.
+
+**Spectacles Interaction Kit and UI Kit.** Every interaction: scan card, tags, Turn on / Turn off, the Voice toggle.
+
+**Lens Studio 5.23.2 and its ASR Module.** The preview environment (Evening Room) and speech-to-text for voice commands.
+
+**Claude Code** was the agent harness running CLAD.
+
+## Where did you get stuck, or nearly quit?
+
+**1. Sign-in (the biggest blocker).** Lens Studio 5.24.1 could not sign in. On `accounts.specs.com/login` I entered my email, chose "Continue with email", and got only "Something went wrong. Please try again." The login URL redirects to `http://127.0.0.1:<port>/auth/callback`. It failed the same way in a private window and when opening the login page directly, so I could not reach CLAD at all. The SPECS team's workaround was to downgrade to 5.23.2. After that, opening my 5.24 project showed "This project was created with a newer version of Lens Studio. Project may be unstable. Project Version: 5.24 (build: 26100516) Current Version: 5.23 (build: 26081320)", so I recreated the project from a fresh Base Template. Later, after a restart, the log said "Failed to connect with SPECS: Please check if you are logged into SPECS and Lens Studio with the same account", and speech recognition returned 401 until I signed in again. None of these messages said what was actually wrong.
+
+**2. A pinch went to the wrong object.** Picking "Fan" on a scan card tagged the fan as "Power bank" or "Phone charger". The card's buttons overlapped another appliance's invisible pinch box and SIK sends a pinch to the nearest interactable. It took a day of hand-testing to find: the log showed the right handler running with the right label. Later a card opening under the hand mid-pinch took the release as a pick ("Kettle" instead of "Iron").
+
+**3. LEAF flakiness.** `extra-ik-reach-fan` (the full-arm avatar pinching the fan) failed on about half of cold starts after a refresh and passed on an immediate re-run (error: "ray failed to converge"). Another scenario intermittently threw "Exception in HostFunction: Object is null" because the Lens destroyed a button 0.3 s after a pick while LEAF read its name a few frames later; slow editor frames (about 98 ms vs about 22 ms) made it worse. Long scenarios (3.5 minutes) also made tool calls time out.
+
+**4. The preview start pose.** The room places itself relative to the preview camera at start, and that pose changed between runs (z from about 560 to 2,300 cm), so after a refresh the room was sometimes behind me. Every refresh also logged "Lens has been reset" twice.
+
+**5. Voice.** The ASR module has no language option (a noisy room once returned Russian) and no "session ended" event, so a dropped stream is silent. With the speech object left enabled, refreshes logged "CANCELLED" and "Pipe was already closed", and once the app hung until I toggled Lens Studio's own preview microphone icon off and on.
+
+**6. Dark meshes vanish in the preview.** On the simulated additive display, dark materials render see-through, so my "night" room disappeared into the preview grid. Using the built-in Evening Room environment fixed it.
+
+## If Snap could fix one thing in CLAD or Lens Studio, what would it be?
+
+**Make the Interactive Preview start the same way every time.** A fixed, documented start pose, one Lens instance per refresh, and a reset button that guarantees both. That one thing caused the room appearing behind me, the double "Lens has been reset", and most of the LEAF flakiness (the IK scenario failed mostly on cold starts and double instances), and it made every demo recording need a manual "reset camera, refresh, check the logger once" ritual. If I could ask for a second thing: sign-in errors that say what failed instead of "Something went wrong".
