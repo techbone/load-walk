@@ -1,6 +1,6 @@
 # Load Walk
 
-![Load Walk in Lens Studio's preview: the iron pushes the load to 1,282 W on a 200 W power station; its tag turns red and says switch off the iron](docs/evidence/screenshots/iron-overload.png)
+![Load Walk in Lens Studio's preview: the iron alone is 1,100 W on a 200 W power station; its tag and chip turn red and say switch off the iron](docs/evidence/screenshots/iron-overload.jpg)
 
 ![LEAF](https://img.shields.io/badge/LEAF-28%20scenarios-2ea44f) ![engine tests](https://img.shields.io/badge/engine%20tests-21%2F21-2ea44f) ![built with CLAD](https://img.shields.io/badge/built%20with-CLAD-black) ![platform](https://img.shields.io/badge/platform-SPECS%20%C2%B7%20Lens%20Studio%205.23.2-black)
 
@@ -16,7 +16,7 @@ _YouTube link and embed go here (under 3 minutes, recorded from Lens Studio's pr
 
 | Desk at 182 of 200 W | Iron overload | Meter by the power station |
 |---|---|---|
-| ![Desk](docs/evidence/screenshots/desk-182w.png) | ![Overload](docs/evidence/screenshots/iron-overload.png) | ![Meter](docs/evidence/screenshots/meter-overload.png) |
+| ![Desk](docs/evidence/screenshots/desk-182w.jpg) | ![Overload](docs/evidence/screenshots/iron-overload.jpg) | ![Meter](docs/evidence/screenshots/meter-overload.jpg) |
 
 ## Judge it in 90 seconds
 
@@ -102,7 +102,7 @@ Pinch and voice both call the same `setSwitch()`, so they can't disagree. On and
 
 **The login that blocked the whole platform.** Lens Studio 5.24.1's sign-in failed in every browser. The SPECS team's workaround was to downgrade to 5.23.2, and a project saved in 5.24 warns it may be unstable in 5.23, so the project was rebuilt from a fresh 5.23.2 Base Template and the brief and engine moved in. Speech recognition also returned 401 until signed in.
 
-**Readable on an additive display.** The first build was correct and unreadable: grey boxes, a grey void, 2 cm text. Three design rounds later: generated models, a warm room, wattage as the biggest line on each tag (~4 cm digits, measured from rendered pixels), unlit text, plates that fit their content. Compare [`first-build.png`](docs/evidence/screenshots/first-build.png) with [`desk-182w.png`](docs/evidence/screenshots/desk-182w.png).
+**Readable on an additive display.** The first build was correct and unreadable: grey boxes, a grey void, 2 cm text. Three design rounds later: generated models, a warm room, wattage as the biggest line on each tag (~4 cm digits, measured from rendered pixels), unlit text, plates that fit their content. Compare [`first-build.png`](docs/evidence/screenshots/first-build.jpg) with [`desk-182w.png`](docs/evidence/screenshots/desk-182w.jpg).
 
 **Voice with no language setting.** Snap's speech module guesses the language; a noisy room once came back in Russian. It also has no "ended" event, so a dropped stream is silent. The Lens acts only on final transcripts, restarts the session after 45 s of silence or after an error, and keeps voice off by default behind a toggle. The spike that proved it works in the preview is in [`docs/voice-spike.md`](docs/voice-spike.md).
 
