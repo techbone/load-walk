@@ -8,11 +8,13 @@
 
 Load Walk is a SPECS Lens for households that live with power cuts and run on a small inverter or power station. Pinch an appliance to tag it with its wattage, switch things on and off with a pinch or your voice, and the answer sits on the appliances themselves: the running total, whether it fits, how many hours of battery are left, and which appliance to switch off before the unit trips.
 
-**Watch the demo** (link coming) · **[Judge it in 90 seconds](#judge-it-in-90-seconds)** · **[Design brief](lens/devpost/design-brief.md)** · **[Architecture](ARCHITECTURE.md)** · **[Run it locally](#run-it-locally)**
+**[Watch the demo](https://youtu.be/JQoKEzufpuk)** · **[Judge it in 90 seconds](#judge-it-in-90-seconds)** · **[Design brief](lens/devpost/design-brief.md)** · **[Architecture](ARCHITECTURE.md)** · **[Run it locally](#run-it-locally)**
 
 ## Demo
 
-_YouTube link and embed go here (under 3 minutes, recorded from Lens Studio's preview, nothing sped up)._
+[![Watch the Load Walk demo on YouTube](https://img.youtube.com/vi/JQoKEzufpuk/maxresdefault.jpg)](https://youtu.be/JQoKEzufpuk)
+
+2 minutes 54 seconds, recorded from Lens Studio's preview. Nothing is sped up; the cuts only remove pauses. The scan is a stand-in (see [What's real vs simplified](#whats-real-vs-simplified)).
 
 | Desk at 182 of 200 W | Iron overload | Meter by the power station |
 |---|---|---|
